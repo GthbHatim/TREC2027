@@ -1,0 +1,17 @@
+Aquesta carpeta conté tont el meu treball previ al TREC (Practiques, Experiments, Proves, Versions velles, etc.) a partir del 13/04/2026
+El objectiu d'aquesta carpeta es purament d'archivament de les instancies del treball practic.
+
+Hi haura una llista actualitzada amb cada sessio de treball amb els canvis més importants.
+Una lista més detallada i actualitzada es troba al repositori del projecte a GitHub.
+"https://github.com/GthbHatim/TREC2027/pulls"
+
+LLISTA DE CANVIS (Ultima act. 13/04/2026)
+
+[13/04/2026] [Inici]
+* Crear repositori
+* Crear la llista de canvis
+* Començar a refrescar memoria d'altres projectes previs utils per el treball
+* Configuració i sincronització amb Visual Studio Code, preparació del entorn de treball.
+[Final]
+
+
