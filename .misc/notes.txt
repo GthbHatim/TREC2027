@@ -3,7 +3,7 @@ El objectiu d'aquesta carpeta es purament d'archivament de les instancies del tr
 
 Hi haura una llista actualitzada amb cada sessio de treball amb els canvis més importants.
 Una lista més detallada i actualitzada es troba al repositori del projecte a GitHub.
-"https://github.com/GthbHatim/TREC2027/pulls"
+"https://github.com/GthbHatim/TREC2027/commits?author=GthbHatim"
 
 LLISTA DE CANVIS (Ultima act. 13/04/2026)
 
