@@ -5,7 +5,7 @@ Hi haura una llista actualitzada amb cada sessio de treball amb els canvis més 
 Una lista més detallada i actualitzada es troba al repositori del projecte a GitHub.
 "https://github.com/GthbHatim/TREC2027/commits?author=GthbHatim"
 
-LLISTA DE CANVIS (Ultima act. 23/04/2026)
+LLISTA DE CANVIS (Ultima act. 24/04/2026)
 
 [13/04/2026] [Inici]
 * Crear repositori
@@ -17,4 +17,9 @@ LLISTA DE CANVIS (Ultima act. 23/04/2026)
 [23/04/2026] [Inici]
 * Començar a implementar el framework de Tailwind per començar a practicar classes CSS 
 * Configurar tot Tailwind
+[Final]
+
+[24/04/2026] [Inici]
+* Posposar el Tailwind
+* Començar una practica de HTML i CSS dur i pur.
 [Final]
