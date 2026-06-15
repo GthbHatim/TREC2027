@@ -23,3 +23,7 @@ LLISTA DE CANVIS (Ultima act. 24/04/2026)
 * Posposar el Tailwind
 * Començar una practica de HTML i CSS dur i pur.
 [Final]
+
+[15/06/2026] [Inici]
+* Proposada la estructura de la app (Py+Flask+SQlite), fare una petita practica per començar a experimentar amb els frameworks.
+[Final]
