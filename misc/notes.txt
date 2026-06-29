@@ -31,3 +31,4 @@ LLISTA DE CANVIS (Ultima act. 24/04/2026)
 [28/06/2026] [Inici]
 * Creacio de un entorn virtual per començar amb Flask
 * Creacio de la carpeta "app" on estara el programari.
+[Final]
