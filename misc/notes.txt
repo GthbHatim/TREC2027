@@ -5,7 +5,14 @@ Hi haura una llista actualitzada amb cada sessio de treball amb els canvis més 
 Una lista més detallada i actualitzada es troba al repositori del projecte a GitHub.
 "https://github.com/GthbHatim/TREC2027/commits?author=GthbHatim"
 
-LLISTA DE CANVIS (Ultima act. 24/04/2026)
+Tambe les accions que tenen al final "(Asistit per IA)" son accions que han estat asistides per un xat de IA sigui per:
+* Explicar un error que no he trobat documentat en cap lloc
+* Un dubte puntual osbre quina es la millor opció entre dos formes de fer una cosa
+* Debuging avançat
+
+En cap moment el programari ha estat fet en la seva totalitat per una model de llenguatge, i aquests s'han utilitzat de forma moderada, honesta i només com a eina d'asistencia.
+
+LLISTA DE CANVIS (Ultima act. 16/08/2026)
 
 [13/04/2026] [Inici]
 * Crear repositori
@@ -31,4 +38,14 @@ LLISTA DE CANVIS (Ultima act. 24/04/2026)
 [28/06/2026] [Inici]
 * Creacio de un entorn virtual per començar amb Flask
 * Creacio de la carpeta "app" on estara el programari.
+[Final]
+
+[16/08/2026] [Inici]
+* Creació del projecte Final
+* Estructura d'archius feta
+* Primeres lines de codi, utilitzant la documentació
+* Primers problemes, la documentació obviaba el importar la variable db a el archius inicials.
+* Creat les taules d'alumnat, maquinari i l'historial d'accions.
+* Solucionat problemes amb les etiquetes de les taules (Asistit per IA)
+* La taula funciona, revisat amb DB Browser
 [Final]
