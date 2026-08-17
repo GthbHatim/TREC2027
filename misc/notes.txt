@@ -32,7 +32,7 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 [Final]
 
 [15/06/2026] [Inici]
-* Proposada la estructura de la app (Py+Flask+SQlite), fare una petita practica per començar a experimentar amb els frameworks.
+* Proposada la estructura de la app (Py+Flask+SQlite), fare una petita practica per començar a experimentar amb els frameworks.(Asistit per IA)
 [Final]
 
 [28/06/2026] [Inici]
@@ -48,4 +48,15 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Creat les taules d'alumnat, maquinari i l'historial d'accions.
 * Solucionat problemes amb les etiquetes de les taules (Asistit per IA)
 * La taula funciona, revisat amb DB Browser
+[Final]
+
+[17/08/2026] [Inici]
+* Començar a posar dades de prova amb la shell de Flask
+* Intentar que la app retorni la dada en un JSON simple
+* Tot correcte, ara a fer les altres rutes i començar a modificar dades
+* Començant a fer les rutes, problemes de 404 amb un GET desde Postman
+* Debugging, intentar trobar la causa
+* Solucionat :)
+* Fer les funcions GET, POST, PUT i DELETE
+* Escriure les funcions (Asistit per IA)
 [Final]

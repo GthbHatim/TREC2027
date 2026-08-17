@@ -9,6 +9,7 @@ class Alumne(db.Model):
     identificador: Mapped[str] = mapped_column(String(50), unique=True)
     curs: Mapped[str] = mapped_column(String(50))
     ordinador: Mapped[Optional["Ordinador"]] = relationship(back_populates="alumne")
+    estat: Mapped[str] = mapped_column(String(50), default="actiu")
 
 
 class Ordinador(db.Model):
@@ -16,7 +17,7 @@ class Ordinador(db.Model):
     num_serie: Mapped[str] = mapped_column(String(50), unique=True)
     ref_diputacio: Mapped[str] = mapped_column(String(50))
     model: Mapped[str] = mapped_column(String(100))
-    estat: Mapped[str] = mapped_column(String(20), default="Enemagetzemat.")
+    estat: Mapped[str] = mapped_column(String(20), default="emmagatzemat")
     alumne_id: Mapped[Optional[int]] = mapped_column(ForeignKey("alumne.id"))
     alumne: Mapped[Optional["Alumne"]] = relationship(back_populates="ordinador")
 
