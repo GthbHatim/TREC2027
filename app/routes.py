@@ -6,7 +6,7 @@ from flask import request
 @app.route("/alumnes")
 def listar_alumnes():
     alumnes = db.session.execute(db.select(Alumne)).scalars().all()
-    return {"alumnes": [{"id": a.id, "identificador": a.identificador, "curs": a.curs, "estat": a.estat} for a in alumnes]}
+    return {"alumnes": [{"id": a.id, "identificador": a.identificador, "curs": a.curs, "estat": a.estat, "email": a.email} for a in alumnes]}
 
 @app.route("/alumnes/nou", methods=["POST"])
 def crear_alumne():
@@ -23,6 +23,7 @@ def editar_alumne(id):
         return {"error": "Alumne no trobat"}, 404
     dades = request.get_json()
     alumne.curs = dades.get("curs", alumne.curs)
+    alumne.email = dades.get("email", alumne.email)
     db.session.commit()
     return {"missatge": "Alumne actualitzat", "id": alumne.id}, 200
 
