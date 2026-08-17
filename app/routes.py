@@ -11,7 +11,7 @@ def listar_alumnes():
 @app.route("/alumnes/nou", methods=["POST"])
 def crear_alumne():
     dades = request.get_json()
-    nou = Alumne(identificador=dades["identificador"], curs=dades["curs"])
+    nou = Alumne(identificador=dades["identificador"], curs=dades["curs"], email=dades["email"])
     db.session.add(nou)
     db.session.commit()
     return {"missatge": "Alumne creat", "id": nou.id, "estat": nou.estat}, 201

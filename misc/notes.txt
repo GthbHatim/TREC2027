@@ -59,4 +59,6 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Solucionat :)
 * Fer les funcions GET, POST, PUT i DELETE
 * Escriure les funcions (Asistit per IA)
+* Afegir la dada "email"
+* Afegit la carpeta "__pycache__" i tot archiu "*.pyc" al .gitignore, per no omplir de brossa el repositori GitHub
 [Final]

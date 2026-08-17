@@ -10,6 +10,7 @@ class Alumne(db.Model):
     curs: Mapped[str] = mapped_column(String(50))
     ordinador: Mapped[Optional["Ordinador"]] = relationship(back_populates="alumne")
     estat: Mapped[str] = mapped_column(String(50), default="actiu")
+    email: Mapped[str] = mapped_column(String(50), unique=True)
 
 
 class Ordinador(db.Model):
