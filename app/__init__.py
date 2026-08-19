@@ -9,7 +9,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 db.init_app(app)
 
 from app import models 
-from app import routes
+from app import alumnes
+from app import ordinadors
 
 with app.app_context():
     db.create_all()

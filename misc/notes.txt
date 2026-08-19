@@ -62,3 +62,12 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Afegir la dada "email"
 * Afegit la carpeta "__pycache__" i tot archiu "*.pyc", tambe el relacionat amb Postman al .gitignore, per no omplir de brossa el repositori GitHub
 [Final]
+
+[19/08/2026] [Inici]
+* Cambiar el nom de "routes.py" a "alumnes.py", per que un no sigui generic.
+* Començar les rutes dels ordinadors
+* GET funciona
+* PUT sencer funciona
+* Divitit el estat en diferents PUT per una modificació a multiples opcions més segura.
+* Tot funciona correctament.
+[Final]
