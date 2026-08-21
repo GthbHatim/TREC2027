@@ -35,7 +35,7 @@ def reparar_ordinador(id):
         return {"error": "Ordinador no enregistrat"}, 404
     ordinador.estat = "en reparació"
     db.session.commit()
-    return {"missatge": "Ordinador donat de baixa temporalment", "id": ordinador.id}, 200
+    return {"missatge": "Ordinador marcat com a en reparació", "id": ordinador.id}, 200
 
 @app.route("/ordinadors/<int:id>/emmagatzematge", methods=["PUT"])
 def emmagatzemar_ordinador(id):
