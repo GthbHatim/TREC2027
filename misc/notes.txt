@@ -71,3 +71,14 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Divitit el estat en diferents PUT per una modificació a multiples opcions més segura.
 * Tot funciona correctament.
 [Final]
+
+[21/08/2026] [Inici]
+* Afegir el camp "nom" en els alumnes y els ordinadors
+* Corregir un bug que trencava el codi (Asistit per IA)
+* Un cop arreglat, comprobar el funcionament de PUT y GET
+* Funcionament correcte!
+* Crear la logica del historial
+* Afegir la relacio amb els nom al historial (Asistit per IA)
+* Tot funciona!
+* Creat index.html, dema comença el front-end!
+[Final]

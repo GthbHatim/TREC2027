@@ -10,7 +10,7 @@ db.init_app(app)
 
 from app import models 
 from app import alumnes
-from app import ordinadors
+from app import ordinadorshistorial
 
 with app.app_context():
     db.create_all()
