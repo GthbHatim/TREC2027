@@ -83,3 +83,11 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Creat index.html, dema comença el front-end!
 [Final] PD (21/08/2026): Afegit firma GPG al GitHub, ara els canvis fets al meu ordinador apareixen com verificats!
 
+[22/08/2026] [Inici]
+* Començar les rutes de HTML
+* Estructura basica del HTML feta
+* Navegacio minima feta
+* Ruta Python del html per consultar els alumnes, feta
+* Ruta importada al init
+* La dels ordinadors tambe
+

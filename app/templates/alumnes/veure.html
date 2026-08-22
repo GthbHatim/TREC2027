@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<table class="table_fixed">
+    {% for alumne in alumnes %}
+    <tr>
+        <td>{{ alumne.nom }}</td>
+        <td>{{ alumne.curs }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
