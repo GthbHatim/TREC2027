@@ -90,4 +90,5 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Ruta Python del html per consultar els alumnes, feta
 * Ruta importada al init
 * La dels ordinadors tambe
-
+* Donat un minim estil a la taula a ordinadors com a prova
+[Final]
