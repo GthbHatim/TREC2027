@@ -11,6 +11,7 @@ db.init_app(app)
 from app import models 
 from app import alumnes
 from app import ordinadorshistorial
+from app import ruteshtml
 
 with app.app_context():
     db.create_all()

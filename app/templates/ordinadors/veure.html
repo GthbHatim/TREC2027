@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<table class="table-auto border-spacing-2 m-4">
+    {% for ordinador in ordinadors %}
+    <tr>
+        <td class="p-1">{{ ordinador.id }}</td>
+        <td class="p-1">{{ ordinador.model }}</td>
+        <td class="p-1">{{ ordinador.num_serie }}</td>
+        <td class="p-1" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
+        <td class="p-1">{{ ordinador.ref_diputacio }}</td>
+        <td class="p-1">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
