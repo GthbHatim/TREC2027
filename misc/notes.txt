@@ -79,6 +79,7 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Funcionament correcte!
 * Crear la logica del historial
 * Afegir la relacio amb els nom al historial (Asistit per IA)
-* Tot funciona!
+* Tot funciona
 * Creat index.html, dema comença el front-end!
-[Final]
+[Final] PD (21/08/2026): Afegit firma GPG al GitHub, ara els canvis fets al meu ordinador apareixen com verificats!
+
