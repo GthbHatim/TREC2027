@@ -92,3 +92,14 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * La dels ordinadors tambe
 * Donat un minim estil a la taula a ordinadors com a prova
 [Final]
+
+[24/08/2026] [Inici]
+* Fer la navbar més bonica (Assistit per IA)
+* Posar les fonts, y algunes propietats generals
+* Arreglar una mica les taules
+* Creat un metode en "Bulk" per afegir alumnes i ordinadors en massa.
+* Afegida capçalera de les taules
+* Creada la pagina del historial
+* Creada taula del historial
+* Creada una pagina de benvinguda simple
+[Final]

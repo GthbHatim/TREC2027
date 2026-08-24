@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-<table class="table_fixed">
+<div class="p-10">
+<table class="table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+    <thead>
+        <tr>
+            <th class="border border-gray-700 p-2">ID</th>
+            <th class="border border-gray-700 p-2">Identificador</th>
+            <th class="border border-gray-700 p-2">Nom</th>
+            <th class="border border-gray-700 p-2">Email</th>
+            <th class="border border-gray-700 p-2">Curs</th>
+            <th class="border border-gray-700 p-2">Estat</th>
+            <th class="border border-gray-700 p-2">Id Ordinador</th>
+        </tr>
+    </thead>
     {% for alumne in alumnes %}
     <tr>
-        <td>{{ alumne.nom }}</td>
-        <td>{{ alumne.curs }}</td>
+        <td class="border border-gray-700 p-2">{{ alumne.id }}</td>
+        <td class="border border-gray-700 p-2">{{alumne.identificador}}</td>
+        <td class="border border-gray-700 p-2">{{ alumne.nom }}</td>
+        <td class="border border-gray-700 p-2">{{ alumne.email }}</td>
+        <td class="border border-gray-700 p-2">{{ alumne.curs }}</td>
+        <td class="border border-gray-700 p-2" style="text-transform: capitalize">{{ alumne.estat }}</td>
+        <td class="border border-gray-700 p-2">{{ alumne.ordinador.id if alumne.ordinador else "Sense assignar" }}</td>
     </tr>
     {% endfor %}
 </table>
+</div>
 {% endblock %}

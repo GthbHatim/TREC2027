@@ -76,6 +76,18 @@ def assignar_ordinador(id):
     db.session.commit()
     return {"missatge": "Ordinador assignat", "id": ordinador.id, "alumne_id": ordinador.alumne_id}, 200
 
+@app.route("/ordinadors/bulk", methods=["POST"])
+def crear_ordinador_bulk():
+    dades = request.get_json()
+    llista = dades["ordinadors"]
+    creats = []
+    for item in llista:
+        nou = Ordinador(num_serie=item["num_serie"], ref_diputacio=item["ref_diputacio"], model=item["model"])
+        db.session.add(nou)
+        creats.append(nou.num_serie)
+    db.session.commit()
+    return {"missatge": f"{len(creats)} ordinadors creats", "identificadors": creats}, 201
+
 @app.route("/historial")
 def mostrar_historial():
     historial = db.session.execute(db.select(Historial)).scalars().all()

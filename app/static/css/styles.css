@@ -1,4 +1,32 @@
+html {
+    font-size: 125%;
+}
+
 body {
-    background-color: rgb(31, 31, 31);
-    color: aliceblue;
+    background-color: rgb(238, 234, 212);
+    color: black;
+    font-family: "Century Gothic", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+nav {
+    background-color: rgb(245, 245, 244);
+    color: black;
+    font-family: "Stack Sans Headline", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: bold;
+}
+
+table {
+    border: 3px solid rgb(3, 3, 3);
+}
+
+h1 {
+    font-family: "Stack Sans Headline", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: bold;
 }
