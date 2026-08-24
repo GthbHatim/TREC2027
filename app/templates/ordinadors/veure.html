@@ -1,15 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-<table class="table-auto border-spacing-2 m-4">
+<div class="p-10">
+<table class="table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+    <thead>
+        <tr>
+            <th class="border border-gray-700 p-2">ID</th>
+            <th class="border border-gray-700 p-2">Model</th>
+            <th class="border border-gray-700 p-2">Num. Sèrie</th>
+            <th class="border border-gray-700 p-2">Estat</th>
+            <th class="border border-gray-700 p-2">Ref. Diputació</th>
+            <th class="border border-gray-700 p-2">Alumne</th>
+        </tr>
+    </thead>
     {% for ordinador in ordinadors %}
     <tr>
-        <td class="p-1">{{ ordinador.id }}</td>
-        <td class="p-1">{{ ordinador.model }}</td>
-        <td class="p-1">{{ ordinador.num_serie }}</td>
-        <td class="p-1" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
-        <td class="p-1">{{ ordinador.ref_diputacio }}</td>
-        <td class="p-1">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.id }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.model }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.num_serie }}</td>
+        <td class="border border-gray-700 p-2" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.ref_diputacio }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
     </tr>
     {% endfor %}
 </table>
+</div>
 {% endblock %}

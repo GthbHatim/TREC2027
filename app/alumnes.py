@@ -37,4 +37,15 @@ def borrar_alumne(id):
     db.session.commit()
     return {"missatge": "Alumne eliminat", "id": alumne.id}, 200
 
+@app.route("/alumnes/bulk", methods=["POST"])
+def crear_alumnes_bulk():
+    dades = request.get_json()
+    llista = dades["alumnes"]
+    creats = []
+    for item in llista:
+        nou = Alumne(nom=item["nom"], identificador=item["identificador"], curs=item["curs"], email=item["email"])
+        db.session.add(nou)
+        creats.append(nou.identificador)
+    db.session.commit()
+    return {"missatge": f"{len(creats)} alumnes creats", "identificadors": creats}, 201
 
