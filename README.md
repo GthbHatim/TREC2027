@@ -15,5 +15,6 @@ En cas de ser una institució escolar publica, si. Qualsevol altre tipus de ús 
 ## Com ho puc personalitzar?
 En un futur posare una guia de com modificar les entrades per encaixar en les necesitats de cada centre. 
 
-<img width="100" height="100" alt="image" src="https://github.com/user-attachments/assets/49d77009-e542-4045-a420-5a96ab2e9f7a" /> <img width="237" height="100" alt="image" src="https://github.com/user-attachments/assets/4a66eec1-2b40-4f13-be1c-a880b94a9302" />
+<img width="200" height="100" alt="logo" src="https://github.com/user-attachments/assets/cdc108ec-e808-4acd-acc7-257e3e1e40cc" />
+<img width="237" height="100" alt="image" src="https://github.com/user-attachments/assets/4a66eec1-2b40-4f13-be1c-a880b94a9302" />
 
