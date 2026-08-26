@@ -103,3 +103,14 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Creada taula del historial
 * Creada una pagina de benvinguda simple
 [Final]
+
+[25/08/2026] [Inici]
+* Començar a fer els botons per afegir
+* Form HTML dels ordinadors fet
+* Començant les rutes
+[Final]
+
+[26/08/2026] [Inici]
+* Acabar les rutes
+* Fer form HTMl dels alumnes
+* Tot funciona!

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" action="{{ url_for('post_ordinador') }}" class="p-10 flex flex-col gap-4 max-w-md">
+    <input type="text" name="num_serie" placeholder="Número de sèrie" class="border p-2" required>
+    <input type="text" name="ref_diputacio" placeholder="Referència diputació" class="border p-2" required>
+    <input type="text" name="model" placeholder="Model" class="border p-2" required>
+    <input type="text" name="alumne_id" placeholder="ID de l'alumne (opcional)" class="border p-2">
+    <button type="submit" class="bg-blue-600 text-white p-2 rounded">Crear ordinador</button>
+</form>
+{% endblock %}
