@@ -96,5 +96,5 @@ def mostrar_historial():
         alumne = db.session.get(Alumne, h.alumne_id)
         nom = alumne.nom if alumne else None
         entrada = {"id": h.id, "accio": h.accio, "data": h.data, "alumne_id": h.alumne_id, "ordinador_id": h.ordinador_id, "alumne_nom": nom}
-        missatge.append(entrada)
+        missatge.append(entrada)    
     return {"historial": missatge}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" action="{{ url_for('post_alumne') }}" class="p-10 flex flex-col gap-4 max-w-md">
+    <input type="text" name="nom" placeholder="Nom i primer cognom de l'alumne" class="border p-2" required>
+    <input type="text" name="identificador" placeholder="Identificador de l'alumne o alumna" class="border p-2" required>
+    <input type="text" name="curs" placeholder="Curs" class="border p-2" required>
+    <input type="email" name="email" placeholder="Correu electrònic" class="border p-2" required>
+    <input type="text" name="ordinador_id" placeholder="ID de l'ordinador (opcional)" class="border p-2">
+    <button type="submit" class="bg-blue-600 text-white p-2 rounded">Enregistrar alumne</button>
+{% endblock %}
