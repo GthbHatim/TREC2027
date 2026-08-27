@@ -27,6 +27,6 @@ class Ordinador(db.Model):
 class Historial(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     accio: Mapped[str] = mapped_column(String(50))
-    data: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    data: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     ordinador_id: Mapped[int] = mapped_column(ForeignKey("ordinador.id"))
     alumne_id: Mapped[Optional[int]] = mapped_column(ForeignKey("alumne.id"))
