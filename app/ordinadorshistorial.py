@@ -53,7 +53,8 @@ def borrar_ordinador(id):
     ordinador = db.session.get(Ordinador, id)
     if not ordinador:
         return {"error": "Ordinador no enregistrat"}, 404
-    ordinador.estat = "baixa"
+    ordinador.estat = "de baixa"
+    ordinador.alumne_id = None 
     db.session.commit()
     return {"missatge": "Ordinador donat de baixa", "id": ordinador.id}, 200
 

@@ -114,3 +114,21 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 * Acabar les rutes
 * Fer form HTMl dels alumnes
 * Tot funciona!
+* Fer el botó de estats fixes, com reparació
+* Fer el botó responsiu, en comptes de un redirect (Asistit per IA)
+* Fer el mateix per les baixes
+* Canviar la logica de les baixes per eliminar el nom d'un alumne si esta asignat.
+* Fer la ruta de asignació
+* Conectarla amb el historial (Asistit per IA)
+* Fer el fons y els botons mes bonics
+* Afegir el boto de baixa de alumne, juntament a un per restaurar
+* Fer la nav un pel més bonica
+[Final] PD: Per saber que fer dema, ja que falten poques coses, la majoria detalls per pulir:
+
+* Fer el formulari per editar un alumne
+* Acabar de integrar tot al historial
+* Fer que un cop feta una assignacio, apareixi a la dreta les ultimes entrades del
+historal, alumnes, o ordinadors enregistrats
+* (Pot ser) veure com fer una notificació un cop fet un canvi, ja que ara només redirigeix
+* Afegir Pandas per exportar les taules com Exel, segurament com a llista amb ticks, per triar quina taula exportar. O potser trobo la forma de combinar tot.
+ [PD]

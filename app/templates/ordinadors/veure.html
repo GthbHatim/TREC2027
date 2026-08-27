@@ -1,8 +1,65 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="p-10">
-    <a href="{{url_for('formulari_ordinadors')}}" class="button bg-[rgb(72_114_0)] text-white rounded p-2 mb-4 inline-block">Afegir Ordinador</a>
-<table class="table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+
+  <div class="flex items-center gap-3 mb-4 flex-wrap">
+
+    <a href="{{url_for('formulari_ordinadors')}}" class="shadow-2xl button bg-gradient-to-r from-green-600 to-green-700 hover:bg-[rgb(58_91_0)] text-white rounded-lg p-2 inline-block">
+      Afegir Ordinador
+    </a>
+
+    <button onclick="document.getElementById('form-reparacio').classList.toggle('hidden')" class="bg-gradient-to-r from-yellow-500 to-yellow-600 shadow-2xl hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition">Marcar en reparació</button>
+
+    <form id="form-reparacio" action="{{ url_for('reparar_ordinador_html') }}" method="POST" 
+          class="hidden flex items-center gap-2">
+      <input 
+        type="text" 
+        name="num_serie" 
+        placeholder="Número de sèrie"
+        class="border rounded-lg px-3 py-2 w-40"
+        required
+      >
+      <button type="submit" class="bg-gradient-to-r from-green-600 to-green-700 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+        Confirmar
+      </button>
+    </form>
+    <button onclick="document.getElementById('form-baixa').classList.toggle('hidden')" class="bg-gradient-to-r from-red-500 to-red-600 shadow-2xl hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">Marcar de baixa</button>
+
+    <form id="form-baixa" action="{{ url_for('baixa_ordinador_html') }}" method="POST" 
+          class="hidden flex items-center gap-2">
+      <input 
+        type="text" 
+        name="num_serie" 
+        placeholder="Número de sèrie"
+        class="border rounded-lg px-3 py-2 w-40"
+        required
+      >
+      <button type="submit" class="bg-gradient-to-r from-green-600 to-green-700 hover:bg-green-900 text-white px-4 py-2 rounded-lg">
+        Confirmar
+      </button>
+    </form>
+
+<button onclick="document.getElementById('form-emmagatzemar').classList.toggle('hidden')" class="bg-gradient-to-r from-purple-500 to-purple-600 shadow-2xl hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition">Marcar com a emmagatzemat</button>
+
+    <form id="form-emmagatzemar" action="{{ url_for('emmagatzemar_ordinador_html') }}" method="POST" 
+          class="hidden flex items-center gap-2">
+      <input 
+        type="text" 
+        name="num_serie" 
+        placeholder="Número de sèrie"
+        class="border rounded-lg px-3 py-2 w-40"
+        required
+      >
+      <button type="submit" class="bg-gradient-to-r from-green-600 to-green-700 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+        Confirmar
+      </button>
+    </form>
+        <a href="{{url_for('formulari_assignar')}}" class="button bg-gradient-to-r from-blue-500 to-blue-700 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
+      Assignar Ordinador
+    </a>
+  </div>
+
+  <table class="table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
     <thead>
         <tr>
             <th class="border border-gray-700 p-2">ID</th>
