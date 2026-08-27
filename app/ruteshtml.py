@@ -35,6 +35,10 @@ def veure_historial():
 def benvingut():
     return render_template("benvinguda.html")
 
+@app.route("/assignar/html/form")
+def formulari_assignar():
+    return render_template("assignar.html")
+
 @app.route("/alumnes/html/formulari")
 def formulari_alumnes():
     return render_template("alumnes/afegir.html")
@@ -83,3 +87,123 @@ def post_alumne():
         db.session.commit()
 
     return redirect(url_for("veure_alumnes"))
+
+@app.route('/alumnes/html/restaurar', methods=['POST'])
+def restaurar_alumne_html():
+    alumne_id = request.form.get('alumne_id')
+    alumne = db.session.get(Alumne, alumne_id)
+    
+    if not alumne:
+        return redirect(url_for('veure_alumnes'))
+
+    alumne.estat = "actiu"
+    db.session.commit() 
+    
+    return redirect(url_for('veure_alumnes'))
+
+@app.route('/ordinadors/html/reparar', methods=['POST'])
+def reparar_ordinador_html():
+    num_serie = request.form.get('num_serie')
+    ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
+    
+    if not ordinador:
+        # manejar error, ordenador no encontrado
+        return redirect(url_for('veure_ordinadors'))
+    
+    ordinador.estat = 'En reparació'
+    db.session.commit() 
+    
+    return redirect(url_for('veure_ordinadors'))
+
+@app.route('/ordinadors/html/baixa', methods=['POST'])
+def baixa_ordinador_html():
+    num_serie = request.form.get('num_serie')
+    ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
+    
+    if not ordinador:
+        return redirect(url_for('veure_ordinadors'))
+    
+    ordinador.estat = ' de baixa'
+    ordinador.alumne_id = None 
+    db.session.commit() 
+    
+    return redirect(url_for('veure_ordinadors'))
+
+@app.route('/ordinadors/html/emmagatzemar', methods=['POST'])
+def emmagatzemar_ordinador_html():
+    num_serie = request.form.get('num_serie')
+    ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
+    
+    if not ordinador:
+        return redirect(url_for('veure_ordinadors'))
+    
+    ordinador.estat = 'emmagatzemat'
+    ordinador.alumne_id = None 
+    db.session.commit() 
+    
+    return redirect(url_for('veure_ordinadors'))
+
+@app.route('/assignar/html', methods=['POST'])
+def assignar_ordinador_html():
+    ordinador_id = request.form.get('ordinador_id')
+    alumne_id = request.form.get('alumne_id')
+
+    if not ordinador_id or not alumne_id:
+        return {"error": "Falten dades"}, 404
+
+    ordinador = db.session.get(Ordinador, ordinador_id)
+    if not ordinador:
+        return {"error": "Ordinador no trobat"}, 404
+
+    alumne = db.session.get(Alumne, alumne_id)
+    if not alumne:
+        return {"error": "Alumne no trobat"}, 404
+
+    if ordinador.alumne_id is not None:
+        historial_retirada = Historial(
+            alumne_id=ordinador.alumne_id,
+            ordinador_id=ordinador.id,
+            accio="retirat"
+        )
+        db.session.add(historial_retirada)
+
+    ordinador.alumne_id = alumne.id
+    ordinador.estat = "assignat"
+
+    historial_assignacio = Historial(
+        alumne_id=alumne.id,
+        ordinador_id=ordinador.id,
+        accio="assignat"
+    )
+    db.session.add(historial_assignacio)
+
+    db.session.commit()
+    return redirect(url_for('veure_historial'))
+
+@app.route('/alumnes/html/baixa', methods=['POST'])
+def baixa_alumne_html():
+    alumne_id = request.form.get('alumne_id')
+    alumne = db.session.get(Alumne, alumne_id)
+    
+    if not alumne:
+        return redirect(url_for('veure_alumnes'))
+
+    alumne.estat = "de baixa"
+
+    ordinadors_assignats = db.session.execute(
+        db.select(Ordinador).filter_by(alumne_id=alumne.id)
+    ).scalars().all()
+
+    for ordinador in ordinadors_assignats:
+        historial = Historial(
+            alumne_id=alumne.id,
+            ordinador_id=ordinador.id,
+            accio="retirat (baixa alumne)"
+        )
+        db.session.add(historial)
+
+        ordinador.alumne_id = None
+        ordinador.estat = "emmagatzemat"
+
+    db.session.commit()
+    return redirect(url_for('veure_alumnes'))

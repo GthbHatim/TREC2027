@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
 </head>
 <body>
-<nav class="bg-rgb(31, 31, 31) w-full p-4">
+<nav class="fixed bg-rgb(31, 31, 31) w-full p-4">
   <div class="max-w-screen-xl flex items-center justify-between mx-auto">
     <a href="https://agora.xtec.cat/ieselfoix/" class="image"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="h-10"></a>
     <ul class="flex space-x-8">
@@ -30,7 +30,9 @@
     </ul>
   </div>
 </nav>
+<main class="pt-16">
 {% block content %}
 {% endblock %}
+</main>
 </body>
 </html>

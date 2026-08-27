@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    background-color: rgb(238, 234, 212);
+    background: linear-gradient(to right, #e4d89c, #d9bda6);
     color: black;
     font-family: "Century Gothic", sans-serif;
     font-optical-sizing: auto;
@@ -30,3 +30,7 @@ h1 {
     font-weight: 400;
     font-style: bold;
 }
+
+ asfdjlkdsf{
+    background-color: rgb(115, 111, 85)
+ }
