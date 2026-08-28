@@ -44,6 +44,22 @@
     <a href="{{ url_for('formulari_assignar') }}" class="button bg-gradient-to-r from-blue-500 to-blue-700 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
       Assignar Ordinador
     </a>
+    <button onclick="document.getElementById('form-editar').classList.toggle('hidden')" class="bg-gradient-to-r from-orange-500 to-orange-600 shadow-2xl hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition">
+  Editar Alumne
+</button>
+
+<form id="form-editar" action="{{ url_for('editar_alumne_html') }}" method="GET" class="hidden flex items-center gap-2">
+  <input
+    type="text"
+    name="alumne_id"
+    placeholder="Id de l'alumne"
+    class="border rounded-lg px-3 py-2 w-40"
+    required
+  >
+  <button type="submit" class="bg-gradient-to-r from-green-600 to-green-700 hover:bg-green-900 text-white px-4 py-2 rounded-lg">
+    Buscar
+  </button>
+</form>
   </div>
 
   <table class="table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">

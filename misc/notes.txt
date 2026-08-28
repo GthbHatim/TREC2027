@@ -1,4 +1,4 @@
-Aquesta carpeta conté tont el meu treball previ al TREC (Practiques, Experiments, Proves, Versions velles, etc.) a partir del 13/04/2026
+Aquesta carpeta conté tont el meu treball de la web TREC, a partir del 16/08/2026
 El objectiu d'aquesta carpeta es purament d'archivament de les instancies del treball practic.
 
 Hi haura una llista actualitzada amb cada sessio de treball amb els canvis més importants.
@@ -9,36 +9,14 @@ Tambe les accions que tenen al final "(Asistit per IA)" son accions que han esta
 * Explicar un error que no he trobat documentat en cap lloc
 * Un dubte puntual osbre quina es la millor opció entre dos formes de fer una cosa
 * Debuging avançat
+* Coses que no he trobat a la documentació i no sabia fer
 
-En cap moment el programari ha estat fet en la seva totalitat per una model de llenguatge, i aquests s'han utilitzat de forma moderada, honesta i només com a eina d'asistencia.
+En cap moment el programari ha estat fet en la seva totalitat per una model de llenguatge, i aquests s'han utilitzat 
+de forma moderada, honesta i només com a eina d'asistencia.
 
-LLISTA DE CANVIS (Ultima act. 16/08/2026)
+(Es a dir, la IA era merament orientativa, no utilitzada com agent.)
 
-[13/04/2026] [Inici]
-* Crear repositori
-* Crear la llista de canvis
-* Començar a refrescar memoria d'altres projectes previs utils per el treball
-* Configuració i sincronització amb Visual Studio Code, preparació del entorn de treball.
-[Final]
-
-[23/04/2026] [Inici]
-* Començar a implementar el framework de Tailwind per començar a practicar classes CSS 
-* Configurar tot Tailwind
-[Final]
-
-[24/04/2026] [Inici]
-* Posposar el Tailwind
-* Començar una practica de HTML i CSS dur i pur.
-[Final]
-
-[15/06/2026] [Inici]
-* Proposada la estructura de la app (Py+Flask+SQlite), fare una petita practica per començar a experimentar amb els frameworks.(Asistit per IA)
-[Final]
-
-[28/06/2026] [Inici]
-* Creacio de un entorn virtual per començar amb Flask
-* Creacio de la carpeta "app" on estara el programari.
-[Final]
+LLISTA DE CANVIS (Ultima act. 28/08/2026)
 
 [16/08/2026] [Inici]
 * Creació del projecte Final
@@ -131,4 +109,20 @@ LLISTA DE CANVIS (Ultima act. 16/08/2026)
 historal, alumnes, o ordinadors enregistrats
 * (Pot ser) veure com fer una notificació un cop fet un canvi, ja que ara només redirigeix
 * Afegir Pandas per exportar les taules com Exel, segurament com a llista amb ticks, per triar quina taula exportar. O potser trobo la forma de combinar tot.
+ 
+ [PD]
+
+[27/08/2026] [Inici]
+* Formulari i rutes de edició d'alumnes fetes
+* Fet el historial despres de Assignar
+* Cambiar el ordre de les entrades del historial (Asistit per IA)
+* Mostrar les ultimes entrades de alumnes i ordinadors en els respectius afegirs
+* Bug descobert que no fa falta corregir: Si es fa un nou ordinador, y aquest es assignat a un mateix alumne, el anterior no perd l'assignacio
+Es pot solucionar manualment emmagetzemant el anterior.
+[Final] PD: Per saber que fer dema, ja que falten poques coses, la majoria detalls per pulir:
+
+* (Pot ser) veure com fer una notificació un cop fet un canvi, ja que ara només redirigeix
+* Afegir Pandas per exportar les taules com Exel, segurament com a llista amb ticks, per triar quina taula exportar. O potser trobo la forma de combinar tot.
+* Fer un boto per eliminar entrades, segurament amb una alerta de que [aixo es totalment destructiu, i millor utilitzar "Baixa"]
+
  [PD]

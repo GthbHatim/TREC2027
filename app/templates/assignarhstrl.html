@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-center items-center min-h-[80vh]">
+
+<div class="p-10 m-4 w-full max-w-xl border-5 border-[rgb(115_111_85)] rounded-lg flex flex-col items-center justify-center">
+    <h1 class="text-3xl font-bold mb-4 text-center">Assignar Ordinador a Alumne</h1>
+    <p class="mb-4 text-center">Introdueix l'ID de l'ordinador i l'ID de l'alumne per assignar l'ordinador a l'alumne.</p>
+    <form method="POST" action="{{ url_for('assignar_ordinador_html') }}" class="flex flex-col gap-4 w-full">
+      <input type="text" name="ordinador_id" placeholder="ID de l'ordinador" class="border p-2 w-full" required>
+      <input type="text" name="alumne_id" placeholder="ID de l'alumne" class="border p-2 w-full" required>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Assignar ordinador!</button>
+    </form>
+  </div>
+
+  <table class=" m-4 table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+    <thead>
+        <tr>
+            <th class="border border-gray-700 p-2">ID</th>
+            <th class="border border-gray-700 p-2">Acció</th>
+            <th class="border border-gray-700 p-2">Data i hora</th>
+            <th class="border border-gray-700 p-2">Id del ordinador</th>
+            <th class="border border-gray-700 p-2">Id del alumne</th>
+            <th class="border border-gray-700 p-2">Alumne afectat</th>
+        </tr>
+    </thead>
+    {% for historial in historial %}
+    <tr>
+        <td class="border border-gray-700 p-2">{{ historial.id }}</td>
+        <td class="border border-gray-700 p-2" style="text-transform: capitalize;">{{ historial.accio }}</td>
+        <td class="border border-gray-700 p-2">{{ historial.data }}</td>
+        <td class="border border-gray-700 p-2">{{ historial.ordinador_id }}</td>
+        <td class="border border-gray-700 p-2">{{ historial.alumne_id }}</td>
+        <td class="border border-gray-700 p-2">{{ historial.alumne_nom }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</div>
+{% endblock %}
