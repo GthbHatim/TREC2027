@@ -2,7 +2,7 @@
 {% block content %}
 <div class="flex justify-center items-center min-h-[80vh]">
 
-<div class="p-10 w-full max-w-xl border-5 border-[rgb(115_111_85)] rounded-lg flex flex-col items-center justify-center">
+<div class="p-10 m-4 w-full max-w-xl border-5 border-[rgb(115_111_85)] rounded-lg flex flex-col items-center justify-center">
     <h1 class="text-3xl font-bold mb-4 text-center">Assignar Ordinador a Alumne</h1>
     <p class="mb-4 text-center">Introdueix l'ID de l'ordinador i l'ID de l'alumne per assignar l'ordinador a l'alumne.</p>
     <form method="POST" action="{{ url_for('assignar_ordinador_html') }}" class="flex flex-col gap-4 w-full">
@@ -11,6 +11,5 @@
       <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Assignar ordinador!</button>
     </form>
   </div>
-
 </div>
 {% endblock %}

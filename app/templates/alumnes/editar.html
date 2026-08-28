@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-center items-center min-h-[80vh]">
+
+  <div class="p-10 w-full max-w-xl border-5 border-[rgb(115_111_85)] rounded-lg flex flex-col items-center justify-center">
+    <h1 class="text-2xl font-bold mb-4">Editar Alumne</h1>
+
+    <form method="POST" action="{{ url_for('actualitzar_alumne_html', alumne_id=alumne.id) }}" class="flex flex-col gap-4 w-full">
+      <input type="text" name="nom" value="{{ alumne.nom }}" class="border p-2 w-full" required>
+      <input type="text" name="identificador" value="{{ alumne.identificador }}" class="border p-2 w-full" required>
+      <input type="text" name="curs" value="{{ alumne.curs }}" class="border p-2 w-full" required>
+      <input type="email" name="email" value="{{ alumne.email }}" class="border p-2 w-full" required>
+      <button type="submit" class="bg-blue-600 text-white p-2 rounded">Guardar canvis</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

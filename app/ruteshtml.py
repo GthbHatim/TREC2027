@@ -29,6 +29,7 @@ def veure_historial():
         alumne = db.session.get(Alumne, h.alumne_id)
         nom = alumne.nom if alumne else None
         dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
+    dades.reverse()
     return render_template("historial/veure.html", historial=dades)
 
 @app.route("/benvingut")
@@ -39,13 +40,34 @@ def benvingut():
 def formulari_assignar():
     return render_template("assignar.html")
 
+@app.route("/assignar/html/form/after")
+def formulari_assignar_after():
+    historial = db.session.execute(db.select(Historial).order_by(Historial.data.desc()).limit(7)).scalars()
+    dades = []
+    for h in historial:
+        alumne = db.session.get(Alumne, h.alumne_id)
+        nom = alumne.nom if alumne else None
+        dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
+    dades.reverse()
+    return render_template("assignarhstrl.html", historial=dades)
+
 @app.route("/alumnes/html/formulari")
 def formulari_alumnes():
     return render_template("alumnes/afegir.html")
 
+@app.route("/alumes/html/formulari/after")
+def formulari_alumnes_after():
+    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id.desc()).limit(7)).scalars()
+    return render_template("alumnes/afegir_after.html", alumnes=alumnes)
+
 @app.route("/ordinadors/html/formulari")
 def formulari_ordinadors():
     return render_template("ordinadors/afegir.html")
+
+@app.route("/ordinadors/html/formulari/after")
+def formulari_ordinadors_after():
+    ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id.desc()).limit(7)).scalars()
+    return render_template("ordinadors/afegir_after.html", ordinadors=ordinadors)
 
 @app.route("/ordinadors/nou/form", methods=["POST"])
 def post_ordinador():
@@ -64,7 +86,7 @@ def post_ordinador():
         nou2 = Historial(alumne_id = nou.alumne_id, ordinador_id = nou.id, accio = "assignat")
         db.session.add(nou2)
         db.session.commit()
-    return redirect(url_for('veure_ordinadors'))
+    return redirect(url_for('formulari_ordinadors_after'))
 
 @app.route("/alumnes/nou/form", methods=["POST"])
 def post_alumne():
@@ -86,7 +108,7 @@ def post_alumne():
         db.session.add(historial)
         db.session.commit()
 
-    return redirect(url_for("veure_alumnes"))
+    return redirect(url_for("formulari_alumnes_after"))
 
 @app.route('/alumnes/html/restaurar', methods=['POST'])
 def restaurar_alumne_html():
@@ -107,7 +129,6 @@ def reparar_ordinador_html():
     ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
     
     if not ordinador:
-        # manejar error, ordenador no encontrado
         return redirect(url_for('veure_ordinadors'))
     
     ordinador.estat = 'En reparació'
@@ -133,13 +154,23 @@ def baixa_ordinador_html():
 def emmagatzemar_ordinador_html():
     num_serie = request.form.get('num_serie')
     ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
-    
     if not ordinador:
         return redirect(url_for('veure_ordinadors'))
     
-    ordinador.estat = 'emmagatzemat'
-    ordinador.alumne_id = None 
-    db.session.commit() 
+    alumnes_assignats = db.session.execute(db.select(Alumne).filter_by(id=ordinador.alumne_id)).scalars().all()
+
+    for alumne in alumnes_assignats:
+        historial = Historial(
+            alumne_id=alumne.id,
+            ordinador_id=ordinador.id,
+            accio="retirat (emmagatzemat)"
+        )
+        db.session.add(historial)
+
+    ordinador.alumne_id = None
+    ordinador.estat = "emmagatzemat"
+
+    db.session.commit()
     
     return redirect(url_for('veure_ordinadors'))
 
@@ -176,8 +207,16 @@ def assignar_ordinador_html():
         accio="assignat"
     )
     db.session.add(historial_assignacio)
-
     db.session.commit()
+    historial = db.session.execute(db.select(Historial).order_by(Historial.data.desc()).limit(7)).scalars()
+    dades = []
+    for h in historial:
+        alumne = db.session.get(Alumne, h.alumne_id)
+        nom = alumne.nom if alumne else None
+        dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
+    dades.reverse()
+    return render_template("/assignarhstrl.html", historial=dades)
+
     return redirect(url_for('veure_historial'))
 
 @app.route('/alumnes/html/baixa', methods=['POST'])
@@ -204,6 +243,31 @@ def baixa_alumne_html():
 
         ordinador.alumne_id = None
         ordinador.estat = "emmagatzemat"
+
+    db.session.commit()
+    return redirect(url_for('veure_alumnes'))
+
+@app.route('/alumnes/html/editar', methods=['GET'])
+def editar_alumne_html():
+    alumne_id = request.args.get('alumne_id')
+    alumne = db.session.get(Alumne, alumne_id)
+
+    if not alumne:
+        return redirect(url_for('veure_alumnes'))
+
+    return render_template('alumnes/editar.html', alumne=alumne)
+
+@app.route('/alumnes/html/actualitzar/<int:alumne_id>', methods=['POST'])
+def actualitzar_alumne_html(alumne_id):
+    alumne = db.session.get(Alumne, alumne_id)
+
+    if not alumne:
+        return redirect(url_for('veure_alumnes'))
+
+    alumne.nom = request.form.get('nom')
+    alumne.identificador = request.form.get('identificador')
+    alumne.curs = request.form.get('curs')
+    alumne.email = request.form.get('email')
 
     db.session.commit()
     return redirect(url_for('veure_alumnes'))
