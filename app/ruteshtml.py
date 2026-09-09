@@ -1,4 +1,13 @@
-from app import app
+from csv import writer
+from io import BytesIO
+import io
+from flask import send_file
+import pandas
+from sqlalchemy import String, ForeignKey, DateTime
+from pandas import options
+from pandas import DataFrame
+from pandas import ExcelWriter
+from app import alumnes, app
 from app.extensions import db
 from flask import request, url_for
 from flask import render_template
@@ -6,6 +15,8 @@ from app.models import Alumne
 from app.models import Ordinador
 from app.models import Historial
 from flask import redirect
+from pandas import Timestamp
+import pandas as pd
 
 @app.route("/alumnes/html")
 def llistar_alumnes():
@@ -271,3 +282,43 @@ def actualitzar_alumne_html(alumne_id):
 
     db.session.commit()
     return redirect(url_for('veure_alumnes'))
+
+@app.route('/html/export')
+def exportar ():
+    return render_template('export.html')
+
+@app.route('/html/export/action', methods=['POST'])
+def exportar_post():
+    options = {
+        'historial': bool(request.form.get('historial')),
+        'alumnes': bool(request.form.get('alumnes')),
+        'ordinadors': bool(request.form.get('ordinadors'))
+    }
+
+    dataframes = {}
+    fecha_actual = pandas.Timestamp.now().strftime("%d-%m-%Y_%H-%M-%S")
+
+    for key, value in options.items():
+        if value:
+            if key == 'historial':
+                historial = db.session.execute(db.select(Historial)).scalars().all()
+                data = [{'id': h.id, 'accio': h.accio, 'data': h.data, 'ordinador_id': h.ordinador_id, 'alumne_id': h.alumne_id} for h in historial]
+                df = pd.DataFrame(data)
+                dataframes['historial'] = df
+            elif key == 'alumnes':
+                alumnes = db.session.execute(db.select(Alumne)).scalars().all()
+                data = [{'id': a.id, 'nom': a.nom, 'identificador': a.identificador, 'curs': a.curs, 'email': a.email} for a in alumnes]
+                df = pd.DataFrame(data)
+                dataframes['alumnes'] = df
+            elif key == 'ordinadors':
+                ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
+                data = [{'id': o.id, 'num_serie': o.num_serie, 'ref_diputacio': o.ref_diputacio, 'model': o.model, 'estat': o.estat} for o in ordinadors]
+                df = pd.DataFrame(data)
+                dataframes['ordinadors'] = df
+
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        for sheet_name, df in dataframes.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+    output.seek(0)
+    return send_file(output, as_attachment=True, download_name=f"backup_{fecha_actual}.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    background: linear-gradient(to right, #e4d89c, #d9bda6);
+    background-color: #e4d89c;
     color: black;
     font-family: "Century Gothic", sans-serif;
     font-optical-sizing: auto;
