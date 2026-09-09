@@ -126,3 +126,9 @@ Es pot solucionar manualment emmagetzemant el anterior.
 * Fer un boto per eliminar entrades, segurament amb una alerta de que [aixo es totalment destructiu, i millor utilitzar "Baixa"]
 
  [PD]
+
+ [09/09/2027] [Inici]
+ * Enrutacions checkboxes exportacio
+ * Exportacions amb Pandes
+ * Treure degradat botons
+ [Final]
