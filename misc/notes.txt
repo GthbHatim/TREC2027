@@ -127,8 +127,12 @@ Es pot solucionar manualment emmagetzemant el anterior.
 
  [PD]
 
- [09/09/2027] [Inici]
+ [09/09/2026] [Inici]
  * Enrutacions checkboxes exportacio
  * Exportacions amb Pandes
  * Treure degradat botons
  [Final]
+
+ [11/09/2026] [Inici]
+ * Afegir un (intent de) mode oscur, a la seccio per veure els alumnes.
+ * Afegir el logo del centre i més info a la pagina inicial

@@ -27,6 +27,11 @@ def veure_alumnes():
     alumnes = db.session.execute(db.select(Alumne)).scalars().all()
     return render_template("alumnes/veure.html", alumnes=alumnes)
 
+@app.route("/alumnes/html/dark/veure")
+def veure_alumnes_dark():
+    alumnes = db.session.execute(db.select(Alumne)).scalars().all()
+    return render_template("darkmode_test/alumnes/veure.html", alumnes=alumnes)
+
 @app.route("/ordinadors/html/veure")
 def veure_ordinadors():
     ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()

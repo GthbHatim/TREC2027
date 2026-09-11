@@ -3,8 +3,8 @@ html {
 }
 
 body {
-    background-color: #e4d89c;
-    color: black;
+    background-color: #1c0f07;
+    color: white;
     font-family: "Century Gothic", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -12,8 +12,8 @@ body {
 }
 
 nav {
-    background-color: rgb(245, 245, 244);
-    color: black;
+    background-color: rgb(234, 144, 59);
+    color: white;
     font-family: "Stack Sans Headline", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -21,7 +21,7 @@ nav {
 }
 
 table {
-    border: 3px solid rgb(3, 3, 3);
+    border: 3px solid rgb(221, 222, 167);
 }
 
 h1 {
