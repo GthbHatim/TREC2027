@@ -28,12 +28,14 @@ En Windows
 ```
 git clone https://github.com/GthbHatim/TREC2027
 cd ./TREC2027
+pip install -r requirements.txt
 py run.py
 ```
 A Linux:
 ```
 git clone https://github.com/GthbHatim/TREC2027
 cd ./TREC2027
+pip install -r requirements.txt
 python3 run.py
 ```
 El terminal retornara:
