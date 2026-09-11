@@ -13,7 +13,7 @@ Aquest treball de recerca consisteix en l’aprenentatge de programació en dive
 Per fer-ho has de tenir tant Git com Python al teu sistema
 Windows:
 ```
-winget install -e --id Python.Python.3.13 --accept-package-agreements --accept-source-agreements
+winget install -e --id python --accept-package-agreements --accept-source-agreements
 winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
 ```
 Fedora:
