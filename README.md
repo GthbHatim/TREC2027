@@ -1,5 +1,7 @@
 # Treball de Recerca | Hatim el Housni Lagrine | Institut el Foix
 
+<img width="3460" height="1440" alt="Gestio El Foix Nou (TXT) (1)" src="https://github.com/user-attachments/assets/8a243aae-13bf-40aa-9729-e4888371e5cd" />
+
 ## Benvingut al meu Treball de Recerca pel curs 2026-2027!
 En aquest repositori és guardat tota la part practica del meu treball, incloses notes, practiques, etc.
 En finalitzar el treball també fare public el full de recerca final.
