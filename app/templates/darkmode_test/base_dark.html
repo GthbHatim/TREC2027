@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestió El Foix</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_dark.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 <body>
 <nav class="fixed bg-rgb(31, 31, 31) w-full p-4">
   <div class="max-w-screen-xl flex items-center justify-between mx-auto">
-    <a href="https://agora.xtec.cat/ieselfoix/" class="image"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="h-10"></a>
+    <a href="https://agora.xtec.cat/ieselfoix/" class="image"><img src="{{ url_for('static', filename='logo_alt.png') }}" alt="Logo" class="h-10"></a>
     <ul class="flex space-x-8">
       <li>
         <a href="{{ url_for('benvingut') }}" class="hover:text-gray-300">Casa</a>

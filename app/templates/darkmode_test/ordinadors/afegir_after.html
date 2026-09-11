@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-center items-center p-10">
+        <div class="m-4p-10 w-full max-w-xl border-5 border-[rgb(115_111_85)] rounded-lg flex flex-col items-center justify-center">
+    <h1 class="text-3xl font-bold mb-4 text-center">Afegir Ordinador</h1>
+    <p class="mb-4 text-center">Introdueix les dades de l'ordinador per afegir-lo al sistema. No es obligatori assignar un alumne.</p>
+<form method="POST" action="{{ url_for('post_ordinador') }}" class="p-4 flex flex-col gap-4 w-full max-w-md">
+    <input type="text" name="num_serie" placeholder="Número de sèrie" class="border p-2 w-full" required>
+    <input type="text" name="ref_diputacio" placeholder="Referència diputació" class="border p-2 w-full" required>
+    <input type="text" name="model" placeholder="Model" class="border p-2 w-full" required>
+    <input type="text" name="alumne_id" placeholder="ID de l'alumne (opcional)" class="border p-2 w-full">
+    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Crear ordinador</button>
+</form>
+</div>
+  <table class="m-4 table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+    <thead>
+        <tr>
+            <th class="border border-gray-700 p-2">ID</th>
+            <th class="border border-gray-700 p-2">Model</th>
+            <th class="border border-gray-700 p-2">Num. Sèrie</th>
+            <th class="border border-gray-700 p-2">Estat</th>
+            <th class="border border-gray-700 p-2">Ref. Diputació</th>
+            <th class="border border-gray-700 p-2">Alumne</th>
+        </tr>
+    </thead>
+    {% for ordinador in ordinadors %}
+    <tr>
+        <td class="border border-gray-700 p-2">{{ ordinador.id }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.model }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.num_serie }}</td>
+        <td class="border border-gray-700 p-2" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.ref_diputacio }}</td>
+        <td class="border border-gray-700 p-2">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
