@@ -135,7 +135,8 @@ Es pot solucionar manualment emmagetzemant el anterior.
 
  [11/09/2026] [Inici]
  * Afegir un (intent de) mode oscur, a la seccio per veure els alumnes.
- * Afegir el logo del centre i més info a la pagina inicial
+ * Afegir el logo del projecte i més info a la pagina inicial
+ * Posar les noves versions del logo del centre
  [Final]
 
  [13/09/2026] [Inici]
@@ -146,5 +147,6 @@ Es pot solucionar manualment emmagetzemant el anterior.
     * Treure la contrasenya i crear un .env dins del gitignore
     * Fer el ProcFile
     * Desplegar!
-
+* Fer que root porti a la benvinguda
+* Actualitzar el logo de Gestió el Foix
 

@@ -18,6 +18,10 @@ from flask import redirect
 from pandas import Timestamp
 import pandas as pd
 
+@app.route('/')
+def index():
+    return redirect(url_for('benvingut'))
+
 @app.route("/alumnes/html")
 def llistar_alumnes():
     return render_template("base.html")
