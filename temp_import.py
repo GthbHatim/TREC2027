@@ -6,7 +6,7 @@ import pandas as pd
 with app.app_context():
     # Importar Alumnes
     print("Important alumnes...")
-    df = pd.read_csv('/home/haki/Downloads/alumnes.csv')
+    df = pd.read_csv('/examples/csvs/alumnes.csv')
     for _, row in df.iterrows():
         alumne = Alumne(
             id=int(row['id']),
@@ -22,7 +22,7 @@ with app.app_context():
 
     # Importar Ordinadors
     print("Important ordinadors...")
-    df = pd.read_csv('/home/haki/Downloads/ordinadors.csv')
+    df = pd.read_csv('/examples/csvs/ordinadors.csv')
     for _, row in df.iterrows():
         ordinador = Ordinador(
             id=int(row['id']),
@@ -37,7 +37,7 @@ with app.app_context():
 
     # Importar Historial
     print("Important historial...")
-    df = pd.read_csv('/home/haki/Downloads/historial.csv')
+    df = pd.read_csv('/examples/csvs/historial.csv')
     for _, row in df.iterrows():
         historial = Historial(
             id=int(row['id']),
