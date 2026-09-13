@@ -10,13 +10,15 @@ En finalitzar el treball també fare public el full de recerca final.
 Aquest treball de recerca consisteix en l’aprenentatge de programació en diversos llenguatges de programació i la seva implantació full stack. El producte final és un portal web per l'administració i gestió els equips Chromebook propietat del centre educatiu que han estat cedits a l'alumnat, on es poden gestionar coses com incidències, inventari, dades dels alumnes usuaris, etc. Per assolir això he hagut d'aprendre a programar pàgines web, bases de dades i a enllaçar aquests dos. 
 
 # Com puc iniciar la web per provar-la?
-Per fer-ho has de tenir tant Git com Python al teu sistema
+Per fer-ho has de tenir tant Git com Python al teu sistema.
 Windows:
 ```
 winget install -e --id python --accept-package-agreements --accept-source-agreements
 winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
 ```
-Fedora:
+A posteriori, reinicia la teva finestra de powershell.
+
+Linux (Fedora):
 ```
 sudo dnf install -y git python
 ```
