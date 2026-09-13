@@ -136,3 +136,12 @@ Es pot solucionar manualment emmagetzemant el anterior.
  [11/09/2026] [Inici]
  * Afegir un (intent de) mode oscur, a la seccio per veure els alumnes.
  * Afegir el logo del centre i més info a la pagina inicial
+ [Final]
+
+ [13/09/2026] [Inici]
+ * Migrar de SQLite a PostredgeSQL, per poder fer deployment a Railway. [Asistit per IA]
+    * Exportar backups
+    * Crear la DB de PostredgeSQL
+    * Migrar arxius
+    * Treure la contrasenya i crear un .env dins del gitignore
+
