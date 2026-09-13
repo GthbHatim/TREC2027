@@ -1,14 +1,16 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask
 from app.extensions import db
 
-#  create the app
+load_dotenv()
+
 app = Flask(__name__)
-# configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
-# initialize the app with the extension
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
 db.init_app(app)
 
-from app import models 
+from app import models
 from app import alumnes
 from app import ordinadorshistorial
 from app import ruteshtml
