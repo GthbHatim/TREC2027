@@ -144,4 +144,7 @@ Es pot solucionar manualment emmagetzemant el anterior.
     * Crear la DB de PostredgeSQL
     * Migrar arxius
     * Treure la contrasenya i crear un .env dins del gitignore
+    * Fer el ProcFile
+    * Desplegar!
+
 
