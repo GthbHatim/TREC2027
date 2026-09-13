@@ -140,7 +140,7 @@ Es pot solucionar manualment emmagetzemant el anterior.
  [Final]
 
  [13/09/2026] [Inici]
- * Migrar de SQLite a PostredgeSQL, per poder fer deployment a Railway. [Asistit per IA]
+ * Migrar de SQLite a PostredgeSQL, per poder fer deployment a Railway. (Asistit per IA)
     * Exportar backups
     * Crear la DB de PostredgeSQL
     * Migrar arxius
@@ -149,4 +149,5 @@ Es pot solucionar manualment emmagetzemant el anterior.
     * Desplegar!
 * Fer que root porti a la benvinguda
 * Actualitzar el logo de Gestió el Foix
+* Afegir una petita auth amb Flask (Asistit per IA)
 
