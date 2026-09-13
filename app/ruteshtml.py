@@ -56,10 +56,6 @@ def veure_historial():
     dades.reverse()
     return render_template("historial/veure.html", historial=dades)
 
-@app.route("/benvingut")
-def benvingut():
-    return render_template("benvinguda.html")
-
 @app.route("/assignar/html/form")
 def formulari_assignar():
     return render_template("assignar.html")
