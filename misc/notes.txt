@@ -17,7 +17,8 @@ de forma moderada, honesta i només com a eina d'asistencia.
 (Es a dir, la IA era merament orientativa, no utilitzada com agent.)
 
 Les accions que posi "(Claude Code)" Son fetes pel agent de IA Claude de forma automatica.
-Aquetes accions es limiten a canvis fet en massa que son repetitius, massa llargs i que no tenen valor com a treball
+Aquetes accions es limiten a canvis fet en massa que son repetitius, massa llargs i que no tenen valor com a treball. 
+Quedaran estrictament justificades cada vegada.
 Exemples son: Canviar el nom d'una variable a tot el programari, canviar el color de un boto a tots els HTML, etc.
 
 Aixo s'utilitzara de forma minima, i es reportara de forma honesta. S'ha utilitzat per primera vegada el 21/09/2026.
@@ -161,4 +162,8 @@ Es pot solucionar manualment emmagetzemant el anterior.
 [21/09/2026]
 * Canviar el color del mode fosc.
 * Canviar de "ref_diputacio" a "sace". (Claude Code)
-
+    * Justificaió: S'han de cambiar tots les rutes i scripts per apuntar a "sace" en comptes de "ref_diputacio", es una 
+    substitucio sencilla, pero llarga i repetitiva.
+* Posar el boto i reroute del mode fosc a tota la web (Claude Code)
+    * Justificaió: Similar a l'anterior, la llogica ja estava escrita, nomñes faltava copiarla i pegarla a tots els llocs.
+[Final]

@@ -38,5 +38,11 @@
 {% block content %}
 {% endblock %}
 </main>
+{% set url_fosc = toggle_url() %}
+{% if url_fosc %}
+<a href="{{ url_fosc }}" title="Mode fosc" class="fixed bottom-4 right-4 p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+  ☾ | ☀
+</a>
+{% endif %}
 </body>
 </html>

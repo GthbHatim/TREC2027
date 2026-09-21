@@ -17,19 +17,19 @@
     <a href="https://agora.xtec.cat/ieselfoix/" class="image"><img src="{{ url_for('static', filename='logo_alt.png') }}" alt="Logo" class="h-10"></a>
     <ul class="flex space-x-8">
       <li>
-        <a href="{{ url_for('benvingut') }}" class="hover:text-gray-300">Casa</a>
+        <a href="{{ url_for('benvingut_dark') }}" class="hover:text-gray-300">Casa</a>
       </li>
       <li>
-        <a href="{{ url_for('veure_ordinadors') }}" class="hover:text-gray-300">Ordinadors</a>
+        <a href="{{ url_for('veure_ordinadors_dark') }}" class="hover:text-gray-300">Ordinadors</a>
       </li>
       <li>
-        <a href="{{ url_for('veure_alumnes') }}" class="hover:text-gray-300">Alumnes</a>  
+        <a href="{{ url_for('veure_alumnes_dark') }}" class="hover:text-gray-300">Alumnes</a>  
       </li>
       <li>
-        <a href="{{ url_for('veure_historial') }}" class="hover:text-gray-300">Historial</a>
+        <a href="{{ url_for('veure_historial_dark') }}" class="hover:text-gray-300">Historial</a>
       </li>
       <li>
-        <a href="{{ url_for('exportar') }}" class="hover:text-gray-300">Exportar</a>
+        <a href="{{ url_for('exportar_dark') }}" class="hover:text-gray-300">Exportar</a>
       </li>
     </ul>
   </div>
@@ -38,5 +38,11 @@
 {% block content %}
 {% endblock %}
 </main>
+{% set url_clar = toggle_url() %}
+{% if url_clar %}
+<a href="{{ url_clar }}" title="Mode clar" class="text-white fixed bottom-4 right-4 p-3 bg-gray-900 rounded-full hover:bg-gray-700 transition">
+  ☾ | ☀
+</a>
+{% endif %}
 </body>
 </html>
