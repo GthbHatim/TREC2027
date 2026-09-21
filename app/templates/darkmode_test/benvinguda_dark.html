@@ -1,6 +1,11 @@
 {% extends "darkmode_test/base_dark.html" %}
 {% block content %}
+<div class="fixed top-22 right-70 text-white px-4 py-2 animate-bounce">
+  Comença aquí!
+<img src="{{ url_for('static', filename='arrow.png') }}" alt="Icon" class="h-10 inline mr-2">
+</div>
 <div class="flex flex-col items-center justify-center h-screen">
+<img src="{{ url_for('static', filename='logo_gestio.png') }}" alt="Logo" class="h-30">
 <h1 class="text-align: center text-7xl">Benvingut!</h1>
 <h1>Aquesta es la web de gestio de portatils al Institut el Foix!</h1>
 <h1>A dalt tens tot el que necesites per començar.</h1>
