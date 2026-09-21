@@ -27,7 +27,7 @@ with app.app_context():
         ordinador = Ordinador(
             id=int(row['id']),
             num_serie=row['num_serie'],
-            ref_diputacio=row['ref_diputacio'],
+            sace=row['sace'],
             model=row['model'],
             estat=row['estat'].strip()
         )

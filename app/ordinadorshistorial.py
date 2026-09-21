@@ -8,12 +8,12 @@ from flask import request
 @app.route("/ordinadors")
 def listar_ordinadors():
     ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
-    return {"ordinadors": [{"id": o.id, "num_serie": o.num_serie, "ref_diputacio": o.ref_diputacio, "model": o.model, "estat": o.estat, "alumne_id": o.alumne_id, "alumne_nom": o.alumne.nom if o.alumne else None} for o in ordinadors]}
+    return {"ordinadors": [{"id": o.id, "num_serie": o.num_serie, "sace": o.sace, "model": o.model, "estat": o.estat, "alumne_id": o.alumne_id, "alumne_nom": o.alumne.nom if o.alumne else None} for o in ordinadors]}
 
 @app.route("/ordinadors/nou", methods=["POST"])
 def crear_ordinador():
     dades = request.get_json()
-    nou = Ordinador(num_serie=dades["num_serie"], ref_diputacio=dades["ref_diputacio"], model=dades["model"])
+    nou = Ordinador(num_serie=dades["num_serie"], sace=dades["sace"], model=dades["model"])
     db.session.add(nou)
     db.session.commit()
     return {"missatge": "Ordinador enregistrat", "id": nou.id, "estat": nou.estat}, 201
@@ -25,7 +25,7 @@ def editar_ordinador(id):
         return {"error": "Ordinador no enregistrat"}, 404
     dades = request.get_json()
     ordinador.num_serie = dades.get("num_serie", ordinador.num_serie)
-    ordinador.ref_diputacio = dades.get("ref_diputacio", ordinador.ref_diputacio)
+    ordinador.sace = dades.get("sace", ordinador.sace)
     ordinador.model = dades.get("model", ordinador.model)
     db.session.commit()
     return {"missatge": "Info. del ordinador modificada", "id": ordinador.id}, 200
@@ -83,7 +83,7 @@ def crear_ordinador_bulk():
     llista = dades["ordinadors"]
     creats = []
     for item in llista:
-        nou = Ordinador(num_serie=item["num_serie"], ref_diputacio=item["ref_diputacio"], model=item["model"])
+        nou = Ordinador(num_serie=item["num_serie"], sace=item["sace"], model=item["model"])
         db.session.add(nou)
         creats.append(nou.num_serie)
     db.session.commit()
