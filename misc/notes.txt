@@ -16,6 +16,12 @@ de forma moderada, honesta i només com a eina d'asistencia.
 
 (Es a dir, la IA era merament orientativa, no utilitzada com agent.)
 
+Les accions que posi "(Claude Code)" Son fetes pel agent de IA Claude de forma automatica.
+Aquetes accions es limiten a canvis fet en massa que son repetitius, massa llargs i que no tenen valor com a treball
+Exemples son: Canviar el nom d'una variable a tot el programari, canviar el color de un boto a tots els HTML, etc.
+
+Aixo s'utilitzara de forma minima, i es reportara de forma honesta. S'ha utilitzat per primera vegada el 21/09/2026.
+
 LLISTA DE CANVIS (Ultima act. 28/08/2026)
 
 [16/08/2026] [Inici]
@@ -150,4 +156,9 @@ Es pot solucionar manualment emmagetzemant el anterior.
 * Fer que root porti a la benvinguda
 * Actualitzar el logo de Gestió el Foix
 * Afegir una petita auth amb Flask (Asistit per IA)
+[Final]
+
+[21/09/2026]
+* Canviar el color del mode fosc.
+* Canviar de "ref_diputacio" a "sace". (Claude Code)
 

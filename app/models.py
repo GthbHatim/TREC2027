@@ -17,7 +17,7 @@ class Alumne(db.Model):
 class Ordinador(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     num_serie: Mapped[str] = mapped_column(String(50), unique=True)
-    ref_diputacio: Mapped[str] = mapped_column(String(50), unique=True)
+    sace: Mapped[str] = mapped_column(String(50), unique=True)
     model: Mapped[str] = mapped_column(String(100))
     estat: Mapped[str] = mapped_column(String(20), default="emmagatzemat")
     alumne_id: Mapped[Optional[int]] = mapped_column(ForeignKey("alumne.id"))

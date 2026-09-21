@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    background-color: #1c0f07;
+    background-color: #1c1c1c;
     color: white;
     font-family: "Century Gothic", sans-serif;
     font-optical-sizing: auto;
@@ -12,7 +12,7 @@ body {
 }
 
 nav {
-    background-color: rgb(234, 144, 59);
+    background-color: rgb(145 128 107);
     color: white;
     font-family: "Stack Sans Headline", sans-serif;
     font-optical-sizing: auto;

@@ -1,10 +1,10 @@
-id,num_serie,ref_diputacio,model,estat
+id,num_serie,sace,model,estat
 1,LEN0000001,CAT000001,Lenovo Chromebook Gen 1,emmagatzemat
-2,LEN0000002,CAT000002,Lenovo Chromebook Gen 1, de baixa
-3,LEN0000003,CAT0000002,Lenovo Chromebook Gen 1,assignat
+2,LEN0000002,CAT000002,Lenovo Chromebook Gen 1,de baixa
+3,LEN0000003,CAT000003,Lenovo Chromebook Gen 1,assignat
 4,LEN0000004,CAT000004,Lenovo Chromebook Gen 1,En reparació
-5,LEN0000005,CAT000005,Lenovo Chromebook Gen 1, de baixa
-6,LEN0000006,CAT000006,Lenovo Chromebook Gen 1, de baixa
+5,LEN0000005,CAT000005,Lenovo Chromebook Gen 1,de baixa
+6,LEN0000006,CAT000006,Lenovo Chromebook Gen 1,de baixa
 7,LEN0000007,CAT000007,Lenovo Chromebook Gen 1,emmagatzemat
 8,LEN0000008,CAT000008,Lenovo Chromebook Gen 1,emmagatzemat
 9,LEN0000009,CAT000009,Lenovo Chromebook Gen 1,emmagatzemat

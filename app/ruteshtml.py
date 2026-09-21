@@ -91,7 +91,7 @@ def formulari_ordinadors_after():
 
 @app.route("/ordinadors/nou/form", methods=["POST"])
 def post_ordinador():
-    nou = Ordinador(num_serie=request.form["num_serie"], ref_diputacio=request.form["ref_diputacio"], model=request.form["model"])
+    nou = Ordinador(num_serie=request.form["num_serie"], sace=request.form["sace"], model=request.form["model"])
 
     db.session.add(nou)
     db.session.commit()
@@ -321,7 +321,7 @@ def exportar_post():
                 dataframes['alumnes'] = df
             elif key == 'ordinadors':
                 ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
-                data = [{'id': o.id, 'num_serie': o.num_serie, 'ref_diputacio': o.ref_diputacio, 'model': o.model, 'estat': o.estat} for o in ordinadors]
+                data = [{'id': o.id, 'num_serie': o.num_serie, 'sace': o.sace, 'model': o.model, 'estat': o.estat} for o in ordinadors]
                 df = pd.DataFrame(data)
                 dataframes['ordinadors'] = df
 
