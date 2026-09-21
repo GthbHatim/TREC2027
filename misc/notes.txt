@@ -166,4 +166,5 @@ Es pot solucionar manualment emmagetzemant el anterior.
     substitucio sencilla, pero llarga i repetitiva.
 * Posar el boto i reroute del mode fosc a tota la web (Claude Code)
     * Justificaió: Similar a l'anterior, la llogica ja estava escrita, nomñes faltava copiarla i pegarla a tots els llocs.
+* Posar les animacions i imatge de la benvinguda a benvinguda_dark
 [Final]
