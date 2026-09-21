@@ -296,6 +296,108 @@ def actualitzar_alumne_html(alumne_id):
 def exportar ():
     return render_template('export.html')
 
+# --- Mode fosc ---------------------------------------------------------
+# Cada ruta clara te la seva bessona fosca, que fa servir la mateixa
+# consulta pero renderitza la plantilla de darkmode_test/.
+
+PARELLES_FOSQUES = {
+    'benvingut': 'benvingut_dark',
+    'veure_alumnes': 'veure_alumnes_dark',
+    'formulari_alumnes': 'formulari_alumnes_dark',
+    'formulari_alumnes_after': 'formulari_alumnes_after_dark',
+    'editar_alumne_html': 'editar_alumne_html_dark',
+    'veure_ordinadors': 'veure_ordinadors_dark',
+    'formulari_ordinadors': 'formulari_ordinadors_dark',
+    'formulari_ordinadors_after': 'formulari_ordinadors_after_dark',
+    'veure_historial': 'veure_historial_dark',
+    'formulari_assignar': 'formulari_assignar_dark',
+    'formulari_assignar_after': 'formulari_assignar_after_dark',
+    'exportar': 'exportar_dark',
+}
+
+PARELLES_CLARES = {fosca: clara for clara, fosca in PARELLES_FOSQUES.items()}
+
+
+@app.context_processor
+def injectar_toggle():
+    """Dona a les plantilles l'URL de la mateixa pagina en l'altre mode."""
+    def toggle_url():
+        bessona = PARELLES_FOSQUES.get(request.endpoint) or PARELLES_CLARES.get(request.endpoint)
+        if not bessona:
+            return None
+        parametres = dict(request.view_args or {})
+        parametres.update(request.args.to_dict())
+        return url_for(bessona, **parametres)
+    return {'toggle_url': toggle_url}
+
+
+def dades_historial(historial):
+    dades = []
+    for h in historial:
+        alumne = db.session.get(Alumne, h.alumne_id)
+        nom = alumne.nom if alumne else None
+        dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
+    dades.reverse()
+    return dades
+
+
+@app.route("/benvingut/dark")
+def benvingut_dark():
+    return render_template("darkmode_test/benvinguda_dark.html")
+
+@app.route("/alumnes/html/dark/formulari")
+def formulari_alumnes_dark():
+    return render_template("darkmode_test/alumnes/afegir.html")
+
+@app.route("/alumnes/html/dark/formulari/after")
+def formulari_alumnes_after_dark():
+    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id.desc()).limit(7)).scalars()
+    return render_template("darkmode_test/alumnes/afegir_after.html", alumnes=alumnes)
+
+@app.route("/alumnes/html/dark/editar", methods=['GET'])
+def editar_alumne_html_dark():
+    alumne_id = request.args.get('alumne_id')
+    alumne = db.session.get(Alumne, alumne_id)
+
+    if not alumne:
+        return redirect(url_for('veure_alumnes_dark'))
+
+    return render_template("darkmode_test/alumnes/editar.html", alumne=alumne)
+
+@app.route("/ordinadors/html/dark/veure")
+def veure_ordinadors_dark():
+    ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
+    return render_template("darkmode_test/ordinadors/veure.html", ordinadors=ordinadors)
+
+@app.route("/ordinadors/html/dark/formulari")
+def formulari_ordinadors_dark():
+    return render_template("darkmode_test/ordinadors/afegir.html")
+
+@app.route("/ordinadors/html/dark/formulari/after")
+def formulari_ordinadors_after_dark():
+    ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id.desc()).limit(7)).scalars()
+    return render_template("darkmode_test/ordinadors/afegir_after.html", ordinadors=ordinadors)
+
+@app.route("/historial/html/dark/veure")
+def veure_historial_dark():
+    historial = db.session.execute(db.select(Historial)).scalars().all()
+    return render_template("darkmode_test/historial/veure.html", historial=dades_historial(historial))
+
+@app.route("/assignar/html/dark/form")
+def formulari_assignar_dark():
+    return render_template("darkmode_test/assignar_dark.html")
+
+@app.route("/assignar/html/dark/form/after")
+def formulari_assignar_after_dark():
+    historial = db.session.execute(db.select(Historial).order_by(Historial.data.desc()).limit(7)).scalars()
+    return render_template("darkmode_test/assignarhstrl_dark.html", historial=dades_historial(historial))
+
+@app.route("/html/dark/export")
+def exportar_dark():
+    return render_template("darkmode_test/export_dark.html")
+
+# --- Fi mode fosc ------------------------------------------------------
+
 @app.route('/html/export/action', methods=['POST'])
 def exportar_post():
     options = {

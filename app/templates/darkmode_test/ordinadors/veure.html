@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "darkmode_test/base_dark.html" %}
 {% block content %}
 <div class="p-10">
 
   <div class="flex items-center gap-3 mb-4 flex-wrap">
 
-    <a href="{{url_for('formulari_ordinadors')}}" class="shadow-2xl button bg-green-600 hover:bg-[rgb(58_91_0)] text-white rounded-lg p-2 inline-block">
+    <a href="{{url_for('formulari_ordinadors_dark')}}" class="shadow-2xl button bg-green-600 hover:bg-[rgb(58_91_0)] text-white rounded-lg p-2 inline-block">
       Afegir Ordinador
     </a>
 
@@ -54,7 +54,7 @@
         Confirmar
       </button>
     </form>
-        <a href="{{url_for('formulari_assignar')}}" class="button bg-blue-500 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
+        <a href="{{url_for('formulari_assignar_dark')}}" class="button bg-blue-500 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
       Assignar Ordinador
     </a>
   </div>

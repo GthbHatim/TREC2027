@@ -3,7 +3,7 @@
 <div class="p-10">
 
   <div class="flex items-center gap-3 mb-4 flex-wrap">
-    <a href="{{ url_for('formulari_alumnes') }}" class="button bg-green-500 shadow-2xl hover:bg-green-600 text-white rounded-lg p-2 inline-block">
+    <a href="{{ url_for('formulari_alumnes_dark') }}" class="button bg-green-500 shadow-2xl hover:bg-green-600 text-white rounded-lg p-2 inline-block">
       Afegir Alumne
     </a>
 
@@ -41,14 +41,14 @@
       </button>
     </form>
 
-    <a href="{{ url_for('formulari_assignar') }}" class="button bg-blue-500 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
+    <a href="{{ url_for('formulari_assignar_dark') }}" class="button bg-blue-500 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
       Assignar Ordinador
     </a>
     <button onclick="document.getElementById('form-editar').classList.toggle('hidden')" class="bg-orange-500 shadow-2xl hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition">
   Editar Alumne
 </button>
 
-<form id="form-editar" action="{{ url_for('editar_alumne_html') }}" method="GET" class="hidden flex items-center gap-2">
+<form id="form-editar" action="{{ url_for('editar_alumne_html_dark') }}" method="GET" class="hidden flex items-center gap-2">
   <input
     type="text"
     name="alumne_id"
@@ -90,7 +90,4 @@
   </table>
 
 </div>
-<a href="{{url_for('veure_alumnes')}}" class="text-white fixed bottom-4 right-4 p-3 bg-gray-900 rounded-full hover:bg-gray-700 transition"">
-  ☾ | ☀
-</a>
 {% endblock %}
