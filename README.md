@@ -3,7 +3,7 @@
 <img width="6445" height="2410" alt="Logo_Gestio" src="https://github.com/user-attachments/assets/a95e9b57-b6ae-4a33-8d36-d02f3368aecd" />
 
 # Benvingut al meu Treball de Recerca pel curs 2026-2027!
-En aquest repositori és guardat tota la part practica del meu treball, incloses notes, practiques, etc.
+En aquest repositori és guardat tota la part practica del meu treball.
 En finalitzar el treball també fare public el full de recerca final.
 
 # En que consisteix el treball?
@@ -31,7 +31,7 @@ En Windows
 git clone https://github.com/GthbHatim/TREC2027
 cd ./TREC2027
 pip install -r requirements.txt
-py run.py
+python run.py
 ```
 A Linux:
 ```
@@ -51,9 +51,9 @@ Press CTRL+C to quit
  * Debugger is active!
  * Debugger PIN: 708-197-034
 ```
-Al teu navegador, substitueix `http://XXX.X.X.X:XXXX` amb el valor que la terminal retorni i /benvingut, per exemple
+Al teu navegador, substitueix `http://XXX.X.X.X:XXXX` amb el valor que la terminal retorni, per exemple:
 ```
-http://192.0.0.1:4444/benvingut
+http://192.0.0.1:4444/
 ```
 
 # FAQ
@@ -61,7 +61,7 @@ http://192.0.0.1:4444/benvingut
 El programari esta escrit majoritariament en Python (Pandas, SQLAlchemy, Flask) i les webs en HTML (TailwindCSS, Google Fonts)
 
 ## Es reutilitzable?
-En cas de ser una institució escolar publica, si. Qualsevol altre tipus de ús comercial queda totalment prohibit.
+En cas de ser una institució escolar publica, si. Qualsevol altre tipus de ús comercial queda totalment prohibit sense autorització.
 
 ## Com ho puc personalitzar?
 En un futur posare una guia de com modificar les entrades per encaixar en les necesitats de cada centre.
