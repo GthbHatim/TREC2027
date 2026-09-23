@@ -1,27 +1,23 @@
 {% extends "darkmode_test/base_dark.html" %}
 {% block content %}
-
 <div class="flex justify-center items-center min-h-[80vh]">
-
-<div class="p-10 m-4 w-full max-w-xl border-5 border-[rgb(115_111_85)] rounded-lg flex flex-col items-center justify-center">
+  <div class="p-10 m-4 w-full max-w-xl border-5 border-[rgb(115_111_85)] bg-gray-800 rounded-lg flex flex-col items-center justify-center">
     <h1 class="text-3xl font-bold mb-4 text-center">Exportar Dades</h1>
     <p class="mb-4 text-center">Exporta les dades del sistema a un fitxer apte per Excel.</p>
     <form method="POST" action="{{ url_for('exportar_post') }}" class="flex flex-col gap-4 w-full">
-      <label class="flex items-center gap-2">
-        <input type="checkbox" id="ordinadors" name="ordinadors">
-        <span>Ordinadors</span>
-      </label>
-
-      <label class="flex items-center gap-2">
-        <input type="checkbox" id="alumnes" name="alumnes">
-        <span>Alumnes</span>
-      </label>
-
-      <label class="flex items-center gap-2">
-        <input type="checkbox" id="historial" name="historial">
-        <span>Historial</span>
-      </label>
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Exportar dades!</button>
+    <label class="label text-white">
+      <input type="checkbox" id="ordinadors" name="ordinadors" checked="checked" class="checkbox text-white [--input-color:var(--color-blue-600)]" />
+        Ordinadors
+    </label>
+    <label class="label text-white">
+      <input type="checkbox" id="alumnes" name="alumnes" checked="checked" class="checkbox text-white [--input-color:var(--color-blue-600)]" />
+        Alumnes
+    </label>
+    <label class="label text-white">
+      <input type="checkbox" id="historial" name="historial" checked="checked" class="checkbox text-white [--input-color:var(--color-blue-600)]" />
+        Historial
+    </label>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Exportar dades! ⤓ </button>
     </form>
   </div>
 </div>

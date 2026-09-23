@@ -159,7 +159,7 @@ Es pot solucionar manualment emmagetzemant el anterior.
 * Afegir una petita auth amb Flask (Asistit per IA)
 [Final]
 
-[21/09/2026]
+[21/09/2026] [Inici]
 * Canviar el color del mode fosc.
 * Canviar de "ref_diputacio" a "sace". (Claude Code)
     * Justificaió: S'han de cambiar tots les rutes i scripts per apuntar a "sace" en comptes de "ref_diputacio", es una 
@@ -168,3 +168,20 @@ Es pot solucionar manualment emmagetzemant el anterior.
     * Justificaió: Similar a l'anterior, la llogica ja estava escrita, nomñes faltava copiarla i pegarla a tots els llocs.
 * Posar les animacions i imatge de la benvinguda a benvinguda_dark
 [Final]
+
+BUG: Ordre incorrecte de les entrades de la taula de ordinadors.
+
+[23/09/2026] [Inici]
+* Canviar color del fons
+* Millores a la UX i UI generals
+* Introducció del framework DaisyUI, per tindre blocs més estetics amb menys codi, i acces a certes plantilles.
+[Final]
+
+Falta:
+* Arreglar bug
+* Acabar de polir la UI
+Possibles introduccions:
+* Notifiaccions sobre l'estat dels canvis
+* Boto de borrat atomic (no baixa, borrat de la DB), amb el respectiu avis
+* Busqueda (JS, quasi imposible en un mes)
+

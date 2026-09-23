@@ -1,9 +1,9 @@
 html {
     font-size: 125%;
+    background-color: rgb(234, 242, 215);
 }
 
 body {
-    background-color: #e4d89c;
     color: black;
     font-family: "Century Gothic", sans-serif;
     font-optical-sizing: auto;
@@ -21,12 +21,28 @@ nav {
 }
 
 table {
-    border: 3px solid rgb(3, 3, 3);
+    border-collapse: collapse;
 }
+
+table tr {
+    border-top: 1px solid #56585a;
+    border-bottom: 1px solid #333334;
+}
+
+table thead tr {
+    border-bottom: 2px solid #0e0e0e;
+    border-top: none
+}
+
 
 h1 {
     font-family: "Stack Sans Headline", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: bold;
+}
+
+input {
+    background-color: rgb(255, 255, 255);
+    text-align: center;
 }

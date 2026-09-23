@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="p-10">
-<table class="table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+<table class="table-auto table-m w-full">
     <thead>
         <tr>
-            <th class="border border-gray-700 p-2">ID</th>
-            <th class="border border-gray-700 p-2">Acció</th>
-            <th class="border border-gray-700 p-2">Data i hora</th>
-            <th class="border border-gray-700 p-2">Id del ordinador</th>
-            <th class="border border-gray-700 p-2">Id del alumne</th>
-            <th class="border border-gray-700 p-2">Alumne afectat</th>
+            <th class="p-2">ID</th>
+            <th class="p-2">Acció</th>
+            <th class="p-2">Data i hora</th>
+            <th class="p-2">Id del ordinador</th>
+            <th class="p-2">Id del alumne</th>
+            <th class="p-2">Alumne afectat</th>
         </tr>
     </thead>
     {% for historial in historial %}
     <tr>
-        <td class="border border-gray-700 p-2">{{ historial.id }}</td>
-        <td class="border border-gray-700 p-2" style="text-transform: capitalize;">{{ historial.accio }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.data }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.ordinador_id }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.alumne_id }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.alumne_nom }}</td>
+        <td class="p-2 text-center">{{ historial.id }}</td>
+        <td class="p-2 text-center" style="text-transform: capitalize;">{{ historial.accio }}</td>
+        <td class="p-2 text-center">{{ historial.data }}</td>
+        <td class="p-2 text-center">{{ historial.ordinador_id }}</td>
+        <td class="p-2 text-center">{{ historial.alumne_id }}</td>
+        <td class="p-2 text-center">{{ historial.alumne_nom }}</td>
     </tr>
     {% endfor %}
 </table>

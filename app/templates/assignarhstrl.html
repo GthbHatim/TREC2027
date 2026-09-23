@@ -12,25 +12,25 @@
     </form>
   </div>
 
-  <table class=" m-4 table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+  <table class="table-auto table-m w-full">
     <thead>
         <tr>
-            <th class="border border-gray-700 p-2">ID</th>
-            <th class="border border-gray-700 p-2">Acció</th>
-            <th class="border border-gray-700 p-2">Data i hora</th>
-            <th class="border border-gray-700 p-2">Id del ordinador</th>
-            <th class="border border-gray-700 p-2">Id del alumne</th>
-            <th class="border border-gray-700 p-2">Alumne afectat</th>
+            <th>ID</th>
+            <th>Acció</th>
+            <th>Data i hora</th>
+            <th>Id del ordinador</th>
+            <th>Id del alumne</th>
+            <th>Alumne afectat</th>
         </tr>
     </thead>
     {% for historial in historial %}
     <tr>
-        <td class="border border-gray-700 p-2">{{ historial.id }}</td>
-        <td class="border border-gray-700 p-2" style="text-transform: capitalize;">{{ historial.accio }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.data }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.ordinador_id }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.alumne_id }}</td>
-        <td class="border border-gray-700 p-2">{{ historial.alumne_nom }}</td>
+        <td>{{ historial.id }}</td>
+        <td style="text-transform: capitalize;">{{ historial.accio }}</td>
+        <td>{{ historial.data }}</td>
+        <td>{{ historial.ordinador_id }}</td>
+        <td>{{ historial.alumne_id }}</td>
+        <td>{{ historial.alumne_nom }}</td>
     </tr>
     {% endfor %}
 </table>

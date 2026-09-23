@@ -12,25 +12,25 @@
     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Crear ordinador</button>
 </form>
 </div>
-  <table class="m-4 table-auto w-full border-spacing-2 border border-slate-400 border-collapse border border-gray-700">
+  <table class="table-auto table-m w-full">
     <thead>
         <tr>
-            <th class="border border-gray-700 p-2">ID</th>
-            <th class="border border-gray-700 p-2">Model</th>
-            <th class="border border-gray-700 p-2">Num. Sèrie</th>
-            <th class="border border-gray-700 p-2">Estat</th>
-            <th class="border border-gray-700 p-2">SACE</th>
-            <th class="border border-gray-700 p-2">Alumne</th>
+            <th class="p-2">ID</th>
+            <th>Model</th>
+            <th>Num. Sèrie</th>
+            <th>Estat</th>
+            <th>SACE</th>
+            <th>Alumne</th>
         </tr>
     </thead>
     {% for ordinador in ordinadors %}
     <tr>
-        <td class="border border-gray-700 p-2">{{ ordinador.id }}</td>
-        <td class="border border-gray-700 p-2">{{ ordinador.model }}</td>
-        <td class="border border-gray-700 p-2">{{ ordinador.num_serie }}</td>
-        <td class="border border-gray-700 p-2" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
-        <td class="border border-gray-700 p-2">{{ ordinador.sace }}</td>
-        <td class="border border-gray-700 p-2">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
+        <td class="text-center p-2">{{ ordinador.id }}</td>
+        <td class="text-center">{{ ordinador.model }}</td>
+        <td class="text-center">{{ ordinador.num_serie }}</td>
+        <td class="text-center" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
+        <td class="text-center">{{ ordinador.sace }}</td>
+        <td class="text-center">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
     </tr>
     {% endfor %}
 </table>
