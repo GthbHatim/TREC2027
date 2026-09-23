@@ -75,7 +75,7 @@ def formulari_assignar_after():
 def formulari_alumnes():
     return render_template("alumnes/afegir.html")
 
-@app.route("/alumes/html/formulari/after")
+@app.route("/alumnes/html/formulari/after")
 def formulari_alumnes_after():
     alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id.desc()).limit(7)).scalars()
     return render_template("alumnes/afegir_after.html", alumnes=alumnes)
@@ -433,3 +433,7 @@ def exportar_post():
             df.to_excel(writer, sheet_name=sheet_name, index=False)
     output.seek(0)
     return send_file(output, as_attachment=True, download_name=f"backup_{fecha_actual}.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+@app.route('/html/test')
+def test_html():
+    return render_template('tests/test.html')
