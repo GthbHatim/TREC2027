@@ -32,22 +32,22 @@ def llistar_alumnes():
     
 @app.route("/alumnes/html/veure")
 def veure_alumnes():
-    alumnes = db.session.execute(db.select(Alumne)).scalars().all()
+    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
     return render_template("alumnes/veure.html", alumnes=alumnes)
 
 @app.route("/alumnes/html/dark/veure")
 def veure_alumnes_dark():
-    alumnes = db.session.execute(db.select(Alumne)).scalars().all()
+    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
     return render_template("darkmode_test/alumnes/veure.html", alumnes=alumnes)
 
 @app.route("/ordinadors/html/veure")
 def veure_ordinadors():
-    ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
+    ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id)).scalars().all()
     return render_template("ordinadors/veure.html", ordinadors=ordinadors)
 
 @app.route("/historial/html/veure")
 def veure_historial():
-    historial = db.session.execute(db.select(Historial)).scalars().all()
+    historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
     dades = []
     for h in historial:
         alumne = db.session.get(Alumne, h.alumne_id)
@@ -366,7 +366,7 @@ def editar_alumne_html_dark():
 
 @app.route("/ordinadors/html/dark/veure")
 def veure_ordinadors_dark():
-    ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
+    ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id)).scalars().all()
     return render_template("darkmode_test/ordinadors/veure.html", ordinadors=ordinadors)
 
 @app.route("/ordinadors/html/dark/formulari")
@@ -380,7 +380,7 @@ def formulari_ordinadors_after_dark():
 
 @app.route("/historial/html/dark/veure")
 def veure_historial_dark():
-    historial = db.session.execute(db.select(Historial)).scalars().all()
+    historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
     return render_template("darkmode_test/historial/veure.html", historial=dades_historial(historial))
 
 @app.route("/assignar/html/dark/form")
@@ -412,17 +412,17 @@ def exportar_post():
     for key, value in options.items():
         if value:
             if key == 'historial':
-                historial = db.session.execute(db.select(Historial)).scalars().all()
+                historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
                 data = [{'id': h.id, 'accio': h.accio, 'data': h.data, 'ordinador_id': h.ordinador_id, 'alumne_id': h.alumne_id} for h in historial]
                 df = pd.DataFrame(data)
                 dataframes['historial'] = df
             elif key == 'alumnes':
-                alumnes = db.session.execute(db.select(Alumne)).scalars().all()
+                alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
                 data = [{'id': a.id, 'nom': a.nom, 'identificador': a.identificador, 'curs': a.curs, 'email': a.email} for a in alumnes]
                 df = pd.DataFrame(data)
                 dataframes['alumnes'] = df
             elif key == 'ordinadors':
-                ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
+                ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id)).scalars().all()
                 data = [{'id': o.id, 'num_serie': o.num_serie, 'sace': o.sace, 'model': o.model, 'estat': o.estat} for o in ordinadors]
                 df = pd.DataFrame(data)
                 dataframes['ordinadors'] = df

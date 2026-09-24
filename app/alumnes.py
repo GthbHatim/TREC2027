@@ -5,7 +5,7 @@ from flask import request
 
 @app.route("/alumnes")
 def listar_alumnes():
-    alumnes = db.session.execute(db.select(Alumne)).scalars().all()
+    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
     return {"alumnes": [{"nom": a.nom, "id": a.id, "identificador": a.identificador, "curs": a.curs, "estat": a.estat, "email": a.email} for a in alumnes]}
 
 @app.route("/alumnes/nou", methods=["POST"])
