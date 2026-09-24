@@ -189,6 +189,7 @@ Possibles introduccions:
 * Afegir la condició order_by per arreglar el bug
 * Nav transparent
 * A test, probant nova UI del formulari. L'exemple es l'assignació
+* Afegir icon per la tab de Chrome
 [Final]
 
 Falta:
