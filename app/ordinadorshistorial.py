@@ -7,7 +7,7 @@ from flask import request
 
 @app.route("/ordinadors")
 def listar_ordinadors():
-    ordinadors = db.session.execute(db.select(Ordinador)).scalars().all()
+    ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id)).scalars().all()
     return {"ordinadors": [{"id": o.id, "num_serie": o.num_serie, "sace": o.sace, "model": o.model, "estat": o.estat, "alumne_id": o.alumne_id, "alumne_nom": o.alumne.nom if o.alumne else None} for o in ordinadors]}
 
 @app.route("/ordinadors/nou", methods=["POST"])
@@ -91,7 +91,7 @@ def crear_ordinador_bulk():
 
 @app.route("/historial")
 def mostrar_historial():
-    historial = db.session.execute(db.select(Historial)).scalars().all()
+    historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
     missatge = []
     for h in historial:
         alumne = db.session.get(Alumne, h.alumne_id)

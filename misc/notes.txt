@@ -185,3 +185,18 @@ Possibles introduccions:
 * Boto de borrat atomic (no baixa, borrat de la DB), amb el respectiu avis
 * Busqueda (JS, quasi imposible en un mes)
 
+[24/09/2026] [Inici]
+* Afegir la condició order_by per arreglar el bug
+* Nav transparent
+* A test, probant nova UI del formulari. L'exemple es l'assignació
+[Final]
+
+Falta:
+* Acabar de polir la UI
+
+Possibles introduccions:
+* Notifiaccions sobre l'estat dels canvis
+    Segurament amb un Modal de DaisyUi, que reporti el canvi, i el boto en comptes de tancar
+    la notificacio, el que fara es refrescar per mostrar el canvi.
+* Boto de borrat atomic (no baixa, borrat de la DB), amb el respectiu avis
+* Busqueda (JS, quasi imposible en un mes)
