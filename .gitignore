@@ -5,3 +5,6 @@ postman/
 venv/
 .env
 tests/
+instance/
+*.db
+*.xlsx
