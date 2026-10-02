@@ -31,7 +31,7 @@
     <tr>
         <td class="text-center p-2">{{ historial.id }}</td>
         <td class="text-center" style="text-transform: capitalize;">{{ historial.accio }}</td>
-        <td class="text-center">{{ historial.data }}</td>
+        <td class="text-center">{{ historial.data.strftime('%d/%m/%Y %H:%M:%S') if historial.data }}</td>
         <td class="text-center">{{ historial.ordinador_id }}</td>
         <td class="text-center">{{ historial.alumne_id }}</td>
         <td class="text-center">{{ historial.alumne_nom }}</td>
