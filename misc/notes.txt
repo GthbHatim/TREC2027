@@ -201,3 +201,10 @@ Possibles introduccions:
     la notificacio, el que fara es refrescar per mostrar el canvi.
 * Boto de borrat atomic (no baixa, borrat de la DB), amb el respectiu avis
 * Busqueda (JS, quasi imposible en un mes)
+
+[29/06/2026]
+* Nous forms, més bonics. (Claude Code)
+    * Justificaió: Hi ha bastants forms, per tant s'ha utilitzat per aplicar les noves propietats a tots utilitzant com a base
+    el codi que jo habia escrit durant les proves.
+* Treure la carpeta exemples, ja que es una falla de seguretat absurdament important. Afegida al .gitignore.
+PD: Surt al commit del 02/10, problemes amb el repositori han perdut el commit d'aquell dia.
