@@ -207,4 +207,12 @@ Possibles introduccions:
     * Justificaió: Hi ha bastants forms, per tant s'ha utilitzat per aplicar les noves propietats a tots utilitzant com a base
     el codi que jo habia escrit durant les proves.
 * Treure la carpeta exemples, ja que es una falla de seguretat absurdament important. Afegida al .gitignore.
+[Final]
+
 PD: Surt al commit del 02/10, problemes amb el repositori han perdut el commit d'aquell dia.
+
+[02/10/2026] [Inici]
+* Arreglada llogica del export, si no es selecciona res retorna a la web en comptes del error Jinja2
+Pd: Potser faig una notificacio despres
+* Proves de icones al navbar
+[Final]

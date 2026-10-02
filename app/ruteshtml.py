@@ -296,10 +296,6 @@ def actualitzar_alumne_html(alumne_id):
 def exportar ():
     return render_template('export.html')
 
-# --- Mode fosc ---------------------------------------------------------
-# Cada ruta clara te la seva bessona fosca, que fa servir la mateixa
-# consulta pero renderitza la plantilla de darkmode_test/.
-
 PARELLES_FOSQUES = {
     'benvingut': 'benvingut_dark',
     'veure_alumnes': 'veure_alumnes_dark',
@@ -396,8 +392,6 @@ def formulari_assignar_after_dark():
 def exportar_dark():
     return render_template("darkmode_test/export_dark.html")
 
-# --- Fi mode fosc ------------------------------------------------------
-
 @app.route('/html/export/action', methods=['POST'])
 def exportar_post():
     options = {
@@ -410,6 +404,8 @@ def exportar_post():
     fecha_actual = pandas.Timestamp.now().strftime("%d-%m-%Y_%H-%M-%S")
 
     for key, value in options.items():
+        if not value:
+            return render_template('export.html', error=f"Has de seleccionar almenys una opció per exportar.")
         if value:
             if key == 'historial':
                 historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
