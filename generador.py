@@ -1,4 +1,5 @@
 from faker import Faker
+import unicodedata
 import csv
 
 fake = Faker(['es_CA'])
@@ -13,13 +14,23 @@ anys = {
 
 cursos = ["1r ESO", "2n ESO", "3r ESO", "4t ESO", "1r Batx", "2n Batx"]
 
-for _ in range(10):
-    nom = fake.first_name()
-    cognom = fake.last_name()
-    print(f"{nom} {cognom}")
-    curs = fake.random_element(cursos)
-    print(curs)
-    email = f"{anys[curs]}{nom.lower()}{cognom.lower()}@elfoix.cat"
-    print(email)
-    identificador = fake.cif()
-    print(identificador)
+def clean_string(texto):
+    nfkd_form = unicodedata.normalize('NFD', texto)
+    return ''.join(c for c in nfkd_form if not unicodedata.combining(c))
+
+n = 45
+with open("./examples/csv/alumnes.csv", "w", newline="", encoding="utf-8") as fitxer:
+    writer = csv.writer(fitxer)
+    writer.writerow(["id", "nom", "identificador", "curs", "email"])
+    for e in range(1, n+1):
+        nom = fake.first_name()
+        cognom = fake.unique.last_name()
+        nom_complet = f"{nom} {cognom}"
+        print(nom_complet)
+        curs = fake.random_element(cursos)
+        print(curs)
+        email = f"{anys[curs]}{clean_string(nom).lower().replace(" ", "")}{clean_string(cognom).lower().replace(" ", "")}@elfoix.cat"
+        print(email)
+        identificador = fake.unique.cif()
+        print(identificador)
+        writer.writerow([e, nom_complet, identificador, curs, email])

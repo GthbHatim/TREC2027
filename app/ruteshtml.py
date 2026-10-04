@@ -404,8 +404,6 @@ def exportar_post():
     fecha_actual = pandas.Timestamp.now().strftime("%d-%m-%Y_%H-%M-%S")
 
     for key, value in options.items():
-        if not value:
-            return render_template('export.html', error=f"Has de seleccionar almenys una opció per exportar.")
         if value:
             if key == 'historial':
                 historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
