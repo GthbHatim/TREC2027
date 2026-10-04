@@ -210,12 +210,22 @@ def assignar_ordinador_html():
     if not alumne:
         return {"error": "Alumne no trobat"}, 404
 
-    if ordinador.alumne_id is not None:
+    if ordinador.alumne_id is not None and ordinador.alumne_id != alumne.id:
         historial_retirada = Historial(
             alumne_id=ordinador.alumne_id,
             ordinador_id=ordinador.id,
             accio="retirat"
         )
+        db.session.add(historial_retirada)
+    if alumne.ordinador is not None and alumne.ordinador.id != ordinador.id:
+        antic = alumne.ordinador
+        historial_retirada = Historial(
+            alumne_id=alumne.id,
+            ordinador_id=antic.id,
+            accio="retirat"
+        )
+        antic.estat = "emmagatzemat"
+        antic.alumne_id = None
         db.session.add(historial_retirada)
 
     ordinador.alumne_id = alumne.id
@@ -228,16 +238,7 @@ def assignar_ordinador_html():
     )
     db.session.add(historial_assignacio)
     db.session.commit()
-    historial = db.session.execute(db.select(Historial).order_by(Historial.data.desc()).limit(7)).scalars()
-    dades = []
-    for h in historial:
-        alumne = db.session.get(Alumne, h.alumne_id)
-        nom = alumne.nom if alumne else None
-        dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
-    dades.reverse()
-    return render_template("/assignarhstrl.html", historial=dades)
-
-    return redirect(url_for('veure_historial'))
+    return redirect(url_for("formulari_assignar_after"))
 
 @app.route('/alumnes/html/baixa', methods=['POST'])
 def baixa_alumne_html():
@@ -420,7 +421,8 @@ def exportar_post():
                 data = [{'id': o.id, 'num_serie': o.num_serie, 'sace': o.sace, 'model': o.model, 'estat': o.estat} for o in ordinadors]
                 df = pd.DataFrame(data)
                 dataframes['ordinadors'] = df
-
+    if not dataframes:
+        return render_template('export.html', error="Has de marcar almenys una taula.")
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         for sheet_name, df in dataframes.items():

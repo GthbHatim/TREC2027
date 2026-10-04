@@ -216,3 +216,13 @@ PD: Surt al commit del 02/10, problemes amb el repositori han perdut el commit d
 Pd: Potser faig una notificacio despres
 * Proves de icones al navbar
 [Final]
+
+[04/10/2026] [Inici]
+* Treta la logica del export ja que es erronea, trenca el export
+* Script Faker al root del projecte per generar alumnes falsos com exemples.
+* Arreglada logica del formulari d'assignacio per evitar reenviaments de formularis.
+* Arreglada logica del formulari d'assignacio per "netejar" les entrades de ordinadors i alumnes abans de fer les assignacions
+evitant que hi hagi brossa al historial.
+* Arreglada logica del formulari per evitar que un alumne tingui dos ordinadors
+* Arreglada (ara si) la logica dels exports, si no es selecciona cap opcio retorna error i porta un altre cop a la pagina del export.
+[Final]
