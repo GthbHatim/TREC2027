@@ -8,3 +8,4 @@ tests/
 instance/
 *.db
 *.xlsx
+exemples_document/

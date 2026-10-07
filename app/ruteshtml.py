@@ -433,3 +433,11 @@ def exportar_post():
 @app.route('/html/test')
 def test_html():
     return render_template('tests/test.html')
+
+@app.route('/html/exemples')
+def exemples_html():
+    return render_template('exemples_document/basexemple.html')
+
+@app.route('/html/exemples/1')
+def exemples_1_html():
+    return render_template('exemples_document/fillexemple.html')
