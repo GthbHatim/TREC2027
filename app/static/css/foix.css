@@ -1,0 +1,48 @@
+:root[data-theme] {
+    color-scheme: light dark;
+
+  --color-base-100: light-dark(#F6F8F1, #1D1B15);
+  --color-base-200: light-dark(#EDF1E4, #24221B);   
+  --color-base-300: light-dark(#D9DFCB, #3A372D); 
+  --color-base-content: light-dark(#33291E, #ECE9DA); 
+
+
+  --color-primary: light-dark(#3F6B1F, #9BC45E);
+  --color-primary-content: light-dark(#FFFFFF, #1D1B15);
+  --color-secondary: #88BA32;                        
+  --color-secondary-content: #1D1B15;
+  --color-accent: light-dark(#ED7B35, #F0913A);     
+  --color-accent-content: light-dark(#33291E, #1D1B15);
+  --color-neutral: light-dark(#5E5A4E, #A39D8F);    
+  --color-neutral-content: light-dark(#F6F8F1, #1D1B15);
+
+
+  --color-info: light-dark(#2F6475, #7FB6CC);
+  --color-info-content: light-dark(#FFFFFF, #1D1B15);
+  --color-success: light-dark(#3F6B1F, #9BC45E);
+  --color-success-content: light-dark(#FFFFFF, #1D1B15);
+  --color-warning: light-dark(#ED7B35, #F0913A);
+  --color-warning-content: light-dark(#33291E, #1D1B15);
+  --color-error: light-dark(#B3261E, #F2766B);
+  --color-error-content: light-dark(#FFFFFF, #1D1B15);
+
+
+  --radius-selector: .375rem;
+  --radius-field: .5rem;
+  --radius-box: .75rem;
+  --size-selector: .25rem;
+  --size-field: .25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+
+
+  --estat-assignat: var(--color-secondary);
+  --estat-magatzem: var(--color-base-100);
+  --estat-reparacio: var(--color-accent);
+  --estat-baixa: var(--color-neutral);
+  --ratllat: repeating-linear-gradient(-45deg, var(--estat-baixa) 0 1.5px, transparent 1.5px 5px);
+}
+:root[data-theme="clar"] { color-scheme: light; }
+:root[data-theme="fosc"] { color-scheme: dark; }
+

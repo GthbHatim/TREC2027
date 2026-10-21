@@ -1,3 +1,4 @@
+#Imports
 from csv import writer
 from io import BytesIO
 import io
@@ -17,6 +18,72 @@ from app.models import Historial
 from flask import redirect
 from pandas import Timestamp
 import pandas as pd
+from pathlib import Path
+from markupsafe import Markup
+from datetime import datetime
+
+# Funcions golbals per a les plantilles
+modes = ("auto", "clar", "fosc")
+
+@app.context_processor
+def inject_tema():
+    ara = request.full_path.rstrip("?")
+    if request.cookies.get("tema") not in modes:
+        return dict(modes=modes, T="auto", ara=ara)
+    return dict(modes=modes, T=request.cookies.get("tema", "auto"), ara=ara)
+def tornar(endpoint):
+    seguent = request.form.get("seguent", "")
+    if seguent.startswith("/") and not seguent.startswith("//"):
+        return redirect(seguent)
+    return redirect(url_for(endpoint))
+
+@app.route("/tema", methods=["POST"])
+def canviar_tema():
+    tema = request.form.get("tema", "auto")
+    resposta = tornar("benvingut")
+    if tema in modes:
+        resposta.set_cookie("tema", tema, max_age=60 * 60 * 24 * 365, samesite="Lax")
+    return resposta
+
+@app.template_global()
+def get_icon(nom, classe="size-4"):
+    folder = Path(app.static_folder)
+    file = folder / "icons" / f"{nom}.svg"
+    text = file.read_text()
+    text = text.replace("<svg", f"<svg class='{classe}'")
+    return Markup(text)
+
+@app.template_filter("data")
+def format_data(valor):
+    if isinstance(valor, datetime):
+        return valor.strftime("%d/%m/%Y %H:%M")
+    return "Data no disponible"
+
+@app.template_filter("fa")
+def fa(valor):
+    """{{ h.data|fa }} -> avui, ahir, fa 3 dies, fa 2 setmanes, fa 1 mes..."""
+    if isinstance(valor, datetime):
+        dies = (datetime.now().date() - valor.date()).days
+        if dies <= 0:
+            return "avui"
+        elif dies == 1:
+            return "ahir"
+        elif dies < 7:
+            return f"fa {dies} dies"
+        elif dies < 30:
+            setmanes = dies // 7
+            if setmanes == 1:
+                return "fa 1 setmana"
+            return f"fa {setmanes} setmanes"
+        else:
+            mesos = dies // 30
+            if mesos == 1:
+                return "fa 1 mes"
+            return f"fa {mesos} mesos"
+
+    return ""
+
+#Rutes HTML
 
 @app.route('/')
 def index():
@@ -332,3 +399,6 @@ def exemples_html():
 @app.route('/html/exemples/1')
 def exemples_1_html():
     return render_template('exemples_document/fillexemple.html')
+
+
+
