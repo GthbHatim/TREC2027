@@ -6,12 +6,10 @@
     <title>Gestió El Foix</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.svg">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </head>
 <body>
 <nav class="fixed bg-white/10 backdrop-blur-md border border-white/25 rounded-xl p-3 pt-6 shadow-xl w-full">
@@ -40,11 +38,5 @@
 {% block content %}
 {% endblock %}
 </main>
-{% set url_fosc = toggle_url() %}
-{% if url_fosc %}
-<a href="{{ url_fosc }}" title="Mode fosc" class="fixed bottom-4 right-4 p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-  ☾ | ☀
-</a>
-{% endif %}
 </body>
 </html>

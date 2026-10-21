@@ -226,3 +226,8 @@ evitant que hi hagi brossa al historial.
 * Arreglada logica del formulari per evitar que un alumne tingui dos ordinadors
 * Arreglada (ara si) la logica dels exports, si no es selecciona cap opcio retorna error i porta un altre cop a la pagina del export.
 [Final]
+
+[21/10/2026][Inici]
+* Creat el Branch "Overhaul"; Rediseny total de la web.
+* Borrat dels archius obsolets (Claude Code)
+    * Justificacio: Es un borrat massiu d'arxius, per eficiencia he pasat la llista al agent.
