@@ -25,10 +25,6 @@ def index():
 @app.route("/benvingut")
 def benvingut():
     return render_template("benvinguda.html")
-
-@app.route("/alumnes/html")
-def llistar_alumnes():
-    return render_template("base.html")
     
 @app.route("/alumnes/html/veure")
 def veure_alumnes():
