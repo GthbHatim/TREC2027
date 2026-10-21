@@ -233,3 +233,5 @@ evitant que hi hagi brossa al historial.
     * Justificacio: Es un borrat massiu d'arxius, per eficiencia he pasat la llista al agent.
 * Funció per els SVG, feta (Asistit per IA)
 * Funcio per les dates, y de fa quan el cambi (Asistit per IA)
+* Funcions amb Cookies dels temes
+[Final]
