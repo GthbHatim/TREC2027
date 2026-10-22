@@ -235,3 +235,9 @@ evitant que hi hagi brossa al historial.
 * Funcio per les dates, y de fa quan el cambi (Asistit per IA)
 * Funcions amb Cookies dels temes
 [Final]
+
+[21/10/2026]
+* Nova navbar (Asistit per IA)
+* Afegit boto de nou al costat del de assignar
+* Arreglat bugs dels temes y concordances del codi.
+[Final]

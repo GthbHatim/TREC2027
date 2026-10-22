@@ -43,6 +43,50 @@
   --estat-baixa: var(--color-neutral);
   --ratllat: repeating-linear-gradient(-45deg, var(--estat-baixa) 0 1.5px, transparent 1.5px 5px);
 }
+
+.navlink {
+  display: inline-flex; align-items: center; height: 4rem; padding: 0 .75rem;
+  color: color-mix(in oklab, var(--color-base-content) 75%, transparent);
+  box-shadow: inset 0 -2px 0 transparent;
+}
+.navlink:hover { color: var(--color-base-content); }
+.navlink[aria-current="page"] {
+  color: var(--color-base-content); font-weight: 600;
+  box-shadow: inset 0 -3px 0 var(--color-primary);
+}
+
+.menu-accions { min-width: 15rem; padding: .25rem; border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-box); background: var(--color-base-100);
+  box-shadow: 0 12px 32px -12px rgb(30 25 15 / .35); }
+.menu-accions li > button { width: 100%; }
+.menu-accions .perill { color: var(--color-error); }
+.menu-accions li > [aria-current] {
+  background: color-mix(in oklab, var(--color-primary) 13%, transparent);
+  color: var(--color-base-content); font-weight: 600;
+}
+
+@layer base {
+  body {
+    font-family: "Stack Sans Text", ui-sans-serif, system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, .font-titol {
+    font-family: "Stack Sans Headline", "Stack Sans Text", ui-sans-serif, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  h1 { font-size: 2.25rem; line-height: 1.1; }       /* 36px */
+  h2 { font-size: 1.3125rem; line-height: 1.25; }    /* 21px */
+  h3 { font-weight: 600; }
+  :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  ::selection { background: color-mix(in oklab, var(--color-secondary) 45%, transparent); }
+}
+
+.suau { color: color-mix(in oklab, var(--color-base-content) 72%, var(--color-base-100)); }
+
+
 :root[data-theme="clar"] { color-scheme: light; }
 :root[data-theme="fosc"] { color-scheme: dark; }
 

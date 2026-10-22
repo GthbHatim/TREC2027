@@ -1,40 +1,77 @@
 <!DOCTYPE html>
-<html lang="ca">
+{% set seccio = seccio|default('') %}
+<html lang="ca" data-theme="{{ theme }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestió El Foix</title>
-    <link rel="icon" type="image/x-icon" href="/static/favicon.svg">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="static/css/foix.css">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titol %}{% endblock %} | Gestió El Foix</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@500..700&family=Stack+Sans+Text:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/foix.css') }}">
 </head>
-<body>
-<nav class="fixed bg-white/10 backdrop-blur-md border border-white/25 rounded-xl p-3 pt-6 shadow-xl w-full">
-  <div class="max-w-screen-xl flex items-center justify-between mx-auto">
-    <a href="https://agora.xtec.cat/ieselfoix/" class="image"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="h-10"></a>
-    <ul class="flex space-x-8">
-      <li>
-        <a href="{{ url_for('benvingut') }}" class="hover:text-gray-300">Casa</a>
-      </li>
-      <li>
-        <a href="{{ url_for('veure_ordinadors') }}" class="hover:text-gray-300">Ordinadors</a>
-      </li>
-      <li>
-        <a href="{{ url_for('veure_alumnes') }}" class="hover:text-gray-300">Alumnes</a>  
-      </li>
-      <li>
-        <a href="{{ url_for('veure_historial') }}" class="hover:text-gray-300">Historial</a>
-      </li>
-      <li>
-        <a href="{{ url_for('exportar') }}" class="hover:text-gray-300">Exportar</a>
-      </li>
-    </ul>
+<body class="flex min-h-screen flex-col bg-base-100 text-base-content">
+
+<a href="#contingut" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 btn btn-sm">Vés al contingut</a>
+
+<header class="sticky top-0 z-30 border-b border-base-300 bg-base-100">
+  <div class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
+    <a href="{{ url_for('benvingut') }}" class="mr-2 flex shrink-0 items-center gap-2.5">
+      <img src="{{ url_for('static', filename='favicon.svg') }}" alt="" class="h-9 w-auto">
+      <span class="font-titol text-[1.0625rem] font-semibold leading-tight">Gestió<br class="sm:hidden"> El Foix</span>
+    </a>
+
+    {% set enllacos = [
+      ('benvingut', 'Inici', 'inici'),
+      ('veure_ordinadors', 'Ordinadors', 'ordinadors'),
+      ('veure_alumnes', 'Alumnes', 'alumnes'),
+      ('veure_historial', 'Historial', 'historial'),
+    ] %}
+    <nav aria-label="Seccions" class="hidden md:block">
+      <ul class="flex">
+        {% for endpoint, text, clau in enllacos %}
+        <li><a href="{{ url_for(endpoint) }}" class="navlink" {% if seccio == clau %}aria-current="page"{% endif %}>{{ text }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2">
+      <a href="{{ url_for('formulari_assignar') }}" class="btn btn-primary btn-sm sm:btn-md">{{ get_icon('arrow-left-right') }} Assignar</a>
+
+{# Botó "Nou": obre un menú per triar què vols afegir #}
+<button type="button" class="btn btn-outline btn-sm sm:btn-md" popovertarget="menu-nou"
+        style="anchor-name: --menu-nou" aria-label="Afegir nou">
+  {{ get_icon('plus') }} <span class="hidden sm:inline">Nou</span>
+</button>
+<ul popover id="menu-nou" class="dropdown dropdown-end menu menu-accions mt-1" style="position-anchor: --menu-nou">
+  <li class="menu-title">Afegir</li>
+  <li><a href="{{ url_for('formulari_ordinadors') }}">{{ get_icon('laptop') }} Ordinador</a></li>
+  <li><a href="{{ url_for('formulari_alumnes') }}">{{ get_icon('user-plus') }} Alumne</a></li>
+</ul>
+      <button type="button" class="btn btn-ghost btn-square btn-sm sm:btn-md" popovertarget="menu-general"
+              style="anchor-name: --menu-general" aria-label="Menú">{{ get_icon('ellipsis', 'size-5') }}</button>
+      <ul popover id="menu-general" class="dropdown dropdown-end menu menu-accions mt-1" style="position-anchor: --menu-general">
+        {% for endpoint, text, clau in enllacos %}
+        <li class="md:hidden"><a href="{{ url_for(endpoint) }}" {% if seccio == clau %}aria-current="page"{% endif %}>{{ text }}</a></li>
+        {% endfor %}
+        <li class="md:hidden"><hr class="my-1 border-base-300"></li>
+        <li><a href="{{ url_for('exportar') }}" {% if seccio == 'exportar' %}aria-current="page"{% endif %}>{{ get_icon('file-spreadsheet') }} Exportar a Excel</a></li>
+        <li class="menu-title mt-1">Tema</li>
+        {% for valor, text, nom_icon in [('auto', 'Com el sistema', 'sun-moon'), ('foix', 'Clar', 'sun'), ('foix-fosc', 'Fosc', 'moon')] %}
+        <li><button type="submit" form="form-tema" name="tema" value="{{ valor }}" {% if tema == valor %}aria-current="true"{% endif %}>
+          {{ get_icon(nom_icon) }} {{ text }} {% if tema == valor %}{{ get_icon('check', 'size-4 ml-auto') }}{% endif %}
+        </button></li>
+        {% endfor %}
+      </ul>
+      <form id="form-tema" method="post" action="{{ url_for('canviar_tema') }}" hidden>
+        <input type="hidden" name="seguent" value="{{ ara }}">
+      </form>
+    </div>
   </div>
-</nav>
+</header>
 <main class="pt-16">
 {% block content %}
 {% endblock %}

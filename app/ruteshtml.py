@@ -29,8 +29,8 @@ modes = ("auto", "clar", "fosc")
 def inject_tema():
     ara = request.full_path.rstrip("?")
     if request.cookies.get("tema") not in modes:
-        return dict(modes=modes, T="auto", ara=ara)
-    return dict(modes=modes, T=request.cookies.get("tema", "auto"), ara=ara)
+        return dict(modes=modes, theme="auto", ara=ara)
+    return dict(modes=modes, theme=request.cookies.get("tema", "auto"), ara=ara)
 def tornar(endpoint):
     seguent = request.form.get("seguent", "")
     if seguent.startswith("/") and not seguent.startswith("//"):
@@ -49,9 +49,9 @@ def canviar_tema():
 def get_icon(nom, classe="size-4"):
     folder = Path(app.static_folder)
     file = folder / "icons" / f"{nom}.svg"
-    text = file.read_text()
-    text = text.replace("<svg", f"<svg class='{classe}'")
-    return Markup(text)
+    icon = file.read_text()
+    icon = icon.replace("<svg", f"<svg class='{classe}'")
+    return Markup(icon)
 
 @app.template_filter("data")
 def format_data(valor):
