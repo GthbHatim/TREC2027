@@ -4,7 +4,7 @@ from io import BytesIO
 import io
 from flask import send_file
 import pandas
-from sqlalchemy import String, ForeignKey, DateTime
+from sqlalchemy import String, ForeignKey, DateTime, func
 from pandas import options
 from pandas import DataFrame
 from pandas import ExcelWriter
@@ -12,7 +12,7 @@ from app import alumnes, app
 from app.extensions import db
 from flask import request, url_for
 from flask import render_template
-from app.models import Alumne
+from app.models import ESTATS_ORDINADOR, Alumne
 from app.models import Ordinador
 from app.models import Historial
 from flask import redirect
@@ -21,16 +21,19 @@ import pandas as pd
 from pathlib import Path
 from markupsafe import Markup
 from datetime import datetime
+from sqlalchemy import or_ 
+
+#Diccionaris
+modes = ("auto", "clar", "fosc")
 
 # Funcions golbals per a les plantilles
-modes = ("auto", "clar", "fosc")
 
 @app.context_processor
 def inject_tema():
     ara = request.full_path.rstrip("?")
     if request.cookies.get("tema") not in modes:
-        return dict(modes=modes, theme="auto", ara=ara)
-    return dict(modes=modes, theme=request.cookies.get("tema", "auto"), ara=ara)
+        return dict(modes=modes, theme="auto", ara=ara, ESTATS=ESTATS_ORDINADOR)
+    return dict(modes=modes, theme=request.cookies.get("tema", "auto"), ara=ara, ESTATS=ESTATS_ORDINADOR)
 def tornar(endpoint):
     seguent = request.form.get("seguent", "")
     if seguent.startswith("/") and not seguent.startswith("//"):
@@ -98,10 +101,30 @@ def veure_alumnes():
     alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
     return render_template("alumnes/veure.html", alumnes=alumnes)
 
+def search(query, q):
+    if q:
+        pattern = f"%{q}%"
+        query = query.outerjoin(Ordinador.alumne)
+        query = query.where(or_(
+            Ordinador.num_serie.ilike(pattern),
+            Ordinador.sace.ilike(pattern),
+            Ordinador.model.ilike(pattern),
+            func.unaccent(Alumne.nom).ilike(func.unaccent(pattern)),
+        ))
+    return query
+
 @app.route("/ordinadors/html/veure")
 def veure_ordinadors():
-    ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id)).scalars().all()
-    return render_template("ordinadors/veure.html", ordinadors=ordinadors)
+    q = request.args.get("q", "").strip()
+    estat = request.args.get("estat", "")
+    query = db.select(Ordinador)
+    if estat and estat in ESTATS_ORDINADOR:
+        query = query.where(Ordinador.estat == estat)
+    query = search(query, q)
+    ordinadors = db.session.execute(query.order_by(Ordinador.sace)).scalars().all()
+    recompte = dict(db.session.execute(
+    search(db.select(Ordinador.estat, func.count()), q).group_by(Ordinador.estat)).all())
+    return render_template("ordinadors/veure.html", ordinadors=ordinadors, q=q, estat=estat, recompte=recompte)
 
 @app.route("/historial/html/veure")
 def veure_historial():
@@ -209,7 +232,7 @@ def reparar_ordinador_html():
     if not ordinador:
         return redirect(url_for('veure_ordinadors'))
     
-    ordinador.estat = 'En reparació'
+    ordinador.estat = 'en reparacio'
     db.session.commit() 
     
     return redirect(url_for('veure_ordinadors'))
@@ -222,7 +245,7 @@ def baixa_ordinador_html():
     if not ordinador:
         return redirect(url_for('veure_ordinadors'))
     
-    ordinador.estat = ' de baixa'
+    ordinador.estat = "de baixa"
     ordinador.alumne_id = None 
     db.session.commit() 
     
@@ -375,7 +398,7 @@ def exportar_post():
                 dataframes['historial'] = df
             elif key == 'alumnes':
                 alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
-                data = [{'id': a.id, 'nom': a.nom, 'identificador': a.identificador, 'curs': a.curs, 'email': a.email} for a in alumnes]
+                data = [{'id': a.id, 'nom': a.nom, 'identificador': a.identificador, 'curs': a.curs, 'email': a.email, 'estat': a.estat, 'id_ordinador': a.ordinador.id if a.ordinador else None} for a in alumnes]
                 df = pd.DataFrame(data)
                 dataframes['alumnes'] = df
             elif key == 'ordinadors':

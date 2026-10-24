@@ -236,8 +236,25 @@ evitant que hi hagi brossa al historial.
 * Funcions amb Cookies dels temes
 [Final]
 
-[21/10/2026]
+[21/10/2026] [Inici]
 * Nova navbar (Asistit per IA)
 * Afegit boto de nou al costat del de assignar
 * Arreglat bugs dels temes y concordances del codi.
 [Final]
+
+[22/10/2026] [Inici]
+* Cambiar font de la web
+[Final]
+
+[24/10/2026] [Inici]
+* ESTATS_ORDINADOR i estats unificats
+* Corregida la falta del estat del alumne en el Backup generat
+* Query a la DB per a filtres a les taules web
+* Unaccent per que el Query ?q funcioni sense accents
+* Recompte de resultats per els botons (Asistit per IA)
+* Creació de Macros per a tasques repetitives (Asistit per IA)
+* Canvis en la estructura de les plantilles de veure.html (Asistit per IA)
+* Cerca per form get amb filtes a la tuta amb els querys
+* Arreglat bug del modes, form no coincidia amb el dict de ruteshtml.py
+[Final]
+

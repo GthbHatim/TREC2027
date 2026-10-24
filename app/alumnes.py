@@ -33,7 +33,7 @@ def borrar_alumne(id):
     alumne = db.session.get(Alumne, id)
     if not alumne:
         return {"error": "Alumne no trobat"}, 404
-    alumne.estat = "baixa"
+    alumne.estat = "de baixa"
     db.session.commit()
     return {"missatge": "Alumne eliminat", "id": alumne.id}, 200
 

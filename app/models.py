@@ -4,6 +4,13 @@ from sqlalchemy import String, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
+ESTATS_ORDINADOR = {
+    "assignat": "Assignat",
+    "emmagatzemat": "Al magatzem",
+    "en reparacio": "En reparacio",
+    "de baixa": "De baixa",
+}
+
 class Alumne(db.Model):
     nom: Mapped[str] = mapped_column(String(50), unique=True)
     id: Mapped[int] = mapped_column(primary_key=True)

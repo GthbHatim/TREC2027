@@ -67,14 +67,14 @@
 
 @layer base {
   body {
-    font-family: "Stack Sans Text", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Raleway", ui-sans-serif, system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, .font-titol {
-    font-family: "Stack Sans Headline", "Stack Sans Text", ui-sans-serif, sans-serif;
-    font-weight: 600;
+    font-family: "Raleway", ui-sans-serif, sans-serif;
+    font-weight: 800;
     letter-spacing: -0.01em;
   }
   h1 { font-size: 2.25rem; line-height: 1.1; }       /* 36px */
@@ -85,6 +85,49 @@
 }
 
 .suau { color: color-mix(in oklab, var(--color-base-content) 72%, var(--color-base-100)); }
+
+.codi, time, .xifres { font-variant-numeric: tabular-nums; }
+.codi { letter-spacing: .01em; }
+
+.estat {
+  display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
+  font-size: .875rem; line-height: 1.25rem;
+}
+.estat::before {
+  content: ""; width: .75rem; height: .75rem; border-radius: 3px; flex: none;
+  background: var(--color-estat); border: 1px solid color-mix(in oklab, var(--color-base-content) 22%, transparent);
+}
+[data-estat="assignat"]     { --color-estat: var(--estat-assignat); }
+[data-estat="emmagatzemat"] { --color-estat: var(--estat-magatzem); }
+[data-estat="en reparació"] { --color-estat: var(--estat-reparacio); }
+[data-estat="de baixa"]     { --color-estat: var(--ratllat); }
+
+.xip {
+  display: inline-flex; align-items: center; gap: .5rem; height: 2.25rem; padding: 0 .85rem;
+  border: 1px solid var(--color-base-300); border-radius: var(--radius-field);
+  font-size: .9375rem; background: var(--color-base-100);
+}
+.xip:hover { border-color: color-mix(in oklab, var(--color-base-content) 35%, transparent); }
+.xip[aria-current="true"] {
+  border-color: var(--color-primary); font-weight: 600;
+  background: color-mix(in oklab, var(--color-primary) 10%, var(--color-base-100));
+}
+.xip .num { color: color-mix(in oklab, var(--color-base-content) 65%, transparent); font-variant-numeric: tabular-nums; }
+.xip .estat { font-size: inherit; }
+
+.table-box { border: 1px solid var(--color-base-300); border-radius: var(--radius-box); overflow-x: auto; background: var(--color-base-100); }
+.table-box .table { font-size: .9375rem; }
+.table-box thead th { background: var(--color-base-200); color: var(--color-base-content); font-weight: 600; font-size: .875rem; }
+.table-box tbody tr:hover { background: color-mix(in oklab, var(--color-base-200) 60%, transparent); }
+@media (max-width: 40rem) {
+  .table-box .table :where(th, td) { padding-inline: .625rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+
 
 
 :root[data-theme="clar"] { color-scheme: light; }

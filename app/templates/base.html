@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@500..700&family=Stack+Sans+Text:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/foix.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
 </head>
 <body class="flex min-h-screen flex-col bg-base-100 text-base-content">
 
@@ -60,7 +61,7 @@
         <li class="md:hidden"><hr class="my-1 border-base-300"></li>
         <li><a href="{{ url_for('exportar') }}" {% if seccio == 'exportar' %}aria-current="page"{% endif %}>{{ get_icon('file-spreadsheet') }} Exportar a Excel</a></li>
         <li class="menu-title mt-1">Tema</li>
-        {% for valor, text, nom_icon in [('auto', 'Com el sistema', 'sun-moon'), ('foix', 'Clar', 'sun'), ('foix-fosc', 'Fosc', 'moon')] %}
+        {% for valor, text, nom_icon in [('auto', 'Com el sistema', 'sun-moon'), ('clar', 'Clar', 'sun'), ('fosc', 'Fosc', 'moon')] %}
         <li><button type="submit" form="form-tema" name="tema" value="{{ valor }}" {% if tema == valor %}aria-current="true"{% endif %}>
           {{ get_icon(nom_icon) }} {{ text }} {% if tema == valor %}{{ get_icon('check', 'size-4 ml-auto') }}{% endif %}
         </button></li>
@@ -72,7 +73,7 @@
     </div>
   </div>
 </header>
-<main class="pt-16">
+<main id="contingut" class="mx-auto w-full max-w-7xl flex-1 px-4 pb-16 pt-8 sm:px-6">
 {% block content %}
 {% endblock %}
 </main>

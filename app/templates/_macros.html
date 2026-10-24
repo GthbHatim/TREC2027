@@ -1,0 +1,20 @@
+{% macro estat(valor) -%}
+<span class="estat" data-estat="{{ valor }}">{{ ESTATS.get(valor, valor|capitalize) }}</span>
+{%- endmacro %}
+
+{% macro capcalera(titol, resum='') -%}
+<div class="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+  <div class="max-w-2xl">
+    <h1>{{ titol }}</h1>
+    {% if resum %}<p class="mt-2 suau">{{ resum }}</p>{% endif %}
+  </div>
+  {% if caller %}<div class="flex flex-wrap gap-2">{{ caller() }}</div>{% endif %}
+</div>
+{%- endmacro %}
+
+{% macro buit(text, enllac_text='', enllac_url='') -%}
+<div class="px-6 py-12 text-center">
+  <p class="suau">{{ text }}</p>
+  {% if enllac_url %}<a href="{{ enllac_url }}" class="btn btn-ghost btn-sm mt-3">{{ enllac_text }}</a>{% endif %}
+</div>
+{%- endmacro %}
