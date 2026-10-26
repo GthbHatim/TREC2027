@@ -99,7 +99,7 @@
 }
 [data-estat="assignat"]     { --color-estat: var(--estat-assignat); }
 [data-estat="emmagatzemat"] { --color-estat: var(--estat-magatzem); }
-[data-estat="en reparació"] { --color-estat: var(--estat-reparacio); }
+[data-estat="reparacio"] { --color-estat: var(--estat-reparacio); }
 [data-estat="de baixa"]     { --color-estat: var(--ratllat); }
 
 .xip {
@@ -127,8 +127,29 @@
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 
+.dialeg {
+  /* Tailwind posa margin:0 a tot; el popover necessita margin:auto per quedar centrat */
+  position: fixed; inset: 0; margin: auto; height: fit-content;
+  width: min(28rem, calc(100vw - 2rem)); padding: 1.5rem;
+  border: 1px solid var(--color-base-300); border-radius: var(--radius-box);
+  background: var(--color-base-100); color: var(--color-base-content);
+  box-shadow: 0 24px 48px -16px rgb(30 25 15 / .45);
+}
+.dialeg::backdrop { background: rgb(20 18 12 / .45); }
 
-
+.registre { border-left: 2px solid var(--color-base-300); margin-left: .45rem; }
+.registre > li { position: relative; padding: 0 0 1.25rem 1.5rem; }
+.registre > li:last-child { padding-bottom: 0; }
+.registre > li::before {
+  content: ""; position: absolute; left: -.5rem; top: .35rem;
+  width: .875rem; height: .875rem; border-radius: 50%;
+  background: var(--color-base-100); border: 2px solid var(--color-punt, var(--color-base-300));
+}
+[data-accio="assignat"]       { --color-punt: var(--color-secondary); }
+[data-accio^="retirat"]       { --color-punt: var(--color-neutral); }
+[data-accio="en reparació"]   { --color-punt: var(--color-accent); }
+[data-accio="reparat"]        { --color-punt: var(--color-primary); }
+[data-accio="de baixa"]       { --color-punt: var(--color-neutral); }
 
 :root[data-theme="clar"] { color-scheme: light; }
 :root[data-theme="fosc"] { color-scheme: dark; }

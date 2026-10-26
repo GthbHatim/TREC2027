@@ -258,3 +258,17 @@ evitant que hi hagi brossa al historial.
 * Arreglat bug del modes, form no coincidia amb el dict de ruteshtml.py
 [Final]
 
+[25/10/2026] [Inici]
+* Rutes més eficients
+* Funció general per apuntar al historial.
+[Final]
+
+[26/10/2026]
+* Més Macros per els estats dels oridnadors i accions POST (Asistit per IA)
+* Sub menus per les accions en comptes de botons individuals amb formulari.
+* Notifiaccions flashed per les accions.
+* Accions al historal unificades.
+* Ruta fitxa del ordinador
+* Plantilla fitxa del ordinador (Asistit per IA)
+* Ruta fitxa alumne 
+[Final]

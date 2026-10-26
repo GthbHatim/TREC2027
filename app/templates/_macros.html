@@ -18,3 +18,63 @@
   {% if enllac_url %}<a href="{{ enllac_url }}" class="btn btn-ghost btn-sm mt-3">{{ enllac_text }}</a>{% endif %}
 </div>
 {%- endmacro %}
+
+{% macro form_post(id, accio_url) -%}
+<form id="{{ id }}" method="post" action="{{ accio_url }}" hidden><input type="hidden" name="seguent" value="{{ ara }}"></form>
+{%- endmacro %}
+
+{% macro confirmacio(id, titol, form_id, boto) -%}
+<div popover id="{{ id }}" class="dialeg text-left whitespace-normal" role="alertdialog" aria-labelledby="{{ id }}-titol">
+  <h2 id="{{ id }}-titol" class="text-xl">{{ titol }}</h2>
+  <div class="mt-2 suau">{{ caller() }}</div>
+  <div class="mt-6 flex justify-end gap-2">
+    <button type="button" class="btn btn-ghost" popovertarget="{{ id }}" popovertargetaction="hide">Cancel·lar</button>
+    <button type="submit" class="btn btn-error" form="{{ form_id }}">{{ boto }}</button>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro accions_ordinador(o, amb_fitxa=true) -%}
+{% set id = 'ord' ~ o.id %}
+<div class="inline-flex items-center justify-end gap-1">
+  {% if o.estat == 'emmagatzemat' %}
+  <a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}" class="btn btn-ghost btn-sm hidden text-sm sm:inline-flex">Assignar</a>
+  {% endif %}
+  {% if o.estat != 'de baixa' %}
+  <button type="button" class="btn btn-ghost btn-sm btn-square" popovertarget="menu-{{ id }}"
+          style="anchor-name: --menu-{{ id }}" aria-label="Accions per al {{ o.sace }}">{{ get_icon('ellipsis') }}</button>
+  <ul popover id="menu-{{ id }}" class="dropdown dropdown-end menu menu-accions mt-1 text-left" style="position-anchor: --menu-{{ id }}">
+    {% if amb_fitxa %}
+    <li><a href="{{ url_for('fitxa_ordinador', ordinador_id=o.id) }}">{{ get_icon('file-text') }} Veure la fitxa</a></li>
+    {% endif %}
+    {% if o.estat == 'emmagatzemat' %}
+    <li class="sm:hidden"><a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}">{{ get_icon('arrow-left-right') }} Assignar</a></li>
+    {% endif %}
+    {% if o.estat == 'assignat' %}
+    <li><a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}">{{ get_icon('arrow-left-right') }} Assignar a un altre alumne</a></li>
+    <li><button type="submit" form="emmagatzemar_ordinador_html-{{ id }}">{{ get_icon('archive') }} Retirar i guardar al magatzem</button></li>
+    {% endif %}
+    {% if o.estat in ('assignat', 'emmagatzemat') %}
+    <li><button type="submit" form="reparar-{{ id }}">{{ get_icon('wrench') }} Enviar a reparar</button></li>
+    {% endif %}
+    {% if o.estat == 'reparacio' %}
+    <li><button type="submit" form="reparat-{{ id }}">{{ get_icon('check') }} Marcar com a reparat</button></li>
+    {% endif %}
+    <li><button type="button" class="perill" popovertarget="baixa-{{ id }}">{{ get_icon('ban') }} Donar de baixa…</button></li>
+  </ul>
+  {% endif %}
+</div>
+{% if o.estat == 'assignat' %}{{ form_post('emmagatzemar_ordinador_html-' ~ id, url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
+{% if o.estat in ('assignat', 'emmagatzemat') %}{{ form_post('reparar-' ~ id, url_for('reparar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
+{% if o.estat == 'reparacio' %}{{ form_post('reparat-' ~ id, url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
+{% if o.estat != 'de baixa' %}
+{{ form_post('form-baixa-' ~ id, url_for('baixa_ordinador_html', ordinador_id=o.id)) }}
+{% call confirmacio('baixa-' ~ id, 'Donar de baixa el ' ~ o.sace ~ '?', 'form-baixa-' ~ id, 'Donar de baixa') %}
+  {% if o.alumne %}{{ o.alumne.nom }} es quedarà sense ordinador. {% endif %}L'equip deixarà d'estar disponible i el canvi quedarà a l'historial.
+{% endcall %}
+{% endif %}
+{%- endmacro %}
+
+{% macro sace(o) -%}
+<a href="{{ url_for('fitxa_ordinador', ordinador_id=o.id) }}" class="codi font-semibold link link-hover">{{ o.sace }}</a>
+{%- endmacro %}

@@ -74,6 +74,21 @@
   </div>
 </header>
 <main id="contingut" class="mx-auto w-full max-w-7xl flex-1 px-4 pb-16 pt-8 sm:px-6">
+
+<main id="contingut" class="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-8 sm:px-6">
+  {% with missatges = get_flashed_messages(with_categories=true) %}
+  {% if missatges %}
+  <div class="mb-6 space-y-2">
+    {% for categoria, text in missatges %}
+    {% set estil = {'ok': ('alert-success', 'circle-check'), 'error': ('alert-error', 'triangle-alert'), 'avis': ('alert-warning', 'info')}.get(categoria, ('alert-info', 'info')) %}
+    <div role="{{ 'alert' if categoria == 'error' else 'status' }}" class="alert alert-soft {{ estil[0] }}">
+      {{ get_icon(estil[1], 'size-5') }}<span>{{ text }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
 {% block content %}
 {% endblock %}
 </main>

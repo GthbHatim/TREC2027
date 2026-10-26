@@ -45,7 +45,7 @@
       {% for o in ordinadors %}
       <tr>
         <td>
-          <span class="codi font-semibold">{{ o.sace }}</span>
+          <span class="codi font-semibold">{{ m.sace(o) }}</span>
           <div class="hidden text-sm suau sm:block">{{ o.model }}</div>
           <div class="mt-1 sm:hidden">{{ m.estat(o.estat) }}</div>
         </td>
@@ -57,7 +57,7 @@
           <div class="text-sm suau">{{ o.alumne.curs }}</div>
           {% else %}<span class="suau" aria-label="Cap">–</span>{% endif %}
         </td>
-        <td class="text-right">###</td>
+        <td class="text-right">{{ m.accions_ordinador(o) }}</td>
       </tr>
       {% endfor %}
     </tbody>

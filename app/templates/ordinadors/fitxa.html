@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% set seccio = 'ordinadors' %}
+{% block titol %}{{ ordinador.sace }}{% endblock %}
+
+{% block content %}
+{% set o = ordinador %}
+<a href="{{ url_for('veure_ordinadors') }}" class="mb-5 inline-flex items-center gap-1 text-sm link link-hover suau">{{ get_icon('chevron-left') }} Ordinadors</a>
+
+<div class="flex flex-wrap items-start justify-between gap-6">
+  <div class="flex items-center gap-5">
+    <span class="rajola w-14 shrink-0 text-sm" data-estat="{{ o.estat }}" aria-hidden="true">{{ o.sace[-3:] }}</span>
+    <div>
+      <h1 class="codi">{{ o.sace }}</h1>
+      <p class="mt-1 text-lg suau">{{ o.model }}</p>
+    </div>
+  </div>
+
+  {# Accions possibles segons l'estat, com a botons visibles (aquí hi ha espai) #}
+  <div class="flex flex-wrap gap-2">
+    {% if o.estat == 'emmagatzemat' %}
+    <a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}" class="btn btn-primary">{{ get_icon('arrow-left-right') }} Assignar</a>
+    {% elif o.estat == 'assignat' %}
+    <a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}" class="btn btn-outline">{{ get_icon('arrow-left-right') }} Assignar a un altre alumne</a>
+    <button type="submit" form="retirar" class="btn btn-outline">{{ get_icon('archive') }} Retirar</button>
+    {% elif o.estat == 'reparacio' %}
+    <button type="submit" form="reparat" class="btn btn-primary">{{ get_icon('check') }} Marcar com a reparat</button>
+    {% endif %}
+    {% if o.estat in ('assignat', 'emmagatzemat') %}
+    <button type="submit" form="reparar" class="btn btn-outline">{{ get_icon('wrench') }} Enviar a reparar</button>
+    {% endif %}
+    {% if o.estat != 'de baixa' %}
+    <button type="button" popovertarget="baixa" class="btn btn-outline text-error">{{ get_icon('ban') }} Donar de baixa…</button>
+    {% endif %}
+  </div>
+</div>
+
+{{ m.form_post('retirar', url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}
+{{ m.form_post('reparar', url_for('reparar_ordinador_html', ordinador_id=o.id)) }}
+{{ m.form_post('reparat', url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}
+{{ m.form_post('form-baixa', url_for('baixa_ordinador_html', ordinador_id=o.id)) }}
+{% call m.confirmacio('baixa', 'Donar de baixa el ' ~ o.sace ~ '?', 'form-baixa', 'Donar de baixa') %}
+  {% if o.alumne %}{{ o.alumne.nom }} es quedarà sense ordinador. {% endif %}L'equip deixarà d'estar disponible i el canvi quedarà a l'historial.
+{% endcall %}
+
+<dl class="mt-8 grid gap-px overflow-hidden rounded-box border border-base-300 bg-base-300 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="bg-base-100 p-4">
+    <dt class="text-sm suau">Estat</dt>
+    <dd class="mt-1">{{ m.estat(o.estat) }}</dd>
+  </div>
+  <div class="bg-base-100 p-4">
+    <dt class="text-sm suau">Alumne</dt>
+    <dd class="mt-1">{% if o.alumne %}{{ o.alumne.nom }} <span class="text-sm suau">{{ o.alumne.curs }}</span>{% else %}Cap{% endif %}</dd>
+  </div>
+  <div class="bg-base-100 p-4">
+    <dt class="text-sm suau">Número de sèrie</dt>
+    <dd class="mt-1 codi">{{ o.num_serie }}</dd>
+  </div>
+  <div class="bg-base-100 p-4">
+    <dt class="text-sm suau">Últim canvi</dt>
+    <dd class="mt-1">{% if historial %}<time datetime="{{ historial[0].data.isoformat() }}">{{ historial[0].data|data }}</time> <span class="text-sm suau">({{ historial[0].data|fa }})</span>{% else %}Sense moviments{% endif %}</dd>
+  </div>
+</dl>
+
+<section class="mt-12 max-w-2xl" aria-labelledby="titol-historial">
+  <h2 id="titol-historial">Historial de l'equip</h2>
+  {% if historial %}
+  <ol class="registre mt-6">
+    {% for h in historial %}
+    <li data-accio="{{ h.accio }}">
+      <div class="flex flex-wrap items-baseline gap-x-2">
+        <span class="font-semibold">{{ ACCIONS.get(h.accio, h.accio) }}</span>
+        {% if h.alumne %}<span>{{ 'de' if h.accio == 'retirat (baixa alumne)' else 'a' }} {{ h.alumne.nom }} <span class="text-sm suau">{{ h.alumne.curs }}</span></span>{% endif %}
+      </div>
+      <time datetime="{{ h.data.isoformat() }}" class="text-sm suau">{{ h.data|data }}</time>
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <p class="mt-4 suau">Aquest ordinador encara no ha tingut cap moviment.</p>
+  {% endif %}
+</section>
+{% endblock %}

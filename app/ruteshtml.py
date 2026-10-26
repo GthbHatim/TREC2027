@@ -2,7 +2,7 @@
 from csv import writer
 from io import BytesIO
 import io
-from flask import send_file
+from flask import flash, send_file
 import pandas
 from sqlalchemy import String, ForeignKey, DateTime, func
 from pandas import options
@@ -12,7 +12,7 @@ from app import alumnes, app
 from app.extensions import db
 from flask import request, url_for
 from flask import render_template
-from app.models import ESTATS_ORDINADOR, Alumne
+from app.models import ESTATS_ORDINADOR, Alumne, ACCIONS_HISTORIAL
 from app.models import Ordinador
 from app.models import Historial
 from flask import redirect
@@ -32,8 +32,8 @@ modes = ("auto", "clar", "fosc")
 def inject_tema():
     ara = request.full_path.rstrip("?")
     if request.cookies.get("tema") not in modes:
-        return dict(modes=modes, theme="auto", ara=ara, ESTATS=ESTATS_ORDINADOR)
-    return dict(modes=modes, theme=request.cookies.get("tema", "auto"), ara=ara, ESTATS=ESTATS_ORDINADOR)
+        return dict(modes=modes, ACCIONS=ACCIONS_HISTORIAL, theme="auto", ara=ara, ESTATS=ESTATS_ORDINADOR)
+    return dict(modes=modes, ACCIONS=ACCIONS_HISTORIAL, theme=request.cookies.get("tema", "auto"), ara=ara, ESTATS=ESTATS_ORDINADOR)
 def tornar(endpoint):
     seguent = request.form.get("seguent", "")
     if seguent.startswith("/") and not seguent.startswith("//"):
@@ -85,6 +85,18 @@ def fa(valor):
             return f"fa {mesos} mesos"
 
     return ""
+
+def apuntar(accio, ordinador_id, alumne_id=None):
+    historial = Historial(accio=accio, ordinador_id=ordinador_id, alumne_id=alumne_id)
+    db.session.add(historial)
+
+def retirar_alumne(ordinador, accio="retirat"):
+    alumne = db.session.get(Alumne, ordinador.alumne_id)
+    if alumne:
+        apuntar(accio, ordinador.id, alumne.id)
+        ordinador.alumne_id = None
+    return alumne
+
 
 #Rutes HTML
 
@@ -150,7 +162,7 @@ def formulari_assignar_after():
         nom = alumne.nom if alumne else None
         dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
     dades.reverse()
-    return render_template("assignarhstrl.html", historial=dades)
+    return render_template("assignarhstrlr.html", historial=dades)
 
 @app.route("/alumnes/html/formulari")
 def formulari_alumnes():
@@ -184,8 +196,7 @@ def post_ordinador():
             return {"error": "Alumne no trobat"}, 404
         nou.alumne_id = alumne.id
         nou.estat = "assignat"
-        nou2 = Historial(alumne_id = nou.alumne_id, ordinador_id = nou.id, accio = "assignat")
-        db.session.add(nou2)
+        apuntar("assignat", nou.id, alumne.id)
         db.session.commit()
     return redirect(url_for('formulari_ordinadors_after'))
 
@@ -224,102 +235,67 @@ def restaurar_alumne_html():
     
     return redirect(url_for('veure_alumnes'))
 
-@app.route('/ordinadors/html/reparar', methods=['POST'])
-def reparar_ordinador_html():
-    num_serie = request.form.get('num_serie')
-    ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
-    
-    if not ordinador:
-        return redirect(url_for('veure_ordinadors'))
-    
-    ordinador.estat = 'en reparacio'
-    db.session.commit() 
-    
-    return redirect(url_for('veure_ordinadors'))
-
-@app.route('/ordinadors/html/baixa', methods=['POST'])
-def baixa_ordinador_html():
-    num_serie = request.form.get('num_serie')
-    ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
-    
-    if not ordinador:
-        return redirect(url_for('veure_ordinadors'))
-    
-    ordinador.estat = "de baixa"
-    ordinador.alumne_id = None 
-    db.session.commit() 
-    
-    return redirect(url_for('veure_ordinadors'))
-
-@app.route('/ordinadors/html/emmagatzemar', methods=['POST'])
-def emmagatzemar_ordinador_html():
-    num_serie = request.form.get('num_serie')
-    ordinador = Ordinador.query.filter_by(num_serie=num_serie).first()
-    if not ordinador:
-        return redirect(url_for('veure_ordinadors'))
-    
-    alumnes_assignats = db.session.execute(db.select(Alumne).filter_by(id=ordinador.alumne_id)).scalars().all()
-
-    for alumne in alumnes_assignats:
-        historial = Historial(
-            alumne_id=alumne.id,
-            ordinador_id=ordinador.id,
-            accio="retirat (emmagatzemat)"
-        )
-        db.session.add(historial)
-
-    ordinador.alumne_id = None
-    ordinador.estat = "emmagatzemat"
-
-    db.session.commit()
-    
-    return redirect(url_for('veure_ordinadors'))
-
-@app.route('/assignar/html', methods=['POST'])
-def assignar_ordinador_html():
-    ordinador_id = request.form.get('ordinador_id')
-    alumne_id = request.form.get('alumne_id')
-
-    if not ordinador_id or not alumne_id:
-        return {"error": "Falten dades"}, 404
-
+@app.route('/ordinadors/html/<int:ordinador_id>/reparar', methods=['POST'])
+def reparar_ordinador_html(ordinador_id):
     ordinador = db.session.get(Ordinador, ordinador_id)
     if not ordinador:
-        return {"error": "Ordinador no trobat"}, 404
-
-    alumne = db.session.get(Alumne, alumne_id)
-    if not alumne:
-        return {"error": "Alumne no trobat"}, 404
-
-    if ordinador.alumne_id is not None and ordinador.alumne_id != alumne.id:
-        historial_retirada = Historial(
-            alumne_id=ordinador.alumne_id,
-            ordinador_id=ordinador.id,
-            accio="retirat"
-        )
-        db.session.add(historial_retirada)
-    if alumne.ordinador is not None and alumne.ordinador.id != ordinador.id:
-        antic = alumne.ordinador
-        historial_retirada = Historial(
-            alumne_id=alumne.id,
-            ordinador_id=antic.id,
-            accio="retirat"
-        )
-        antic.estat = "emmagatzemat"
-        antic.alumne_id = None
-        db.session.add(historial_retirada)
-
-    ordinador.alumne_id = alumne.id
-    ordinador.estat = "assignat"
-
-    historial_assignacio = Historial(
-        alumne_id=alumne.id,
-        ordinador_id=ordinador.id,
-        accio="assignat"
-    )
-    db.session.add(historial_assignacio)
+        flash ("404: Ordinador no trobat.", "error")
+        return tornar("veure_ordinadors")
+    if ordinador.estat == "de baixa" or ordinador.estat == "reparacio":
+        flash ("No es pot reparar un ordinador que està de baixa o ja sent reparat.", "avis")
+        return tornar("veure_ordinadors")
+    alumne = retirar_alumne(ordinador, accio="retirat (reparació)")
+    ordinador.estat = "reparacio"
+    apuntar("reparacio", ordinador.id, alumne.id if alumne else None)
     db.session.commit()
-    return redirect(url_for("formulari_assignar_after"))
+    flash (f"Ordinador {ordinador.sace} enviat a reparació.", "ok")
+    return tornar("veure_ordinadors")
+
+@app.route('/ordinadors/html/<int:ordinador_id>/baixa', methods=['POST'])
+def baixa_ordinador_html(ordinador_id):
+    ordinador = db.session.get(Ordinador, ordinador_id)
+    if not ordinador:
+        flash ("404: Ordinador no trobat.", "error")
+        return tornar("veure_ordinadors")
+    if ordinador.estat == "de baixa":
+        flash ("No es pot donar de baixa un ordinador que està ja ho esta.", "avis")
+        return tornar("veure_ordinadors")
+    alumne = retirar_alumne(ordinador, accio="retirat (baixa)")
+    ordinador.estat = "de baixa"
+    apuntar("de baixa", ordinador.id, alumne.id if alumne else None)
+    db.session.commit()
+    flash (f"Ordinador {ordinador.sace} donat de baixa.", "ok")
+    return tornar("veure_ordinadors")
+
+@app.route('/ordinadors/html/<int:ordinador_id>/emmagatzemar', methods=['POST'])
+def emmagatzemar_ordinador_html(ordinador_id):
+    ordinador = db.session.get(Ordinador, ordinador_id)
+    if not ordinador:
+        flash ("404: Ordinador no trobat.", "error")
+        return tornar("veure_ordinadors")
+    if ordinador.estat == "reparacio":
+        flash (f"Ordinador {ordinador.sace} marcat com a reparat i emmagatzemat.", "ok")
+        ordinador.estat = "emmagatzemat"
+        apuntar("reparat i emmagatzemat", ordinador.id)
+        db.session.commit()
+        return tornar("veure_ordinadors")
+    elif ordinador.estat == "assignat":
+        alumne = retirar_alumne(ordinador, accio="retirat (emmagatzemat)")
+    else:
+        flash(f"El {ordinador.sace} no es pot guardar al magatzem: està {ESTATS_ORDINADOR[ordinador.estat].lower()}.", "avis")
+        return tornar("veure_ordinadors")
+    ordinador.estat = "emmagatzemat"
+    apuntar("emmagatzemat", ordinador.id, alumne.id if alumne else None)
+    db.session.commit()
+    flash (f"Ordinador {ordinador.sace} emmagatzemat.", "ok")
+    return tornar("veure_ordinadors")
+
+@app.route('/assignar/html/<int:ordinador_id>', methods=['POST'])
+
+
+
+    
+
 
 @app.route('/alumnes/html/baixa', methods=['POST'])
 def baixa_alumne_html():
@@ -414,6 +390,20 @@ def exportar_post():
             df.to_excel(writer, sheet_name=sheet_name, index=False)
     output.seek(0)
     return send_file(output, as_attachment=True, download_name=f"backup_{fecha_actual}.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+@app.route("/ordinadors/html/<int:ordinador_id>")
+def fitxa_ordinador(ordinador_id):
+    ordinador = db.get_or_404(Ordinador, ordinador_id)
+    historial = db.session.execute(
+        db.select(Historial).where(Historial.ordinador_id == ordinador_id).order_by(Historial.data.desc())).scalars().all()
+    return render_template("ordinadors/fitxa.html", ordinador=ordinador, historial=historial)
+
+@app.route("/alumnes/html/<int:alumne_id>")
+def fitxa_alumne(alumne_id):
+    alumne = db.get_or_404(Alumne, alumne_id)
+    historial = db.session.execute(
+        db.select(Historial).where(Historial.alumne_id == alumne_id).order_by(Historial.data.desc())).scalars().all()
+    return render_template("alumnes/fitxa.html", alumne=alumne, historial=historial)
 
 @app.route('/html/exemples')
 def exemples_html():

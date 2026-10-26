@@ -7,8 +7,20 @@ from datetime import datetime
 ESTATS_ORDINADOR = {
     "assignat": "Assignat",
     "emmagatzemat": "Al magatzem",
-    "en reparacio": "En reparacio",
+    "reparacio": "En reparacio",
     "de baixa": "De baixa",
+}
+
+ACCIONS_HISTORIAL = {
+    "assignat": "Assignat",
+    "retirat": "Retirat",
+    "retirat (emmagatzemat)": "Retirat",
+    "retirat (reparació)": "Retirat per reparar",
+    "retirat (baixa)": "Retirat per baixa de l'equip",
+    "retirat (baixa alumne)": "Retirat per baixa de l'alumne",
+    "reparacio": "Enviat a reparació",
+    "de baixa": "Donat de baixa",
+    "emmagatzemat": "Emmagatzemat",
 }
 
 class Alumne(db.Model):
@@ -35,5 +47,7 @@ class Historial(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     accio: Mapped[str] = mapped_column(String(50))
     data: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
-    ordinador_id: Mapped[int] = mapped_column(ForeignKey("ordinador.id"))
-    alumne_id: Mapped[Optional[int]] = mapped_column(ForeignKey("alumne.id"))
+    ordinador_id: Mapped[int] = mapped_column(ForeignKey("ordinador.id"))          
+    alumne_id: Mapped[Optional[int]] = mapped_column(ForeignKey("alumne.id"))      
+    ordinador: Mapped["Ordinador"] = relationship()                              
+    alumne: Mapped[Optional["Alumne"]] = relationship()                          
