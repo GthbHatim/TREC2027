@@ -115,6 +115,18 @@ def assignar(ordinador, alumne):
     ordinador.estat = "assignat"
     apuntar("assignat", ordinador.id, alumne.id)
 
+def errors_alumne(form):
+    errors = []
+    alumne_nom = form.get("nom", "").strip()
+    alumne_curs = form.get("curs", "").strip()
+    alumne_email = form.get("email", "").strip().lower()
+    if alumne_nom.strip() == "":
+        errors.append("Falta el nom.")
+    if alumne_curs not in CURSOS:
+        errors.append("Tria un curs de la llista.")
+    if not alumne_email.endswith("@elfoix.cat"):
+        errors.append("El correu ha de ser del domini @elfoix.cat.")
+    return errors
 
 #Rutes HTML
 
@@ -199,38 +211,50 @@ def formulari_assignar():
 
 @app.route("/alumnes/html/formulari")
 def formulari_alumnes():
-    return render_template("alumnes/afegir.html")
-
-@app.route("/alumnes/html/formulari/after")
-def formulari_alumnes_after():
-    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id.desc()).limit(7)).scalars()
-    return render_template("alumnes/afegir_after.html", alumnes=alumnes)
+    return pagina_afegir_alumne()
 
 @app.route("/ordinadors/html/formulari")
 def formulari_ordinadors():
     return pagina_afegir_ordinador()
 
+def pagina_afegir_alumne(valors=None, estat_http=200): 
+    ordinadors = db.session.execute(db.select(Ordinador).where(Ordinador.estat.in_(("emmagatzemat", "assignat"))).order_by(Ordinador.sace)).scalars().all()
+    recents = db.session.execute(db.select(Alumne).order_by(Alumne.id.desc()).limit(5)).scalars().all()
+    cursos = CURSOS
+    return render_template("alumnes/afegir.html", valors=valors or {}, ordinadors=ordinadors, recents=recents, cursos=cursos), estat_http
+
 @app.route("/alumnes/nou/form", methods=["POST"])
 def post_alumne():
-    nou = Alumne(nom=request.form["nom"], identificador=request.form["identificador"], curs=request.form["curs"], email=request.form["email"])
-
-    db.session.add(nou)
-    db.session.commit()
-
-    ordinador_id = request.form.get("ordinador_id")
-    if ordinador_id:
-        ordinador = db.session.get(Ordinador, ordinador_id)
+    errors = errors_alumne(request.form)
+    if errors:
+        for error in errors:
+            flash(error, "error")
+        return pagina_afegir_alumne(request.form, 422)
+    nou = Alumne(nom=request.form["nom"].strip(), curs=request.form["curs"].strip(), email=request.form["email"].strip().lower(), identificador=request.form["identificador"].strip())
+    ordinador = None
+    if request.form.get("ordinador_id"):
+        ordinador = db.session.get(Ordinador, request.form.get("ordinador_id", type=int))
         if not ordinador:
-            return {"error": "Ordinador no trobat"}, 404
-
-        ordinador.alumne_id = nou.id
-        ordinador.estat = "assignat"
-
-        historial = Historial(alumne_id=nou.id, ordinador_id=ordinador.id, accio="assignat")
-        db.session.add(historial)
-        db.session.commit()
-
-    return redirect(url_for("formulari_alumnes_after"))
+            flash("Ordinador no trobat", "error")
+            return pagina_afegir_alumne(request.form, 422)
+        elif ordinador.estat not in ("emmagatzemat", "assignat"):
+            flash(f"L'ordinador {ordinador.sace} no està disponible", "error")
+            return pagina_afegir_alumne(request.form, 422)
+    db.session.add(nou)
+    antic = ordinador.alumne if ordinador else None
+    try:
+        db.session.flush()
+    except IntegrityError:
+        db.session.rollback()
+        flash("Ja existeix un alumne amb aquest nom, email o identificador", "error")
+        return pagina_afegir_alumne(request.form, 422)
+    if ordinador:
+        if antic:
+            flash(f"L'ordinador {ordinador.sace} estava assignat a {antic.nom}. S'ha retirat i assignat a {nou.nom}.", "ok")
+        assignar(ordinador, nou)
+    db.session.commit()
+    flash(f"Alumne {nou.nom} afegit correctament", "ok")
+    return redirect(url_for("formulari_alumnes"))
 
 def pagina_afegir_ordinador(valors=None, estat_http=200):
     models = db.session.execute(db.select(Ordinador.model).distinct()).scalars().all()
