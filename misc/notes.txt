@@ -282,3 +282,7 @@ evitant que hi hagi brossa al historial.
 * Noves rutes de baixa i restauració d'alumnes
 * Ruta per restaurar ordinadors
 * Editar la macro dels ordinadors per mostrar el menu de restauració (Asistit per IA)
+* Nova ruta per l'assignació més neta
+* Nova ruta per la creació de nous ordinadors
+* Plantilla per la creació de ordinadors
+* Mini meteja de brossa (Asistit per IA)

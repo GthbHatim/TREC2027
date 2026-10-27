@@ -7,7 +7,7 @@ from datetime import datetime
 ESTATS_ORDINADOR = {
     "assignat": "Assignat",
     "emmagatzemat": "Al magatzem",
-    "reparacio": "En reparacio",
+    "reparacio": "En reparació",
     "de baixa": "De baixa",
 }
 
