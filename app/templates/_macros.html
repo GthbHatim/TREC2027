@@ -40,7 +40,6 @@
   {% if o.estat == 'emmagatzemat' %}
   <a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}" class="btn btn-ghost btn-sm hidden text-sm sm:inline-flex">Assignar</a>
   {% endif %}
-  {% if o.estat != 'de baixa' %}
   <button type="button" class="btn btn-ghost btn-sm btn-square" popovertarget="menu-{{ id }}"
           style="anchor-name: --menu-{{ id }}" aria-label="Accions per al {{ o.sace }}">{{ get_icon('ellipsis') }}</button>
   <ul popover id="menu-{{ id }}" class="dropdown dropdown-end menu menu-accions mt-1 text-left" style="position-anchor: --menu-{{ id }}">
@@ -60,13 +59,17 @@
     {% if o.estat == 'reparacio' %}
     <li><button type="submit" form="reparat-{{ id }}">{{ get_icon('check') }} Marcar com a reparat</button></li>
     {% endif %}
+    {% if o.estat == 'de baixa' %}
+    <li><button type="submit" form="restaurar-{{ id }}">{{ get_icon('undo-2') }} Restaurar al magatzem</button></li>
+    {% else %}
     <li><button type="button" class="perill" popovertarget="baixa-{{ id }}">{{ get_icon('ban') }} Donar de baixa…</button></li>
+    {% endif %}
   </ul>
-  {% endif %}
 </div>
 {% if o.estat == 'assignat' %}{{ form_post('emmagatzemar_ordinador_html-' ~ id, url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
 {% if o.estat in ('assignat', 'emmagatzemat') %}{{ form_post('reparar-' ~ id, url_for('reparar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
 {% if o.estat == 'reparacio' %}{{ form_post('reparat-' ~ id, url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
+{% if o.estat == 'de baixa' %}{{ form_post('restaurar-' ~ id, url_for('restaurar_ordinador_html', ordinador_id=o.id)) }}{% endif %}
 {% if o.estat != 'de baixa' %}
 {{ form_post('form-baixa-' ~ id, url_for('baixa_ordinador_html', ordinador_id=o.id)) }}
 {% call confirmacio('baixa-' ~ id, 'Donar de baixa el ' ~ o.sace ~ '?', 'form-baixa-' ~ id, 'Donar de baixa') %}
@@ -77,4 +80,44 @@
 
 {% macro sace(o) -%}
 <a href="{{ url_for('fitxa_ordinador', ordinador_id=o.id) }}" class="codi font-semibold link link-hover">{{ o.sace }}</a>
+{%- endmacro %}
+
+{% macro accions_alumne(a, amb_fitxa=true) -%}
+{% set id = 'alu' ~ a.id %}
+<div class="inline-flex items-center justify-end gap-1">
+  {% if a.estat == 'actiu' and not a.ordinador %}
+  <a href="{{ url_for('formulari_assignar', alumne_id=a.id) }}" class="btn btn-ghost btn-sm hidden text-sm sm:inline-flex">Assignar</a>
+  {% endif %}
+  <button type="button" class="btn btn-ghost btn-sm btn-square" popovertarget="menu-{{ id }}"
+          style="anchor-name: --menu-{{ id }}" aria-label="Accions per a {{ a.nom }}">{{ get_icon('ellipsis') }}</button>
+  <ul popover id="menu-{{ id }}" class="dropdown dropdown-end menu menu-accions mt-1 text-left" style="position-anchor: --menu-{{ id }}">
+    {% if amb_fitxa %}
+    <li><a href="{{ url_for('fitxa_alumne', alumne_id=a.id) }}">{{ get_icon('file-text') }} Veure la fitxa</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('editar_alumne_html', alumne_id=a.id) }}">{{ get_icon('pencil') }} Editar les dades</a></li>
+    {% if a.estat == 'actiu' %}
+      {% if not a.ordinador %}
+      <li class="sm:hidden"><a href="{{ url_for('formulari_assignar', alumne_id=a.id) }}">{{ get_icon('arrow-left-right') }} Assignar ordinador</a></li>
+      {% endif %}
+      {% if a.ordinador %}
+      <li><a href="{{ url_for('formulari_assignar', alumne_id=a.id) }}">{{ get_icon('arrow-left-right') }} Canviar d'ordinador</a></li>
+      {% endif %}
+      <li><button type="button" class="perill" popovertarget="baixa-{{ id }}">{{ get_icon('user-x') }} Donar de baixa…</button></li>
+    {% else %}
+      <li><button type="submit" form="reactivar-{{ id }}">{{ get_icon('user-check') }} Reactivar</button></li>
+    {% endif %}
+  </ul>
+</div>
+{% if a.estat == 'actiu' %}
+{{ form_post('form-baixa-' ~ id, url_for('baixa_alumne_html', alumne_id=a.id)) }}
+{% call confirmacio('baixa-' ~ id, 'Donar de baixa ' ~ a.nom ~ '?', 'form-baixa-' ~ id, 'Donar de baixa') %}
+  {% if a.ordinador %}El {{ a.ordinador.sace }} tornarà al magatzem. {% endif %}Les dades i l'historial es conserven, i es pot reactivar més endavant.
+{% endcall %}
+{% else %}
+{{ form_post('reactivar-' ~ id, url_for('restaurar_alumne_html', alumne_id=a.id)) }}
+{% endif %}
+{%- endmacro %}
+
+{% macro alumne(a) -%}
+<a href="{{ url_for('fitxa_alumne', alumne_id=a.id) }}" class="link link-hover">{{ a.nom }}</a>
 {%- endmacro %}

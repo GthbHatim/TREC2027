@@ -271,4 +271,14 @@ evitant que hi hagi brossa al historial.
 * Ruta fitxa del ordinador
 * Plantilla fitxa del ordinador (Asistit per IA)
 * Ruta fitxa alumne 
+* Plantilla fitxa dels alumnes (Asistit per IA)
 [Final]
+
+[27/10/2026] [Inici]
+* Ruta de veure_alumnes amb filtres
+* Plantilla de veure alumnes
+* Restauració de assignar_ordinador_html (Claude Code)
+    * Justificacio: Era més eficient que trobes el ultim commit on estaba en paral·lel mentres jo treballaba
+* Noves rutes de baixa i restauració d'alumnes
+* Ruta per restaurar ordinadors
+* Editar la macro dels ordinadors per mostrar el menu de restauració (Asistit per IA)

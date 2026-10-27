@@ -53,7 +53,7 @@
         <td class="hidden sm:table-cell">{{ m.estat(o.estat) }}</td>
         <td>
           {% if o.alumne %}
-          {{ o.alumne.nom }}
+          {{ m.alumne(o.alumne) }}
           <div class="text-sm suau">{{ o.alumne.curs }}</div>
           {% else %}<span class="suau" aria-label="Cap">–</span>{% endif %}
         </td>

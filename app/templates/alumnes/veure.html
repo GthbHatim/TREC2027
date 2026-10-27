@@ -1,92 +1,71 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% set seccio = 'alumnes' %}
+{% block titol %}Alumnes{% endblock %}
+
 {% block content %}
-<div class="p-10">
+{% call m.capcalera('Alumnes', "Qui té ordinador i qui no. Les baixes es conserven amb el seu historial.") %}
+  <a href="{{ url_for('formulari_alumnes') }}" class="btn btn-outline">{{ get_icon('user-plus') }} Afegir alumne</a>
+{% endcall %}
 
-  <div class="flex items-center gap-3 mb-4 flex-wrap">
-    <a href="{{ url_for('formulari_alumnes') }}" class="button bg-green-500 shadow-2xl hover:bg-green-600 text-white rounded-lg p-2 inline-block">
-      Afegir Alumne
-    </a>
-
-    <button onclick="document.getElementById('form-baixa').classList.toggle('hidden')" class="bg-red-500 shadow-2xl hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
-      Eliminar Alumne
-    </button>
-
-    <form id="form-baixa" action="{{ url_for('baixa_alumne_html') }}" method="POST" class="hidden flex items-center gap-2">
-      <input
-        type="text"
-        name="alumne_id"
-        placeholder="Id de l'alumne"
-        class="input w-40"
-        required
-      >
-      <button type="submit" class="bg-green-600 hover:bg-green-900 text-white px-4 py-2 rounded-lg">
-        Confirmar
-      </button>
-    </form>
-
-    <button onclick="document.getElementById('form-restaurar').classList.toggle('hidden')" class="bg-purple-500 shadow-2xl hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition">
-      Restaurar Alumne
-    </button>
-
-    <form id="form-restaurar" action="{{ url_for('restaurar_alumne_html') }}" method="POST" class="hidden flex items-center gap-2">
-      <input
-        type="text"
-        name="alumne_id"
-        placeholder="Id de l'alumne"
-        class="input w-40"
-        required
-      >
-      <button type="submit" class="bg-green-600 hover:bg-green-900 text-white px-4 py-2 rounded-lg">
-        Confirmar
-      </button>
-    </form>
-
-    <a href="{{ url_for('formulari_assignar') }}" class="button bg-blue-500 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
-      Assignar Ordinador
-    </a>
-    <button onclick="document.getElementById('form-editar').classList.toggle('hidden')" class="bg-orange-500 shadow-2xl hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition">
-  Editar Alumne
-</button>
-
-<form id="form-editar" action="{{ url_for('editar_alumne_html') }}" method="GET" class="hidden flex items-center gap-2">
-  <input
-    type="text"
-    name="alumne_id"
-    placeholder="Id de l'alumne"
-    class="input w-40"
-    required
-  >
-  <button type="submit" class="bg-green-600 hover:bg-green-900 text-white px-4 py-2 rounded-lg">
-    Buscar
-  </button>
+<form method="get" role="search" class="mb-4 flex flex-wrap gap-2">
+  <label class="input w-full sm:w-80">
+    {{ get_icon('search', 'size-4 suau') }}
+    <input type="search" name="q" value="{{ q }}" placeholder="Nom, correu, identificador o SACE" aria-label="Cerca alumnes">
+  </label>
+  <select name="curs" class="select w-auto" aria-label="Curs">
+    <option value="">Tots els cursos</option>
+    {% for c in cursos %}<option {% if c == curs %}selected{% endif %}>{{ c }}</option>{% endfor %}
+  </select>
+  {% if estat %}<input type="hidden" name="estat" value="{{ estat }}">{% endif %}
+  <button type="submit" class="btn">Cercar</button>
+  {% if q or curs or estat %}<a href="{{ url_for('veure_alumnes') }}" class="btn btn-ghost">Treure els filtres</a>{% endif %}
 </form>
-  </div>
 
-  <table class="table-auto table-m w-full">
+<nav aria-label="Filtra" class="mb-5 flex flex-wrap gap-2">
+  {% for valor, text in [('', 'Tots'), ('sense', 'Actius sense ordinador'), ('baixa', 'De baixa'), ('amb', 'Amb ordinador')] %}
+  <a href="{{ url_for('veure_alumnes', q=q or None, curs=curs or None, estat=valor or None) }}" class="xip"
+     {% if estat == valor %}aria-current="true"{% endif %}>
+    {{ text }} <span class="num">{{ recompte['tots' if not valor else valor] }}</span>
+  </a>
+  {% endfor %}
+</nav>
+
+<div class="table-box p-3">
+  {% if alumnes %}
+  <table class="table">
     <thead>
       <tr>
-        <th class="p-2">ID</th>
-        <th>Identificador</th>
-        <th>Nom</th>
-        <th>Email</th>
-        <th>Curs</th>
-        <th>Estat</th>
-        <th>Id Ordinador</th>
+        <th scope="col">Alumne</th>
+        <th scope="col" class="hidden sm:table-cell">Curs</th>
+        <th scope="col">Ordinador</th>
+        <th scope="col" class="hidden lg:table-cell">Identificador</th>
+        <th scope="col" class="text-right"><span class="sr-only">Accions</span></th>
       </tr>
     </thead>
     <tbody>
-      {% for alumne in alumnes %}
-      <tr>
-        <td class="text-center p-2">{{ alumne.id }}</td>
-        <td class="text-center">{{ alumne.identificador }}</td>
-        <td class="text-center">{{ alumne.nom }}</td>
-        <td class="text-center">{{ alumne.email }}</td>
-        <td class="text-center">{{ alumne.curs }}</td>
-        <td class="text-center" style="text-transform: capitalize">{{ alumne.estat }}</td>
-        <td class="text-center">{{ alumne.ordinador.id if alumne.ordinador else "Sense assignar" }}</td>
+      {% for a in alumnes %}
+      <tr {% if a.estat != 'actiu' %}class="opacity-70"{% endif %}>
+        <td>
+          {{ m.alumne(a) }}
+          {% if a.estat != 'actiu' %}<span class="ml-1 badge badge-sm badge-ghost">De baixa</span>{% endif %}
+          <div class="text-sm suau"><span class="sm:hidden">{{ a.curs }}</span><span class="hidden sm:inline">{{ a.email }}</span></div>
+        </td>
+        <td class="hidden whitespace-nowrap sm:table-cell">{{ a.curs }}</td>
+        <td>
+          {% if a.ordinador %}{{ m.sace(a.ordinador) }}
+          {% elif a.estat == 'actiu' %}<span class="suau">Sense ordinador</span>
+          {% else %}<span class="suau">–</span>{% endif %}
+        </td>
+        <td class="hidden lg:table-cell codi suau">{{ a.identificador }}</td>
+        <td class="text-right">{{ m.accions_alumne(a) }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  {{ m.buit("Cap alumne coincideix amb la cerca.", "Treure els filtres", url_for('veure_alumnes')) }}
+  {% endif %}
 </div>
+<p class="mt-3 text-sm suau">{{ alumnes|length }} {{ 'alumne' if alumnes|length == 1 else 'alumnes' }} a la llista.</p>
 {% endblock %}

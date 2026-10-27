@@ -1,3 +1,21 @@
 {
-    "python.terminal.useEnvFile": true
+    "python.terminal.useEnvFile": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.requireConfig": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.associations": {
+        "*.html": "jinja-html"
+    },
+    "tailwindCSS.includeLanguages": {
+        "jinja-html": "html"
+    },
+    "emmet.includeLanguages": {
+        "jinja-html": "html"
+    }
 }

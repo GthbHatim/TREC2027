@@ -21,7 +21,12 @@ ACCIONS_HISTORIAL = {
     "reparacio": "Enviat a reparació",
     "de baixa": "Donat de baixa",
     "emmagatzemat": "Emmagatzemat",
+    "emmagatzemat (reparació)": "Emmagatzemat després de reparació",
+    "restaurat": "Restaurat al magatzem",
 }
+
+CURSOS = ["1r ESO", "2n ESO", "3r ESO", "4t ESO", "1r Batx", "2n Batx"]
+
 
 class Alumne(db.Model):
     nom: Mapped[str] = mapped_column(String(50), unique=True)

@@ -12,7 +12,7 @@ from app import alumnes, app
 from app.extensions import db
 from flask import request, url_for
 from flask import render_template
-from app.models import ESTATS_ORDINADOR, Alumne, ACCIONS_HISTORIAL
+from app.models import ESTATS_ORDINADOR, Alumne, ACCIONS_HISTORIAL, CURSOS
 from app.models import Ordinador
 from app.models import Historial
 from flask import redirect
@@ -25,6 +25,12 @@ from sqlalchemy import or_
 
 #Diccionaris
 modes = ("auto", "clar", "fosc")
+
+FILTRES = {
+    "amb": (Alumne.estat == "actiu", Alumne.ordinador.has()),
+    "sense": (Alumne.estat == "actiu", ~Alumne.ordinador.has()),
+    "baixa": (Alumne.estat == "de baixa",),
+}
 
 # Funcions golbals per a les plantilles
 
@@ -108,34 +114,60 @@ def index():
 def benvingut():
     return render_template("benvinguda.html")
     
-@app.route("/alumnes/html/veure")
-def veure_alumnes():
-    alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
-    return render_template("alumnes/veure.html", alumnes=alumnes)
-
-def search(query, q):
+def search_alumnes(query_a, q, curs):
+    if curs in CURSOS:
+        query_a = query_a.where(Alumne.curs == curs)
     if q:
         pattern = f"%{q}%"
-        query = query.outerjoin(Ordinador.alumne)
-        query = query.where(or_(
+        query_a = query_a.outerjoin(Alumne.ordinador)
+        query_a = query_a.where(or_(
+            func.unaccent(Alumne.nom).ilike(func.unaccent(pattern)),
+            Alumne.identificador.ilike(pattern),
+            Alumne.email.ilike(pattern),
+            Ordinador.sace.ilike(pattern),
+            Ordinador.num_serie.ilike(pattern),
+            Ordinador.model.ilike(pattern),
+        ))
+    return query_a
+
+@app.route("/alumnes/html/veure")
+def veure_alumnes():
+    q = request.args.get("q", "").strip()
+    estat = request.args.get("estat", "")
+    curs = request.args.get("curs", "")
+    query_a = search_alumnes(db.select(Alumne), q, curs)
+    if estat in FILTRES:
+        query_a = query_a.where(*FILTRES[estat])
+    alumnes = db.session.execute(query_a.order_by(Alumne.nom)).scalars().all()
+    recompte = {}
+    for clau, condicions in FILTRES.items():
+        consulta = search_alumnes(db.select(func.count(Alumne.id)), q, curs).where(*condicions)
+        recompte[clau] = db.session.scalar(consulta)
+    return render_template("alumnes/veure.html", alumnes=alumnes, recompte=recompte,q=q, estat=estat, curs=curs, cursos=CURSOS)
+
+def search_ordinadors(query_o, q):
+    if q:
+        pattern = f"%{q}%"
+        query_o = query_o.outerjoin(Ordinador.alumne)
+        query_o = query_o.where(or_(
             Ordinador.num_serie.ilike(pattern),
             Ordinador.sace.ilike(pattern),
             Ordinador.model.ilike(pattern),
             func.unaccent(Alumne.nom).ilike(func.unaccent(pattern)),
         ))
-    return query
+    return query_o
 
 @app.route("/ordinadors/html/veure")
 def veure_ordinadors():
     q = request.args.get("q", "").strip()
     estat = request.args.get("estat", "")
-    query = db.select(Ordinador)
+    query_o = db.select(Ordinador)
     if estat and estat in ESTATS_ORDINADOR:
-        query = query.where(Ordinador.estat == estat)
-    query = search(query, q)
-    ordinadors = db.session.execute(query.order_by(Ordinador.sace)).scalars().all()
+        query_o = query_o.where(Ordinador.estat == estat)
+    query_o = search_ordinadors(query_o, q)
+    ordinadors = db.session.execute(query_o.order_by(Ordinador.sace)).scalars().all()
     recompte = dict(db.session.execute(
-    search(db.select(Ordinador.estat, func.count()), q).group_by(Ordinador.estat)).all())
+    search_ordinadors(db.select(Ordinador.estat, func.count()), q).group_by(Ordinador.estat)).all())
     return render_template("ordinadors/veure.html", ordinadors=ordinadors, q=q, estat=estat, recompte=recompte)
 
 @app.route("/historial/html/veure")
@@ -222,19 +254,6 @@ def post_alumne():
 
     return redirect(url_for("formulari_alumnes_after"))
 
-@app.route('/alumnes/html/restaurar', methods=['POST'])
-def restaurar_alumne_html():
-    alumne_id = request.form.get('alumne_id')
-    alumne = db.session.get(Alumne, alumne_id)
-    
-    if not alumne:
-        return redirect(url_for('veure_alumnes'))
-
-    alumne.estat = "actiu"
-    db.session.commit() 
-    
-    return redirect(url_for('veure_alumnes'))
-
 @app.route('/ordinadors/html/<int:ordinador_id>/reparar', methods=['POST'])
 def reparar_ordinador_html(ordinador_id):
     ordinador = db.session.get(Ordinador, ordinador_id)
@@ -258,13 +277,28 @@ def baixa_ordinador_html(ordinador_id):
         flash ("404: Ordinador no trobat.", "error")
         return tornar("veure_ordinadors")
     if ordinador.estat == "de baixa":
-        flash ("No es pot donar de baixa un ordinador que està ja ho esta.", "avis")
+        flash ("No es pot donar de baixa un ordinador que ja ho està.", "avis")
         return tornar("veure_ordinadors")
     alumne = retirar_alumne(ordinador, accio="retirat (baixa)")
     ordinador.estat = "de baixa"
     apuntar("de baixa", ordinador.id, alumne.id if alumne else None)
     db.session.commit()
     flash (f"Ordinador {ordinador.sace} donat de baixa.", "ok")
+    return tornar("veure_ordinadors")
+
+@app.route('/ordinadors/html/<int:ordinador_id>/restaurar', methods=['POST'])
+def restaurar_ordinador_html(ordinador_id):
+    ordinador = db.session.get(Ordinador, ordinador_id)
+    if not ordinador:
+        flash ("404: Ordinador no trobat.", "error")
+        return tornar("veure_ordinadors")
+    if ordinador.estat != "de baixa":
+        flash ("Només es poden restaurar ordinadors que estiguin de baixa.", "avis")
+        return tornar("veure_ordinadors")
+    ordinador.estat = "emmagatzemat"
+    apuntar("restaurat", ordinador.id)
+    db.session.commit()
+    flash (f"Ordinador {ordinador.sace} restaurat i emmagatzemat.", "ok")
     return tornar("veure_ordinadors")
 
 @app.route('/ordinadors/html/<int:ordinador_id>/emmagatzemar', methods=['POST'])
@@ -276,7 +310,7 @@ def emmagatzemar_ordinador_html(ordinador_id):
     if ordinador.estat == "reparacio":
         flash (f"Ordinador {ordinador.sace} marcat com a reparat i emmagatzemat.", "ok")
         ordinador.estat = "emmagatzemat"
-        apuntar("reparat i emmagatzemat", ordinador.id)
+        apuntar("emmagatzemat (reparació)", ordinador.id)
         db.session.commit()
         return tornar("veure_ordinadors")
     elif ordinador.estat == "assignat":
@@ -290,40 +324,84 @@ def emmagatzemar_ordinador_html(ordinador_id):
     flash (f"Ordinador {ordinador.sace} emmagatzemat.", "ok")
     return tornar("veure_ordinadors")
 
-@app.route('/assignar/html/<int:ordinador_id>', methods=['POST'])
-
-
-
-    
-
-
-@app.route('/alumnes/html/baixa', methods=['POST'])
-def baixa_alumne_html():
+@app.route('/assignar/html', methods=['POST'])
+def assignar_ordinador_html():
+    ordinador_id = request.form.get('ordinador_id')
     alumne_id = request.form.get('alumne_id')
+
+    if not ordinador_id or not alumne_id:
+        return {"error": "Falten dades"}, 404
+
+    ordinador = db.session.get(Ordinador, ordinador_id)
+    if not ordinador:
+        return {"error": "Ordinador no trobat"}, 404
+
     alumne = db.session.get(Alumne, alumne_id)
-    
     if not alumne:
-        return redirect(url_for('veure_alumnes'))
+        return {"error": "Alumne no trobat"}, 404
 
-    alumne.estat = "de baixa"
-
-    ordinadors_assignats = db.session.execute(
-        db.select(Ordinador).filter_by(alumne_id=alumne.id)
-    ).scalars().all()
-
-    for ordinador in ordinadors_assignats:
-        historial = Historial(
-            alumne_id=alumne.id,
+    if ordinador.alumne_id is not None and ordinador.alumne_id != alumne.id:
+        historial_retirada = Historial(
+            alumne_id=ordinador.alumne_id,
             ordinador_id=ordinador.id,
-            accio="retirat (baixa alumne)"
+            accio="retirat"
         )
-        db.session.add(historial)
+        db.session.add(historial_retirada)
+    if alumne.ordinador is not None and alumne.ordinador.id != ordinador.id:
+        antic = alumne.ordinador
+        historial_retirada = Historial(
+            alumne_id=alumne.id,
+            ordinador_id=antic.id,
+            accio="retirat"
+        )
+        antic.estat = "emmagatzemat"
+        antic.alumne_id = None
+        db.session.add(historial_retirada)
 
-        ordinador.alumne_id = None
-        ordinador.estat = "emmagatzemat"
+    ordinador.alumne_id = alumne.id
+    ordinador.estat = "assignat"
 
+    historial_assignacio = Historial(
+        alumne_id=alumne.id,
+        ordinador_id=ordinador.id,
+        accio="assignat"
+    )
+    db.session.add(historial_assignacio)
     db.session.commit()
-    return redirect(url_for('veure_alumnes'))
+    return redirect(url_for("formulari_assignar_after"))
+
+@app.route('/alumnes/html/<int:alumne_id>/baixa', methods=['POST'])
+def baixa_alumne_html(alumne_id):
+    alumne = db.session.get(Alumne, alumne_id)
+    if not alumne:
+        flash ("404: Alumne no trobat.", "error")
+        return tornar("veure_alumnes")
+    if alumne.estat == "de baixa":
+        flash ("No es pot donar de baixa un alumne que ja ho està.", "avis")
+        return tornar("veure_alumnes")
+    if alumne.ordinador:
+        ordinador = alumne.ordinador
+        retirar_alumne(ordinador, "retirat (baixa alumne)")
+        ordinador.estat = "emmagatzemat"
+    alumne.estat = "de baixa"
+    db.session.commit()
+    flash (f"{alumne.nom} amb l'identificador {alumne.identificador} ha estat donat de baixa.", "ok")
+    return tornar("veure_alumnes")
+
+@app.route('/alumnes/html/<int:alumne_id>/restaurar', methods=['POST'])
+def restaurar_alumne_html(alumne_id):
+    alumne = db.session.get(Alumne, alumne_id)
+    if not alumne:
+        flash ("404: Alumne no trobat.", "error")
+        return tornar("veure_alumnes")
+    if alumne.estat != "de baixa":
+        flash ("Només es poden restaurar alumnes que estiguin de baixa.", "avis")
+        return tornar("veure_alumnes")
+    alumne.estat = "actiu"
+    db.session.commit()
+    flash (f"{alumne.nom} amb l'identificador {alumne.identificador} ha estat restaurat.", "ok")
+    return tornar("veure_alumnes")
+
 
 @app.route('/alumnes/html/editar', methods=['GET'])
 def editar_alumne_html():
