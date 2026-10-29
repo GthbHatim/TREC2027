@@ -286,3 +286,10 @@ evitant que hi hagi brossa al historial.
 * Nova ruta per la creació de nous ordinadors
 * Plantilla per la creació de ordinadors
 * Mini meteja de brossa (Asistit per IA)
+[Asistit per IA]
+
+[29/10/2026] [Inici]
+* Nova ruta i plantilla per editar alumnes
+* Nova ruta i plantilla per l'historial
+* Nova ruta i plantilla per assignar
+* Nova pagina de benvinguda (Asistit per IA)

@@ -459,7 +459,12 @@ def actualitzar_alumne_html(alumne_id):
 
 @app.route('/html/export')
 def exportar ():
-    return render_template('export.html')
+    recompte = {
+        'ordinadors': db.session.query(Ordinador).count(),
+        'alumnes': db.session.query(Alumne).count(),
+        'historial': db.session.query(Historial).count(),
+    }
+    return render_template('export.html', recompte=recompte)
 
 @app.route('/html/export/action', methods=['POST'])
 def exportar_post():
@@ -475,27 +480,44 @@ def exportar_post():
     for key, value in options.items():
         if value:
             if key == 'historial':
-                historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
-                data = [{'id': h.id, 'accio': h.accio, 'data': h.data, 'ordinador_id': h.ordinador_id, 'alumne_id': h.alumne_id} for h in historial]
-                df = pd.DataFrame(data)
-                dataframes['historial'] = df
+                historial = db.session.execute(db.select(Historial).order_by(Historial.data.desc(), Historial.id.desc())).scalars().all()
+                data = [{
+                'Data': h.data.strftime("%d/%m/%Y %H:%M"),
+                'Acció': ACCIONS_HISTORIAL.get(h.accio, h.accio),
+                'SACE': h.ordinador.sace,
+                'Alumne': h.alumne.nom if h.alumne else "",
+                'Email': h.alumne.email if h.alumne else "",
+                'Identificador alumne': h.alumne.identificador if h.alumne else "",} for h in historial]
             elif key == 'alumnes':
-                alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.id)).scalars().all()
-                data = [{'id': a.id, 'nom': a.nom, 'identificador': a.identificador, 'curs': a.curs, 'email': a.email, 'estat': a.estat, 'id_ordinador': a.ordinador.id if a.ordinador else None} for a in alumnes]
-                df = pd.DataFrame(data)
-                dataframes['alumnes'] = df
+                alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.nom)).scalars().all()
+                data = [{
+                'Nom': a.nom,
+                'Curs': a.curs,
+                'Email': a.email,
+                'Identificador': a.identificador,
+                'Estat': a.estat,
+                'SACE': a.ordinador.sace if a.ordinador else "",
+                'Num sèrie': a.ordinador.num_serie if a.ordinador else"",} for a in alumnes]
             elif key == 'ordinadors':
-                ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.id)).scalars().all()
-                data = [{'id': o.id, 'num_serie': o.num_serie, 'sace': o.sace, 'model': o.model, 'estat': o.estat} for o in ordinadors]
-                df = pd.DataFrame(data)
-                dataframes['ordinadors'] = df
+                ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.sace)).scalars().all()
+                data = [{
+                'SACE': o.sace,
+                'Num sèrie': o.num_serie,
+                'Model': o.model,
+                'Estat': ESTATS_ORDINADOR.get(o.estat, o.estat),
+                'Nom alumne': o.alumne.nom if o.alumne else "",
+                'Email alumne': o.alumne.email if o.alumne else "",
+                'Identificador alumne': o.alumne.identificador if o.alumne else "",} for o in ordinadors]
+            dataframes[key] = pd.DataFrame(data)
     if not dataframes:
-        return render_template('export.html', error="Has de marcar almenys una taula.")
+        flash("Has de marcar almenys una taula.", "avis")
+        return redirect(url_for("exportar"))
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         for sheet_name, df in dataframes.items():
             df.to_excel(writer, sheet_name=sheet_name, index=False)
     output.seek(0)
+    flash("Exportació completada. Descarregant el fitxer.", "ok")
     return send_file(output, as_attachment=True, download_name=f"backup_{fecha_actual}.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 @app.route("/ordinadors/html/<int:ordinador_id>")
