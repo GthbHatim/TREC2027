@@ -1,27 +1,51 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% set seccio = 'historial' %}
+{% block titol %}Historial{% endblock %}
+
 {% block content %}
-<div class="p-10">
-<table class="table-auto table-m w-full">
-    <thead>
-        <tr>
-            <th class="p-2">ID</th>
-            <th class="p-2">Acció</th>
-            <th class="p-2">Data i hora</th>
-            <th class="p-2">Id del ordinador</th>
-            <th class="p-2">Id del alumne</th>
-            <th class="p-2">Alumne afectat</th>
-        </tr>
-    </thead>
-    {% for historial in historial %}
-    <tr>
-        <td class="p-2 text-center">{{ historial.id }}</td>
-        <td class="p-2 text-center" style="text-transform: capitalize;">{{ historial.accio }}</td>
-        <td class="p-2 text-center">{{ historial.data | data }}{{ historial.data|data }} <span class="opacity-60 p-1" style="text-transform: capitalize;">({{ historial.data|fa }})</span></td>
-        <td class="p-2 text-center">{{ historial.ordinador_id }}</td>
-        <td class="p-2 text-center">{{ historial.alumne_id }}</td>
-        <td class="p-2 text-center">{{ historial.alumne_nom or "N/A" }}</td>
-    </tr>
+{{ m.capcalera('Historial', "Tots els moviments, del més recent al més antic. Per veure els d'un sol equip, obre'n la fitxa.") }}
+
+<form method="get" role="search" class="mb-5 flex flex-wrap gap-2">
+  <label class="input w-full sm:w-80">
+    {{ get_icon('search', 'size-4 suau') }}
+    <input type="search" name="q" value="{{ q }}" placeholder="SACE, número de sèrie o alumne" aria-label="Cerca a l'historial">
+  </label>
+  <select name="accio" class="select w-auto" aria-label="Acció">
+    <option value="">Totes les accions</option>
+    {% for t in textos %}
+    <option {% if t == accio %}selected{% endif %}>{{ t }}</option>
     {% endfor %}
-</table>
+  </select>
+  <button type="submit" class="btn">Cercar</button>
+  {% if q or accio %}<a href="{{ url_for('veure_historial') }}" class="btn btn-ghost">Treure els filtres</a>{% endif %}
+</form>
+
+<div class="taula-caixa">
+  {% if historial %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Data</th>
+        <th scope="col">Acció</th>
+        <th scope="col">Ordinador</th>
+        <th scope="col">Alumne</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for h in historial %}
+      <tr>
+        <td class="whitespace-nowrap"><time datetime="{{ h.data.isoformat() }}">{{ h.data|data }}</time></td>
+        <td>{{ ACCIONS.get(h.accio, h.accio) }}</td>
+        <td>{{ m.sace(h.ordinador) }} <span class="hidden text-sm suau lg:inline">{{ h.ordinador.model }}</span></td>
+        <td>{% if h.alumne %}{{ m.alumne(h.alumne) }} <span class="text-sm suau">{{ h.alumne.curs }}</span>{% else %}<span class="suau">–</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  {{ m.buit("No hi ha cap moviment amb aquests filtres.", "Treure els filtres", url_for('veure_historial')) }}
+  {% endif %}
 </div>
+</nav>
 {% endblock %}

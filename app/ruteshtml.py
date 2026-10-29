@@ -196,14 +196,26 @@ def veure_ordinadors():
 
 @app.route("/historial/html/veure")
 def veure_historial():
-    historial = db.session.execute(db.select(Historial).order_by(Historial.id)).scalars().all()
-    dades = []
-    for h in historial:
-        alumne = db.session.get(Alumne, h.alumne_id)
-        nom = alumne.nom if alumne else None
-        dades.append({"id": h.id, "accio": h.accio, "data": h.data, "ordinador_id": h.ordinador_id, "alumne_id": h.alumne_id, "alumne_nom": nom})
-    dades.reverse()
-    return render_template("historial/veure.html", historial=dades)
+    q = request.args.get("q", "").strip()
+    query_h = db.select(Historial).order_by(Historial.data.desc()).order_by(Historial.id.desc())
+    accio = request.args.get("accio", "")
+    if accio:
+        claus = [clau for clau, text in ACCIONS_HISTORIAL.items() if text == accio]
+        query_h = query_h.where(Historial.accio.in_(claus))
+    if q:
+        pattern = f"%{q}%"
+        query_h = query_h.outerjoin(Historial.ordinador).outerjoin(Historial.alumne)
+        query_h = query_h.where(or_(
+            func.unaccent(Alumne.nom).ilike(func.unaccent(pattern)),
+            Alumne.identificador.ilike(pattern),
+            Alumne.email.ilike(pattern),
+            Ordinador.sace.ilike(pattern),
+            Ordinador.num_serie.ilike(pattern),
+            Ordinador.model.ilike(pattern),
+        ))
+    historial = db.session.execute(query_h).scalars().all()
+    textos = sorted(set(ACCIONS_HISTORIAL.values()))
+    return render_template("historial/veure.html", historial=historial, q=q, accio=accio, textos=textos)
 
 @app.route("/assignar/html/form")
 def formulari_assignar():
