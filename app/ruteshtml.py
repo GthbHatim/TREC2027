@@ -136,7 +136,9 @@ def index():
 
 @app.route("/benvingut")
 def benvingut():
-    return render_template("benvinguda.html")
+    recompte = dict(db.session.execute(
+    search_ordinadors(db.select(Ordinador.estat, func.count()), "").group_by(Ordinador.estat)).all())
+    return render_template("benvinguda.html", recompte=recompte)
     
 def search_alumnes(query_a, q, curs):
     if curs in CURSOS:
