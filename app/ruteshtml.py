@@ -106,8 +106,6 @@ def retirar_alumne(ordinador, accio="retirat"):
 
 def assignar(ordinador, alumne):
     antic = alumne.ordinador
-    if ordinador is None or alumne is None:
-        return
     if ordinador.alumne_id == alumne.id:
         return
     if antic is not None and antic.id != ordinador.id:
@@ -383,11 +381,11 @@ def emmagatzemar_ordinador_html(ordinador_id):
 def assignar_ordinador_html():
     ordinador = db.session.get(Ordinador, request.form.get("ordinador_id", type=int))
     alumne = db.session.get(Alumne, request.form.get("alumne_id", type=int))
-    if ordinador.alumne_id == alumne.id:
-        flash(f"{alumne.nom} ja té el {ordinador.sace}.", "avis")
-        return redirect(url_for("formulari_assignar"))
     if ordinador is None or alumne is None:
         flash("Tria un ordinador i un alumne.", "error")
+        return redirect(url_for("formulari_assignar"))
+    if ordinador.alumne_id == alumne.id:
+        flash(f"{alumne.nom} ja té el {ordinador.sace}.", "avis")
         return redirect(url_for("formulari_assignar"))
     assignar(ordinador, alumne)
     db.session.commit()

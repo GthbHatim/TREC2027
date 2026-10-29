@@ -18,7 +18,7 @@
 <a href="#contingut" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 btn btn-sm">Vés al contingut</a>
 
 <header class="sticky top-0 z-30 border-b border-base-300 bg-base-100">
-  <div class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
+  <div class="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
     <a href="https://agora.xtec.cat/ieselfoix/" class="mr-2 flex shrink-0 items-center gap-2.5">
       <img src="{{ url_for('static', filename='favicon.svg') }}" alt="" class="h-9 w-auto">
       <span class="font-titol text-[1.0625rem] font-semibold leading-tight">Institut<br class="sm:hidden"> El Foix</span>
@@ -60,7 +60,7 @@
         <li><a href="{{ url_for('exportar') }}" {% if seccio == 'exportar' %}aria-current="page"{% endif %}>{{ get_icon('file-spreadsheet') }} Exportar a Excel</a></li>
         <li class="menu-title mt-1">Tema</li>
         {% for valor, text, nom_icon in [('auto', 'Com el sistema', 'sun-moon'), ('clar', 'Clar', 'sun'), ('fosc', 'Fosc', 'moon')] %}
-        <li><button type="submit" form="form-tema" name="tema" value="{{ valor }}" {% if tema == valor %}aria-current="true"{% endif %}>
+        <li><button type="submit" form="form-tema" name="tema" value="{{ valor }}" {% if theme == valor %}aria-current="true"{% endif %}>
           {{ get_icon(nom_icon) }} {{ text }} {% if theme == valor %}{{ get_icon('check', 'size-4 ml-auto') }}{% endif %}
         </button></li>
         {% endfor %}
