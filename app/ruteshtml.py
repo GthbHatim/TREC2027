@@ -219,7 +219,11 @@ def veure_historial():
 
 @app.route("/assignar/html/form")
 def formulari_assignar():
-    return render_template("assignar.html")
+    ordinador_id = request.args.get("ordinador_id", type=int)
+    alumne_id = request.args.get("alumne_id", type=int)
+    ordinadors = db.session.execute(db.select(Ordinador).where(Ordinador.estat.in_(("emmagatzemat", "assignat"))).order_by(Ordinador.sace)).scalars().all()
+    alumnes = db.session.execute(db.select(Alumne).where(Alumne.estat == "actiu").order_by(Alumne.nom)).scalars().all()
+    return render_template("assignar.html", ordinadors=ordinadors, alumnes=alumnes, ordinador_id=ordinador_id, alumne_id=alumne_id)
 
 @app.route("/alumnes/html/formulari")
 def formulari_alumnes():
