@@ -39,8 +39,8 @@ FILTRES = {
 def inject_tema():
     ara = request.full_path.rstrip("?")
     if request.cookies.get("tema") not in modes:
-        return dict(modes=modes, ACCIONS=ACCIONS_HISTORIAL, theme="auto", ara=ara, ESTATS=ESTATS_ORDINADOR)
-    return dict(modes=modes, ACCIONS=ACCIONS_HISTORIAL, theme=request.cookies.get("tema", "auto"), ara=ara, ESTATS=ESTATS_ORDINADOR)
+        return dict(ACCIONS=ACCIONS_HISTORIAL, theme="auto", ara=ara, ESTATS=ESTATS_ORDINADOR)
+    return dict(ACCIONS=ACCIONS_HISTORIAL, theme=request.cookies.get("tema", "auto"), ara=ara, ESTATS=ESTATS_ORDINADOR)
 def tornar(endpoint):
     seguent = request.form.get("seguent", "")
     if seguent.startswith("/") and not seguent.startswith("//"):
@@ -60,7 +60,7 @@ def get_icon(nom, classe="size-4"):
     folder = Path(app.static_folder)
     file = folder / "icons" / f"{nom}.svg"
     icon = file.read_text()
-    icon = icon.replace("<svg", f"<svg class='{classe}'")
+    icon = icon.replace("<svg", f"<svg class='{classe}' aria-hidden='true'", 1)
     return Markup(icon)
 
 @app.template_filter("data")
@@ -98,7 +98,7 @@ def apuntar(accio, ordinador_id, alumne_id=None):
     db.session.add(historial)
 
 def retirar_alumne(ordinador, accio="retirat"):
-    alumne = db.session.get(Alumne, ordinador.alumne_id)
+    alumne = ordinador.alumne
     if alumne:
         apuntar(accio, ordinador.id, alumne.id)
         ordinador.alumne_id = None
@@ -106,6 +106,8 @@ def retirar_alumne(ordinador, accio="retirat"):
 
 def assignar(ordinador, alumne):
     antic = alumne.ordinador
+    if ordinador.alumne_id == alumne.id:
+        return
     if antic is not None and antic.id != ordinador.id:
         retirar_alumne(antic)
         antic.estat = "emmagatzemat"
@@ -271,7 +273,7 @@ def post_alumne():
             flash(f"L'ordinador {ordinador.sace} estava assignat a {antic.nom}. S'ha retirat i assignat a {nou.nom}.", "ok")
         assignar(ordinador, nou)
     db.session.commit()
-    flash(f"Alumne {nou.nom} afegit correctament", "ok")
+    flash(f"Alumne {nou.nom} afegit correctament.", "ok")
     return redirect(url_for("formulari_alumnes"))
 
 def pagina_afegir_ordinador(valors=None, estat_http=200):
@@ -302,7 +304,7 @@ def post_ordinador():
     if alumne:
         assignar(nou, alumne)
     db.session.commit()
-    flash(f"Ordinador {nou.sace} afegit correctament", "ok")
+    flash(f"Ordinador {nou.sace} afegit correctament.", "ok")
     return redirect(url_for("formulari_ordinadors"))
 
 @app.route('/ordinadors/html/<int:ordinador_id>/reparar', methods=['POST'])
@@ -379,6 +381,9 @@ def emmagatzemar_ordinador_html(ordinador_id):
 def assignar_ordinador_html():
     ordinador = db.session.get(Ordinador, request.form.get("ordinador_id", type=int))
     alumne = db.session.get(Alumne, request.form.get("alumne_id", type=int))
+    if ordinador.alumne_id == alumne.id:
+        flash(f"{alumne.nom} ja té el {ordinador.sace}.", "avis")
+        return redirect(url_for("formulari_assignar"))
     if ordinador is None or alumne is None:
         flash("Tria un ordinador i un alumne.", "error")
         return redirect(url_for("formulari_assignar"))
@@ -412,11 +417,11 @@ def restaurar_alumne_html(alumne_id):
         flash ("404: Alumne no trobat.", "error")
         return tornar("veure_alumnes")
     if alumne.estat != "de baixa":
-        flash ("Només es poden restaurar alumnes que estiguin de baixa.", "avis")
+        flash ("Només es poden reactivar alumnes que estiguin de baixa.", "avis")
         return tornar("veure_alumnes")
     alumne.estat = "actiu"
     db.session.commit()
-    flash (f"{alumne.nom} amb l'identificador {alumne.identificador} ha estat restaurat.", "ok")
+    flash (f"{alumne.nom} amb l'identificador {alumne.identificador} ha estat reactivat.", "ok")
     return tornar("veure_alumnes")
 
 @app.route('/alumnes/html/<int:alumne_id>/editar', methods=['GET'])
@@ -453,7 +458,7 @@ def actualitzar_alumne_html(alumne_id):
         db.session.rollback()
         flash("Ja existeix un alumne amb aquest nom, email o identificador", "error")
         return render_template('alumnes/editar.html', alumne=alumne, cursos=CURSOS, valors=valors), 422
-    flash(f"Alumne {alumne.nom} actualitzat correctament", "ok")
+    flash(f"Alumne {alumne.nom} actualitzat correctament.", "ok")
     db.session.commit()
     return redirect(url_for('fitxa_alumne', alumne_id=alumne.id))
 
@@ -486,18 +491,18 @@ def exportar_post():
                 'Acció': ACCIONS_HISTORIAL.get(h.accio, h.accio),
                 'SACE': h.ordinador.sace,
                 'Alumne': h.alumne.nom if h.alumne else "",
-                'Email': h.alumne.email if h.alumne else "",
+                'Correu': h.alumne.email if h.alumne else "",
                 'Identificador alumne': h.alumne.identificador if h.alumne else "",} for h in historial]
             elif key == 'alumnes':
                 alumnes = db.session.execute(db.select(Alumne).order_by(Alumne.nom)).scalars().all()
                 data = [{
                 'Nom': a.nom,
                 'Curs': a.curs,
-                'Email': a.email,
+                'Correu': a.email,
                 'Identificador': a.identificador,
-                'Estat': a.estat,
+                'Estat': a.estat.capitalize(),
                 'SACE': a.ordinador.sace if a.ordinador else "",
-                'Num sèrie': a.ordinador.num_serie if a.ordinador else"",} for a in alumnes]
+                'Núm de sèrie': a.ordinador.num_serie if a.ordinador else"",} for a in alumnes]
             elif key == 'ordinadors':
                 ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.sace)).scalars().all()
                 data = [{
@@ -506,7 +511,7 @@ def exportar_post():
                 'Model': o.model,
                 'Estat': ESTATS_ORDINADOR.get(o.estat, o.estat),
                 'Nom alumne': o.alumne.nom if o.alumne else "",
-                'Email alumne': o.alumne.email if o.alumne else "",
+                'Correu alumne': o.alumne.email if o.alumne else "",
                 'Identificador alumne': o.alumne.identificador if o.alumne else "",} for o in ordinadors]
             dataframes[key] = pd.DataFrame(data)
     if not dataframes:
@@ -517,7 +522,6 @@ def exportar_post():
         for sheet_name, df in dataframes.items():
             df.to_excel(writer, sheet_name=sheet_name, index=False)
     output.seek(0)
-    flash("Exportació completada. Descarregant el fitxer.", "ok")
     return send_file(output, as_attachment=True, download_name=f"backup_{fecha_actual}.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 @app.route("/ordinadors/html/<int:ordinador_id>")

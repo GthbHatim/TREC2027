@@ -18,6 +18,9 @@
 
   {# Accions possibles segons l'estat, com a botons visibles (aquí hi ha espai) #}
   <div class="flex flex-wrap gap-2">
+    {% if o.estat == 'de baixa' %}
+    <button type="submit" form="restaurar" class="btn btn-primary">{{ get_icon('undo-2') }} Restaurar al magatzem</button>
+    {% endif %}
     {% if o.estat == 'emmagatzemat' %}
     <a href="{{ url_for('formulari_assignar', ordinador_id=o.id) }}" class="btn btn-primary">{{ get_icon('arrow-left-right') }} Assignar</a>
     {% elif o.estat == 'assignat' %}
@@ -34,7 +37,7 @@
     {% endif %}
   </div>
 </div>
-
+{{ m.form_post('restaurar', url_for('restaurar_ordinador_html', ordinador_id=o.id)) }}
 {{ m.form_post('retirar', url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}
 {{ m.form_post('reparar', url_for('reparar_ordinador_html', ordinador_id=o.id)) }}
 {{ m.form_post('reparat', url_for('emmagatzemar_ordinador_html', ordinador_id=o.id)) }}
@@ -70,7 +73,7 @@
     <li data-accio="{{ h.accio }}">
       <div class="flex flex-wrap items-baseline gap-x-2">
         <span class="font-semibold">{{ ACCIONS.get(h.accio, h.accio) }}</span>
-        {% if h.alumne %}<span>{{ 'de' if h.accio == 'retirat (baixa alumne)' else 'a' }} {{ h.alumne.nom }} <span class="text-sm suau">{{ h.alumne.curs }}</span></span>{% endif %}
+        {% if h.alumne %}<span>{{ 'a' if h.accio == 'assignat' else '·' }} {{ h.alumne.nom }} <span class="text-sm suau">{{ h.alumne.curs }}</span></span>{% endif %}
       </div>
       <time datetime="{{ h.data.isoformat() }}" class="text-sm suau">{{ h.data|data }}</time>
     </li>

@@ -5,7 +5,7 @@
 
 {% block content %}
 <a href="{{ url_for('veure_alumnes') }}" class="mb-5 inline-flex items-center gap-1 text-sm link link-hover suau">{{ get_icon('chevron-left') }} Alumnes</a>
-{{ m.capcalera('Afegir un alumne', "Si ja té un ordinador del magatzem, el pots assignar aquí mateix.") }}
+{{ m.capcalera('Afegir un alumne', "Pots assignar-li un ordinador ara mateix. Si tries un equip d'un altre alumne, se li retirarà.") }}
 
 <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,34rem)_1fr]">
   <form method="post" action="{{ url_for('post_alumne') }}" class="space-y-6">
@@ -15,11 +15,9 @@
       <label for="ordinador_id" class="block font-medium">Ordinador <span class="font-normal suau">(opcional)</span></label>
       <select id="ordinador_id" name="ordinador_id" class="select w-full">
         <option value="">Cap de moment</option>
-        <optgroup label="Al magatzem">
           {% for o in ordinadors %}
-          <option value="{{ o.id }}" {% if valors.get('ordinador_id')|string == o.id|string %}selected{% endif %}>{{ o.sace }}, {{ o.model }}</option>
+          <option value="{{ o.id }}" {% if valors.get('ordinador_id')|string == o.id|string %}selected{% endif %}>   {{ o.sace }}, {{ o.model }}{% if o.alumne %} (ara de {{ o.alumne.nom }}){% endif %}</option>
           {% endfor %}
-        </optgroup>
       </select>
     </div>
 

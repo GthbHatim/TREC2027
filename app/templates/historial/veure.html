@@ -21,7 +21,7 @@
   {% if q or accio %}<a href="{{ url_for('veure_historial') }}" class="btn btn-ghost">Treure els filtres</a>{% endif %}
 </form>
 
-<div class="taula-caixa">
+<div class="table-box">
   {% if historial %}
   <table class="table">
     <thead>
@@ -35,10 +35,14 @@
     <tbody>
       {% for h in historial %}
       <tr>
-        <td class="whitespace-nowrap"><time datetime="{{ h.data.isoformat() }}">{{ h.data|data }}</time></td>
+        <td class="whitespace-nowrap"><time datetime="{{ h.data.isoformat() }}" title="{{ h.data|data }}">
+        <span class="sm:hidden">{{ h.data|fa|capitalize }}</span>
+        <span class="hidden sm:inline">{{ h.data|data }}</span>
+        </time>
+        </td>
         <td>{{ ACCIONS.get(h.accio, h.accio) }}</td>
         <td>{{ m.sace(h.ordinador) }} <span class="hidden text-sm suau lg:inline">{{ h.ordinador.model }}</span></td>
-        <td>{% if h.alumne %}{{ m.alumne(h.alumne) }} <span class="text-sm suau">{{ h.alumne.curs }}</span>{% else %}<span class="suau">–</span>{% endif %}</td>
+        <td>{% if h.alumne %}{{ m.alumne(h.alumne) }} <span class="text-sm suau">{{ h.alumne.curs }}</span>{% else %}<span class="suau">N/A</span>{% endif %}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -47,5 +51,4 @@
   {{ m.buit("No hi ha cap moviment amb aquests filtres.", "Treure els filtres", url_for('veure_historial')) }}
   {% endif %}
 </div>
-</nav>
 {% endblock %}

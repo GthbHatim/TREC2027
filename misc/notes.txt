@@ -293,3 +293,9 @@ evitant que hi hagi brossa al historial.
 * Nova ruta i plantilla per l'historial
 * Nova ruta i plantilla per assignar
 * Nova pagina de benvinguda (Asistit per IA)
+* Neteja profunda de tot sense utilitzar (Claude Code)
+    * Justificacio: Proces molt mecanic sense valor, per eficiencia s'ha automatitzat
+* Probes absolutes i detallades (Asistit per IA)
+* Centrat de la pagina de benvinguda (Asistit per IA)
+* Correcio de error trobats al audit agentic.
+
