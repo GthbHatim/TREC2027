@@ -1,6 +1,5 @@
 # Treball de Recerca | Hatim el Housni Lagrine | Institut el Foix
-
-<img width="6445" height="2410" alt="Logo_Gestio" src="https://github.com/user-attachments/assets/a95e9b57-b6ae-4a33-8d36-d02f3368aecd" />
+<img width="1912" height="970" alt="image" src="https://github.com/user-attachments/assets/d3183ab0-bc2e-4480-ba3e-4f2386c70fc7" />
 
 # Benvingut al meu Treball de Recerca pel curs 2026-2027!
 En aquest repositori és guardat tota la part practica del meu treball.
