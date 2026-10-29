@@ -35,7 +35,7 @@ def reparar_ordinador(id):
     ordinador = db.session.get(Ordinador, id)
     if not ordinador:
         return {"error": "Ordinador no enregistrat"}, 404
-    ordinador.estat = "en reparació"
+    ordinador.estat = "reparacio"
     db.session.commit()
     return {"missatge": "Ordinador marcat com a en reparació", "id": ordinador.id}, 200
 

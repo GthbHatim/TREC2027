@@ -1,85 +1,70 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% set seccio = 'ordinadors' %}
+{% block titol %}Ordinadors{% endblock %}
+
 {% block content %}
-<div class="p-10">
+{% call m.capcalera('Ordinadors', 'Cada equip amb el seu estat i qui el té. Les accions de cada fila són al botó de punts.') %}
+<a href="{{ url_for('formulari_ordinadors') }}" class="btn btn-outline">{{ get_icon('plus') }} Afegir ordinador</a>
+{% endcall %}
 
-  <div class="flex items-center gap-3 mb-4 flex-wrap">
+<form method="get" role="search" class="mb-4 flex flex-wrap gap-2">
+  <label class="input w-full sm:w-96">
+    {{ get_icon('search', 'size-4 suau') }}
+    <input type="search" name="q" value="{{ q }}" placeholder="SACE, número de sèrie, model o alumne" aria-label="Cerca ordinadors">
+  </label>
+  {% if estat %}<input type="hidden" name="estat" value="{{ estat }}">{% endif %}
+  <button type="submit" class="btn">Cercar</button>
+  {% if q or estat %}<a href="{{ url_for('veure_ordinadors') }}" class="btn btn-ghost">Treure els filtres</a>{% endif %}
+</form>
 
-    <a href="{{url_for('formulari_ordinadors')}}" class="shadow-2xl button bg-green-600 hover:bg-[rgb(58_91_0)] text-white rounded-lg p-2 inline-block">
-      Afegir Ordinador
-    </a>
+<nav aria-label="Filtra per estat" class="mb-5 flex flex-wrap gap-2">
+  <a href="{{ url_for('veure_ordinadors', q=q or None) }}" class="xip" {% if not estat %}aria-current="true"{% endif %}>
+    Tots <span class="num">{{ recompte.values()|sum }}</span>
+  </a>
+  {% for valor, text in ESTATS.items() %}
+  <a href="{{ url_for('veure_ordinadors', q=q or None, estat=valor) }}" class="xip" {% if estat == valor %}aria-current="true"{% endif %}>
+    {{ m.estat(valor) }} <span class="num">{{ recompte.get(valor, 0) }}</span>
+  </a>
+  {% endfor %}
+</nav>
 
-    <button onclick="document.getElementById('form-reparacio').classList.toggle('hidden')" class="bg-yellow-500 shadow-2xl hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition">Marcar en reparació</button>
-
-    <form id="form-reparacio" action="{{ url_for('reparar_ordinador_html') }}" method="POST" 
-          class="hidden flex items-center gap-2">
-      <input 
-        type="text" 
-        name="num_serie" 
-        placeholder="Número de sèrie"
-        class="input w-40"
-        required
-      >
-      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-        Confirmar
-      </button>
-    </form>
-    <button onclick="document.getElementById('form-baixa').classList.toggle('hidden')" class="bg-red-500 shadow-2xl hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">Marcar de baixa</button>
-
-    <form id="form-baixa" action="{{ url_for('baixa_ordinador_html') }}" method="POST" 
-          class="hidden flex items-center gap-2">
-      <input 
-        type="text" 
-        name="num_serie" 
-        placeholder="Número de sèrie"
-        class="input w-40"
-        required
-      >
-      <button type="submit" class="bg-green-600 hover:bg-green-900 text-white px-4 py-2 rounded-lg">
-        Confirmar
-      </button>
-    </form>
-
-<button onclick="document.getElementById('form-emmagatzemar').classList.toggle('hidden')" class="bg-purple-500 shadow-2xl hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition">Marcar com a emmagatzemat</button>
-
-    <form id="form-emmagatzemar" action="{{ url_for('emmagatzemar_ordinador_html') }}" method="POST" 
-          class="hidden flex items-center gap-2">
-      <input 
-        type="text" 
-        name="num_serie" 
-        placeholder="Número de sèrie"
-        class="input w-40"
-        required
-      >
-      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-        Confirmar
-      </button>
-    </form>
-        <a href="{{url_for('formulari_assignar')}}" class="button bg-blue-500 shadow-2xl hover:bg-blue-600 ml-auto text-white rounded-lg p-2 inline-block">
-      Assignar Ordinador
-    </a>
-  </div>
-
-  <table class="table-auto table-m w-full">
+<div class="table-box p-3">
+  {% if ordinadors %}
+  <table class="table">
     <thead>
-        <tr>
-            <th class="p-2">ID</th>
-            <th class="p-2">Model</th>
-            <th class="p-2">Num. Sèrie</th>
-            <th class="p-2">Estat</th>
-            <th class="p-2">SACE</th>
-            <th class="p-2">Alumne</th>
-        </tr>
+      <tr>
+        <th scope="col">Equip</th>
+        <th scope="col" class="hidden md:table-cell">Número de sèrie</th>
+        <th scope="col" class="hidden sm:table-cell">Estat</th>
+        <th scope="col">Alumne</th>
+        <th scope="col" class="text-right"><span class="sr-only">Accions</span></th>
+      </tr>
     </thead>
-    {% for ordinador in ordinadors %}
-    <tr>
-        <td class="p-2 text-center">{{ ordinador.id }}</td>
-        <td class="p-2 text-center">{{ ordinador.model }}</td>
-        <td class="p-2 text-center">{{ ordinador.num_serie }}</td>
-        <td class="p-2 text-center" style="text-transform: capitalize;">{{ ordinador.estat }}</td>
-        <td class="p-2 text-center">{{ ordinador.sace }}</td>
-        <td class="p-2 text-center">{{ ordinador.alumne.nom if ordinador.alumne else "Sense assignar" }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <tbody>
+      {% for o in ordinadors %}
+      <tr>
+        <td>
+          <span class="codi font-semibold">{{ m.sace(o) }}</span>
+          <div class="hidden text-sm suau sm:block">{{ o.model }}</div>
+          <div class="mt-1 sm:hidden">{{ m.estat(o.estat) }}</div>
+        </td>
+        <td class="hidden md:table-cell codi suau">{{ o.num_serie }}</td>
+        <td class="hidden sm:table-cell">{{ m.estat(o.estat) }}</td>
+        <td>
+          {% if o.alumne %}
+          {{ m.alumne(o.alumne) }}
+          <div class="text-sm suau">{{ o.alumne.curs }}</div>
+          {% else %}<span class="suau" aria-label="Cap">–</span>{% endif %}
+        </td>
+        <td class="text-right">{{ m.accions_ordinador(o) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  {{ m.buit("Cap ordinador coincideix amb la cerca.", "Treure els filtres", url_for('veure_ordinadors')) }}
+  {% endif %}
 </div>
+<p class="mt-3 text-sm suau">{{ ordinadors|length }} {{ 'ordinador' if ordinadors|length == 1 else 'ordinadors' }} a la llista.</p>
 {% endblock %}

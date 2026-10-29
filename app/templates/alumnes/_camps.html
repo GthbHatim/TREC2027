@@ -1,0 +1,28 @@
+<div class="space-y-1.5">
+  <label for="nom" class="block font-medium">Nom i cognoms</label>
+  <input id="nom" name="nom" class="input validator w-full" required maxlength="50"
+         autocomplete="off" value="{{ valors.get('nom', '') }}">
+</div>
+
+<div class="grid gap-6 sm:grid-cols-2">
+  <div class="space-y-1.5">
+    <label for="curs" class="block font-medium">Curs</label>
+    <select id="curs" name="curs" class="select validator w-full" required>
+      <option value="" disabled {% if not valors.get('curs') %}selected{% endif %}>Tria el curs</option>
+      {% for c in cursos %}<option {% if valors.get('curs') == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="space-y-1.5">
+    <label for="identificador" class="block font-medium">Identificador</label>
+    <input id="identificador" name="identificador" class="input validator codi w-full" required maxlength="50"
+           autocomplete="off" value="{{ valors.get('identificador', '') }}">
+  </div>
+</div>
+
+<div class="space-y-1.5">
+  <label for="email" class="block font-medium">Correu del centre</label>
+  <input id="email" name="email" type="email" class="input validator w-full" required maxlength="50"
+         autocomplete="off" placeholder="26nomcognom@elfoix.cat" value="{{ valors.get('email', '') }}"
+         aria-describedby="email-ajuda">
+         <p id="email-ajuda" class="mt-1 text-sm suau">Ha de ser un correu del centre.</p>
+</div>

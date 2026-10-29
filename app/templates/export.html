@@ -1,26 +1,33 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% set seccio = 'exportar' %}
+{% block titol %}Exportar{% endblock %}
+
 {% block content %}
-<div class="flex justify-center items-center min-h-[80vh]">
-  <div class="p-10 m-4 w-full max-w-xl rounded-lg flex flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold mb-4 text-center">Exportar Dades</h1>
-    <p class="mb-4 text-center">Exporta les dades del sistema a un fitxer apte per Excel.</p>
-<form method="POST" action="{{ url_for('exportar_post') }}">
-  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border-xl p-4">
-    <label class="label">
-      <input type="checkbox" id="ordinadors" name="ordinadors" checked="checked" class="checkbox [--input-color:var(--color-blue-600)]" />
-      Ordinadors
-    </label>
-    <label class="label">
-      <input type="checkbox" id="alumnes" name="alumnes" checked="checked" class="checkbox [--input-color:var(--color-blue-600)]" />
-      Alumnes
-    </label>
-    <label class="label">
-      <input type="checkbox" id="historial" name="historial" checked="checked" class="checkbox [--input-color:var(--color-blue-600)]" />
-      Historial
-    </label>
-    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Exportar dades! ⤓</button>
+<div class="mx-auto flex min-h-[60vh] max-w-2xl flex-col justify-center">
+{{ m.capcalera('Exportar a Excel', "Cada taula marcada surt en un full del mateix fitxer. Les dades són les d'ara mateix.") }}
+
+<form method="post" action="{{ url_for('exportar_post') }}" class="max-w-2xl">
+  <fieldset>
+    <legend class="mb-3 font-medium">Què vols exportar?</legend>
+    <div class="mx-auto max-w-2xl text-center grid gap-3 sm:grid-cols-3">
+      {% for clau, titol, columnes in [
+        ('ordinadors', 'Ordinadors', 'SACE, sèrie, model, estat i alumne'),
+        ('alumnes', 'Alumnes', 'Nom, curs, correu, estat i ordinador'),
+        ('historial', 'Historial', 'Data, acció, ordinador i alumne'),
+      ] %}
+      <label class="flex cursor-pointer flex-col gap-2 rounded-box border border-base-300 p-4 opcio">
+        <span class="flex items-center justify-between gap-2">
+          <span class="font-semibold">{{ titol }}</span>
+          <input type="checkbox" name="{{ clau }}" class="checkbox checkbox-primary checkbox-sm" checked>
+        </span>
+        <span class="xifres text-sm">{{ recompte[clau] }} files</span>
+        <span class="text-sm suau">{{ columnes }}</span>
+      </label>
+      {% endfor %}
+    </div>
   </fieldset>
+  <button type="submit" class="btn btn-primary mt-6">{{ get_icon('download') }} Descarregar l'Excel</button>
 </form>
-  </div>
 </div>
 {% endblock %}

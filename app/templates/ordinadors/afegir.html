@@ -1,22 +1,68 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% set seccio = 'ordinadors' %}
+{% block titol %}Afegir ordinador{% endblock %}
+
 {% block content %}
-<div class="flex justify-center items-center p-10">
-  <div class="p-10 m-4 w-full max-w-xl rounded-lg flex flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold mb-4 text-center">Afegir Ordinador</h1>
-    <p class="mb-4 text-center">Introdueix les dades de l'ordinador per afegir-lo al sistema. No es obligatori assignar un alumne.</p>
-<form method="POST" action="{{ url_for('post_ordinador') }}">
-  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border-xl p-4">
-    <label class="label">Número de sèrie</label>
-    <input type="text" name="num_serie" placeholder="Número de sèrie" class="input" required />
-    <label class="label">SACE</label>
-    <input type="text" name="sace" placeholder="SACE" class="input" required />
-    <label class="label">Model</label>
-    <input type="text" name="model" placeholder="Model" class="input" required />
-    <label class="label">Id del alumne (opcional)</label>
-    <input type="text" name="alumne_id" placeholder="ID de l'alumne" class="input" />
-    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded">Crear ordinador</button>
-  </fieldset>
-</form>
-  </div>
+<a href="{{ url_for('veure_ordinadors') }}" class="mb-5 inline-flex items-center gap-1 text-sm link link-hover suau">{{ get_icon('chevron-left') }} Ordinadors</a>
+{{ m.capcalera('Afegir un ordinador', "Les dades són les de l'etiqueta d'inventari i la base de l'equip. Assignar-lo ara és opcional.") }}
+
+<div class="grid items-start gap-12 lg:grid-cols-[minmax(0,34rem)_1fr]">
+  <form method="post" action="{{ url_for('post_ordinador') }}" class="space-y-6">
+    <div class="space-y-1.5">
+      <label for="sace" class="block font-medium">Codi SACE</label>
+      <input id="sace" name="sace" class="input validator codi w-full uppercase" required maxlength="50"
+             placeholder="CAT004141" autocomplete="off" value="{{ valors.get('sace', '') }}" aria-describedby="sace-ajuda">
+      <p id="sace-ajuda" class="text-sm suau">El codi de l'etiqueta d'inventari. No es pot repetir.</p>
+    </div>
+
+    <div class="space-y-1.5">
+      <label for="num_serie" class="block font-medium">Número de sèrie</label>
+      <input id="num_serie" name="num_serie" class="input validator codi w-full uppercase" required maxlength="50"
+             autocomplete="off" value="{{ valors.get('num_serie', '') }}" aria-describedby="serie-ajuda">
+      <p id="serie-ajuda" class="text-sm suau">A l'adhesiu de sota l'equip, després de «S/N».</p>
+    </div>
+
+    <div class="space-y-1.5">
+      <label for="model" class="block font-medium">Model</label>
+      {# <datalist>: suggereix els models que ja existeixen mentre s'escriu (HTML pur) #}
+      <input id="model" name="model" list="models" class="input validator w-full" required maxlength="100"
+             value="{{ valors.get('model', '') }}" aria-describedby="model-ajuda">
+      <datalist id="models">
+        {% for model in models %}<option value="{{ model }}">{% endfor %}
+      </datalist>
+      <p id="model-ajuda" class="text-sm suau">Tria'n un de la llista o escriu-ne un de nou.</p>
+    </div>
+
+    <div class="space-y-1.5">
+      <label for="alumne_id" class="block font-medium">Assignar-lo a <span class="font-normal suau">(opcional)</span></label>
+      <select id="alumne_id" name="alumne_id" class="select w-full">
+        <option value="">Ningú: es queda al magatzem</option>
+{% for a in alumnes %}
+<option value="{{ a.id }}" {% if valors.get('alumne_id')|string == a.id|string %}selected{% endif %}>{{ a.nom }} ({{ a.curs }})</option>
+{% endfor %}
+      </select>
+      <p class="text-sm suau">Només surten els alumnes actius que encara no tenen ordinador.</p>
+    </div>
+
+    <div class="flex gap-2 pt-2">
+      <button type="submit" class="btn btn-primary">{{ get_icon('plus') }} Afegir ordinador</button>
+      <a href="{{ url_for('veure_ordinadors') }}" class="btn btn-ghost">Cancel·lar</a>
+    </div>
+  </form>
+
+  <aside aria-labelledby="titol-recents" class="rounded-box border border-base-300 p-5">
+    <h2 id="titol-recents" class="text-lg">Últims afegits</h2>
+    <ul class="mt-3 linies">
+      {% for o in recents %}
+      <li class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2.5">
+        <span>{{ m.sace(o) }} <span class="text-sm suau">{{ o.model }}</span></span>
+        {{ m.estat(o.estat) }}
+      </li>
+      {% else %}
+      <li class="py-2.5 suau">Encara no n'hi ha cap.</li>
+      {% endfor %}
+    </ul>
+  </aside>
 </div>
 {% endblock %}

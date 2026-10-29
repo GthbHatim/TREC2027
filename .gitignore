@@ -8,4 +8,9 @@ tests/
 instance/
 *.db
 *.xlsx
-exemples_document/
+exemples_document/node_modules/
+.*
+node_modules/
+package-lock.json
+package.json
+

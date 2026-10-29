@@ -226,3 +226,76 @@ evitant que hi hagi brossa al historial.
 * Arreglada logica del formulari per evitar que un alumne tingui dos ordinadors
 * Arreglada (ara si) la logica dels exports, si no es selecciona cap opcio retorna error i porta un altre cop a la pagina del export.
 [Final]
+ --------------------------------------------------------------------# INICI DEL REDISENY #------------------------------------------------------------------------------------------------
+[21/10/2026][Inici]
+* Creat el Branch "Overhaul"; Rediseny total de la web.
+* Borrat dels archius obsolets (Claude Code)
+    * Justificacio: Es un borrat massiu d'arxius, per eficiencia he pasat la llista al agent.
+* Funció per els SVG, feta (Asistit per IA)
+* Funcio per les dates, y de fa quan el cambi (Asistit per IA)
+* Funcions amb Cookies dels temes
+[Final]
+
+[21/10/2026] [Inici]
+* Nova navbar (Asistit per IA)
+* Afegit boto de nou al costat del de assignar
+* Arreglat bugs dels temes y concordances del codi.
+[Final]
+
+[22/10/2026] [Inici]
+* Cambiar font de la web
+[Final]
+
+[24/10/2026] [Inici]
+* ESTATS_ORDINADOR i estats unificats
+* Corregida la falta del estat del alumne en el Backup generat
+* Query a la DB per a filtres a les taules web
+* Unaccent per que el Query ?q funcioni sense accents
+* Recompte de resultats per els botons (Asistit per IA)
+* Creació de Macros per a tasques repetitives (Asistit per IA)
+* Canvis en la estructura de les plantilles de veure.html (Asistit per IA)
+* Cerca per form get amb filtes a la tuta amb els querys
+* Arreglat bug del modes, form no coincidia amb el dict de ruteshtml.py
+[Final]
+
+[25/10/2026] [Inici]
+* Rutes més eficients
+* Funció general per apuntar al historial.
+[Final]
+
+[26/10/2026]
+* Més Macros per els estats dels oridnadors i accions POST (Asistit per IA)
+* Sub menus per les accions en comptes de botons individuals amb formulari.
+* Notifiaccions flashed per les accions.
+* Accions al historal unificades.
+* Ruta fitxa del ordinador
+* Plantilla fitxa del ordinador (Asistit per IA)
+* Ruta fitxa alumne 
+* Plantilla fitxa dels alumnes (Asistit per IA)
+[Final]
+
+[27/10/2026] [Inici]
+* Ruta de veure_alumnes amb filtres
+* Plantilla de veure alumnes
+* Restauració de assignar_ordinador_html (Claude Code)
+    * Justificacio: Era més eficient que trobes el ultim commit on estaba en paral·lel mentres jo treballaba
+* Noves rutes de baixa i restauració d'alumnes
+* Ruta per restaurar ordinadors
+* Editar la macro dels ordinadors per mostrar el menu de restauració (Asistit per IA)
+* Nova ruta per l'assignació més neta
+* Nova ruta per la creació de nous ordinadors
+* Plantilla per la creació de ordinadors
+* Mini meteja de brossa (Asistit per IA)
+[Asistit per IA]
+
+[29/10/2026] [Inici]
+* Nova ruta i plantilla per editar alumnes
+* Nova ruta i plantilla per l'historial
+* Nova ruta i plantilla per assignar
+* Nova pagina de benvinguda (Asistit per IA)
+* Neteja profunda de tot sense utilitzar (Claude Code)
+    * Justificacio: Proces molt mecanic sense valor, per eficiencia s'ha automatitzat
+* Probes absolutes i detallades (Asistit per IA)
+* Centrat de la pagina de benvinguda (Asistit per IA)
+* Correcio de error trobats al audit agentic.
+
