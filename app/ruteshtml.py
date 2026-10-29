@@ -106,6 +106,8 @@ def retirar_alumne(ordinador, accio="retirat"):
 
 def assignar(ordinador, alumne):
     antic = alumne.ordinador
+    if ordinador is None or alumne is None:
+        return
     if ordinador.alumne_id == alumne.id:
         return
     if antic is not None and antic.id != ordinador.id:
@@ -507,7 +509,7 @@ def exportar_post():
                 ordinadors = db.session.execute(db.select(Ordinador).order_by(Ordinador.sace)).scalars().all()
                 data = [{
                 'SACE': o.sace,
-                'Num sèrie': o.num_serie,
+                'Núm de sèrie': o.num_serie,
                 'Model': o.model,
                 'Estat': ESTATS_ORDINADOR.get(o.estat, o.estat),
                 'Nom alumne': o.alumne.nom if o.alumne else "",
