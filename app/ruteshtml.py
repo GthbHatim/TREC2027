@@ -401,31 +401,43 @@ def restaurar_alumne_html(alumne_id):
     flash (f"{alumne.nom} amb l'identificador {alumne.identificador} ha estat restaurat.", "ok")
     return tornar("veure_alumnes")
 
+@app.route('/alumnes/html/<int:alumne_id>/editar', methods=['GET'])
+def editar_alumne_html(alumne_id):
+    alumne = db.get_or_404(Alumne, alumne_id)
+    valors = {
+        'nom': alumne.nom,
+        'identificador': alumne.identificador,
+        'curs': alumne.curs,
+        'email': alumne.email,
+    }
+    return render_template('alumnes/editar.html', alumne=alumne, cursos=CURSOS, valors=valors)
 
-@app.route('/alumnes/html/editar', methods=['GET'])
-def editar_alumne_html():
-    alumne_id = request.args.get('alumne_id')
-    alumne = db.session.get(Alumne, alumne_id)
-
-    if not alumne:
-        return redirect(url_for('veure_alumnes'))
-
-    return render_template('alumnes/editar.html', alumne=alumne)
 
 @app.route('/alumnes/html/actualitzar/<int:alumne_id>', methods=['POST'])
 def actualitzar_alumne_html(alumne_id):
-    alumne = db.session.get(Alumne, alumne_id)
-
-    if not alumne:
-        return redirect(url_for('veure_alumnes'))
-
-    alumne.nom = request.form.get('nom')
-    alumne.identificador = request.form.get('identificador')
-    alumne.curs = request.form.get('curs')
-    alumne.email = request.form.get('email')
-
+    alumne = db.get_or_404(Alumne, alumne_id)
+    valors = {
+        'nom': request.form.get('nom', '').strip(),
+        'identificador': request.form.get('identificador', '').strip(),
+        'curs': request.form.get('curs', '').strip(),
+        'email': request.form.get('email', '').strip().lower(),
+    }
+    errors = errors_alumne(valors)
+    if errors:
+        for error in errors:
+            flash(error, "error")
+        return render_template('alumnes/editar.html', alumne=alumne, cursos=CURSOS, valors=valors), 422
+    for camp, valor in valors.items():
+        setattr(alumne, camp, valor)
+    try:
+        db.session.flush()
+    except IntegrityError:
+        db.session.rollback()
+        flash("Ja existeix un alumne amb aquest nom, email o identificador", "error")
+        return render_template('alumnes/editar.html', alumne=alumne, cursos=CURSOS, valors=valors), 422
+    flash(f"Alumne {alumne.nom} actualitzat correctament", "ok")
     db.session.commit()
-    return redirect(url_for('veure_alumnes'))
+    return redirect(url_for('fitxa_alumne', alumne_id=alumne.id))
 
 @app.route('/html/export')
 def exportar ():
