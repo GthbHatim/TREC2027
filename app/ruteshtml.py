@@ -43,7 +43,12 @@ def inject_tema():
     return dict(ACCIONS=ACCIONS_HISTORIAL, theme=request.cookies.get("tema", "auto"), ara=ara, ESTATS=ESTATS_ORDINADOR)
 def tornar(endpoint):
     seguent = request.form.get("seguent", "")
-    if seguent.startswith("/") and not seguent.startswith("//"):
+    es_interna = (
+        seguent.startswith("/")                 
+        and not seguent.startswith(("//", "/\\"))        
+        and not any(c.isspace() for c in seguent)        
+    )
+    if es_interna:
         return redirect(seguent)
     return redirect(url_for(endpoint))
 
@@ -537,14 +542,3 @@ def fitxa_alumne(alumne_id):
     historial = db.session.execute(
         db.select(Historial).where(Historial.alumne_id == alumne_id).order_by(Historial.data.desc())).scalars().all()
     return render_template("alumnes/fitxa.html", alumne=alumne, historial=historial)
-
-@app.route('/html/exemples')
-def exemples_html():
-    return render_template('exemples_document/basexemple.html')
-
-@app.route('/html/exemples/1')
-def exemples_1_html():
-    return render_template('exemples_document/fillexemple.html')
-
-
-
